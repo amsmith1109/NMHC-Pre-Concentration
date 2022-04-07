@@ -51,4 +51,5 @@ def scanner(name, BR=115200):
     return result
 
 if __name__ == '__main__':
-    print(serial_ports())
+    s = serial_ports()
+    print(s)
