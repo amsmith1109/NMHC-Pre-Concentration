@@ -21,10 +21,25 @@ class terranova908:
             bytesize=size,
             timeout=timeout)
         
-        self.units = self.unit()
-        self.model = self.model()
-        self.scale = self.scale()
-        
+        units = self.unit().decode('utf-8')
+        model = self.model().decode('utf-8')
+        self.serial.write(b'f\r')
+        scale = self.serial.readall().decode('utf-8').split()
+        self.units = units[0:-2]
+        self.model = model[0:-2]
+        self.scale = scale
+        # The conversion to float then back to string gets rid of the added
+        # exponent. That way a print displays 10.0, not 10.00e+0.
+        self.scale = str(float(self.scale[0])), str(float(self.scale[1]))
+    
+    def info(self):
+        print(self.model + ':')
+        print('Measurements are made in ' + self.units + '.')
+        print('Gauge 1 has a range of 0 - ' + self.scale[0] + ' ' + self.units)
+        print('Gauge 2 has a range of 0 - ' + self.scale[1] + ' ' + self.units)
+        print('')
+        print('Use <object>.read() to get instrument measurements.')
+    
     def read(self):
         self.serial.write(b'p\r')
         raw = self.serial.readall()
@@ -34,11 +49,7 @@ class terranova908:
     def model(self):
         self.serial.write(b'v\r')
         return self.serial.readall()
-    
-    def scale(self):
-        self.serial.write(b'f\r')
-        return self.serial.readall()
-            
+                
     def unit(self):
         self.serial.write(b'u\r')
         return self.serial.readall()
@@ -54,5 +65,4 @@ if __name__ == '__main__':
     import serial
     s = serial_ports()
     t = terranova908('/dev/ttyUSB0') #setting this to the port I plugged in to
-    print(t)
-    
+    t.info()
