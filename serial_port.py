@@ -29,6 +29,7 @@ def serial_ports():
             result.append(port)
         except (OSError, serial.SerialException):
             pass
+    result.remove('/dev/ttyAMA0') #removes default port from list
     return result
 
 def scanner(name, BR=115200):
