@@ -118,8 +118,10 @@ class omegatc:
         return flag
 
     def measure(self):
-        return self.rc('X01')
+        temp = self.rc('X01')[3:-1]
+        return float(temp)
 
+    # c for "change" units
     def c_units(self, selection=None):
         code = self.rc('R08')  # Requests device settings, need to only change temperature
         if code.__len__() > 6:
@@ -154,7 +156,23 @@ class omegatc:
         if flag:
             print('Units successfully changed to °' + selection.upper() + '.')
 
-
+    def set_decimal(self, n):
+        if not(isinstance(n, int)):
+            print('Select an integer between 0 and 3')
+            return
+        if n < 0 or n > 3:
+            print('Invalid decimal place.')
+            return
+        code = self.rc('R08')
+        b = int(code[4], 16)
+        temp = 0
+        if b > 7:
+            temp = 8
+        b = str(hex(n + 1 + temp))[-1]
+        self.rc('W' + code[1:4] + b)
+        flag = self.reset()
+        if flag:
+            print('Decimal point successfully changed to ' + str(n) + '.')
         
 if __name__ == '__main__':
     from serial_port import serial_ports
