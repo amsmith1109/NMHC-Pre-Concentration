@@ -49,7 +49,11 @@ class omegatc:
         recognition = codecs.decode(check[0:2],'hex')
         self.recognition = recognition
         self.port = com
-        #self.address = Addr
+
+        self.units = self.c_units()
+        # self.write('R07')
+        # inpt = self.serial.readall().decode('utf-8')
+        # inpt = inpt[3:4]
         
     def write(self, message):
         #Check input type and convert it to byte string
@@ -78,38 +82,84 @@ class omegatc:
         
     def read(self):
         msg = self.serial.readall()
-        if msg[0:-1] == b'?43':
+        msg = msg.decode("utf-8")
+        if msg[0:-1] == '?43':
             print('Command error.')
-        elif msg[0:-1] == b'?46':
+        elif msg[0:-1] == '?46':
             print('Format error.')
-        elif msg[0:-1] == b'?50':
+        elif msg[0:-1] == '?50':
             print('Parity error.')
-        elif msg[0:-1] == b'?56':
+        elif msg[0:-1] == '?56':
             print('Serial Device Address Error.')
-        if __name__ != '__main__':
-            print(msg)
-        return msg
+        else:
+            return msg
+        return None
         
     def readline(self):
         msg = self.serial.readline()
-        if __name__ != '__main__':
-            print(msg)
         return msg
         
     def close(self):
         self.serial.close()
-        
+
+    # rc is used to perform a write followed by a read.
     def rc(self, message):
         self.write(message)
         time.sleep(0.5)
-        self.read()
+        msg = self.read()
+        return msg
         
     def reset(self):
-        self.write('Z02')
-        
+        check = self.rc('Z02')
+        if check[0:3] == 'Z02':
+            flag = True
+        else:
+            flag = False
+        return flag
+
+    def measure(self):
+        return self.rc('X01')
+
+    def c_units(self, selection=None):
+        code = self.rc('R08')  # Requests device settings, need to only change temperature
+        if code.__len__() > 6:
+            # Find the returned command from the request
+            return
+        # Get the byte that stores what the instrument uses for temperature units.
+        # Also grab the decimal place information (bits 0 - 2) to write the same
+        # value to eeprom when the command to change temperature units is called.
+        b = int(code[4], 16)
+        if b > 7:
+            temp = 'F'
+            dec = b - 8
+        else:
+            temp = 'C'
+            dec = b
+        # Do nothing if the eeprom doesn't need to be updated.
+        # Otherwise calculate the byte to send.
+        if selection == None:
+            return temp
+        elif selection in ('F', 'f'):
+            if temp == 'F':
+                return 'F'
+            else:
+                b = str(hex(dec + 8))[2]
+        elif selection in ('C', 'c'):
+            if temp == 'C':
+                return 'C'
+            else:
+                b = str(hex(dec))[2]
+        self.rc('W'+code[1:4]+b)
+        flag = self.reset()
+        if flag:
+            print('Units successfully changed to °' + selection.upper() + '.')
+
+
         
 if __name__ == '__main__':
     from serial_port import serial_ports
     import serial
     s = serial_ports()
     o = omegatc(s[0])
+    o.c_units('f')
+    o.close()
