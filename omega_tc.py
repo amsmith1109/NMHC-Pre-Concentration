@@ -86,10 +86,13 @@ class omegatc:
             print('Invalid set point target')
             return
         if temp == None:
-            msg = msg2dec(self.echo('R0' + str(position)))
-            bits = extract(msg, idx)
-            temp = bits[0] / (10**(bits[1]-1)) * (-1**bits[2])
-            return temp
+            val = []
+            for i in ['1','2']:
+                msg = msg2dec(self.echo('R0' + i))
+                bits = extract(msg, idx)
+                temp = bits[0] / (10**(bits[1]-1)) * ((-1)**bits[2])
+                val.append(temp)
+            return val
             
         if eeprom==True:
             msg = 'W'
