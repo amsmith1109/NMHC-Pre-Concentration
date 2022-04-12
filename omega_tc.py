@@ -49,8 +49,87 @@ class omegatc:
         recognition = codecs.decode(check[0:2],'hex')
         self.recognition = recognition
         self.port = com
+        # Read values at 0x07 register
+        self.probe_type = self.probe()
+        
+        # Read values at 0x08 register
+        idx = [0,3,5,8]
+        msg = msg2dec(self.echo('R08'))
+        R08 = extract(msg, idx)
+        self.decimal = R08[0] - 1 # note: 0 = "not allowed", '1' = 0 ...
+        if R08 == 0:
+            self.units = '°C'
+        else:
+            self.units = '°F'
+        self.filter_constant = 2**R08[2]
 
-        self.units = self.c_units()
+    def reading(self, option=1):
+        if isinstance(option,str):
+            if option.upper() == 'PEAK':
+                option = 2
+            elif option.upper() == 'VALLEY':
+                option = 3
+            else:
+                print('Invalid reading option.')
+                return
+        if option > 3 or option < 0:
+            print('Invalid reading option. (out of range)')
+            return
+        cmd = 'X0' + str(option)
+        msg = self.echo(cmd)[3:-1]
+        return float(msg)
+    
+    def set_point(self, temp = None, position = 1, eeprom=False):
+        # Input checks to make sure a valid command is being requested.
+        idx = [0,20,23,24]
+        if position > 2 or position < 1:
+            print('Invalid set point target')
+            return
+        if temp == None:
+            msg = msg2dec(self.echo('R0' + str(position)))
+            bits = extract(msg, idx)
+            temp = bits[0] / (10**(bits[1]-1)) * (-1**bits[2])
+            return temp
+            
+        if eeprom==True:
+            msg = 'W'
+        else:
+            msg = 'P'
+        if temp > 9999 or temp < -9999:
+            print('Temperature setting is out of range.')
+            return
+        msg = msg + '0' + str(position)
+        
+        # Process the input value and convert it to the machine readable value.
+        # bits 0 - 19 = temperature value, 0 - 9999
+        # bits 20 - 22 = decimal place, 0 - 4 (note 4 = F.FFF)
+        # bit 23 = sign, 0 = positive, 1 = negative
+        
+        val = []
+        temp_string = str(abs(temp))
+        if '.' in temp_string[0:5]:
+            temp_string = temp_string[0:5]
+            dec = temp_string[::-1].find('.')
+        else:
+            temp_string = temp_string[0:4]
+            dec = 0
+        temp_val = int(round(abs(temp)*10**dec))
+        val.append(temp_val)
+        val.append(dec + 1)
+        if temp > 0:
+            val.append(0)
+        else:
+            val.append(1)
+        temp_hex = compact(val,idx,6)
+        
+        # Compile the message and send it
+        msg = msg + temp_hex
+        check = self.echo(msg)
+        if check[0:3] == msg[0:3]:
+            return 'Set point successfully changed to: ' + str(temp) + '.'
+        else:
+            return check
+    
     
     # Performs a serial write on the RS232 line.
     # Some functionality is added to mainstream sending messages.
@@ -236,7 +315,7 @@ class omegatc:
             tc = _tc_type.index(tc.upper())
         
         # Grab the current memory state
-        prb_val = int(self.echo('R07')[3:-1], 16)
+        prb_val = msg2dec(self.echo('R07'))
         mem = extract(prb_val, _indices)
         
         # Assign grabbed values:
@@ -310,9 +389,12 @@ def compact(code, index, length = None):
                 output = '0' + output
     return output
 
+def msg2dec(msg):
+    return int(msg[3:-1], 16)
+
 if __name__ == '__main__':
     from serial_port import serial_ports
     import serial
     s = serial_ports()
     o = omegatc(s[0])
-    val = o.probe(typ='TC',tc='K')
+    
