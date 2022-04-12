@@ -1,3 +1,7 @@
+# Commands not implemented:
+# Setting/tuning offsets in 03
+# 04, 05, 09 & beyond
+# Alarms D01 - E04, X02 - V01
 import serial
 import time
 import codecs
@@ -36,7 +40,7 @@ class omegatc:
                 break
             if abs(time.time() - t) > 5:
                 print('Unable to connect with omega device.')
-                break
+                return
         print('Connection to Omega TC successful!')        
         # check returns the communication configuration:
         # Byte 1 - Recognition character
@@ -48,6 +52,14 @@ class omegatc:
         
         recognition = codecs.decode(check[0:2],'hex')
         self.recognition = recognition
+        
+        # init offset is called any time the instrument is reset
+        # offset values stored in eeprom, but not passed to memory.
+        # .init_offset() grabs what's stored in the eeprom and pushes
+        # it to memory to obtain the correct reading.
+        # Note: the same may be necessary for scale offsets.
+        # Note 2: Be sure to change the offset calibration with new probes.
+        self.init_offset()
         self.port = com
         # Read values at 0x07 register
         self.probe_type = self.probe()
@@ -62,6 +74,7 @@ class omegatc:
         else:
             self.units = '°F'
         self.filter_constant = 2**R08[2]
+        print('Omega controller is ready!')
 
     def reading(self, option=1):
         if isinstance(option,str):
@@ -185,6 +198,7 @@ class omegatc:
 
     # echo is used to perform a write followed by a read.
     def echo(self, message):
+        self.serial.flush()
         self.write(message)
         time.sleep(self.serial.timeout)
         msg = self.read()
@@ -196,6 +210,7 @@ class omegatc:
             flag = True
         else:
             flag = False
+        self.init_offset()
         return flag
 
     def measure(self):
@@ -348,6 +363,10 @@ class omegatc:
             
         return typ, tc, rtd
 
+    def init_offset(self):
+        msg = self.echo('R03')
+        self.echo('P' + msg[1:-1])
+        
 # Takes the hex code from the omega system and extracts the
 # individual components to return a list.
 #
@@ -399,5 +418,4 @@ if __name__ == '__main__':
     from serial_port import serial_ports
     import serial
     s = serial_ports()
-    o = omegatc(s[0])
-    
+    o = omegatc(s[1])
