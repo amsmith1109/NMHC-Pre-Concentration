@@ -17,5 +17,5 @@ git clone https://github.com/amsmith1109/NMHC-Pre-Concentration
 cd NMHC-Pre-Concentration
 git add .
 git commit -m "commit description"
-git push main origin
+git push origin main
 

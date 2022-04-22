@@ -6,6 +6,8 @@ import serial
 import time
 import codecs
 
+degree_sign = u'\N{DEGREE SIGN}'
+
 class omegatc:
     # Initialize with factory default settings.
     #
@@ -53,7 +55,7 @@ class omegatc:
         recognition = codecs.decode(check[0:2],'hex')
         self.recognition = recognition
         
-        # init offset is called any time the instrument is reset
+        # init_offset is called any time the instrument is reset
         # offset values stored in eeprom, but not passed to memory.
         # .init_offset() grabs what's stored in the eeprom and pushes
         # it to memory to obtain the correct reading.
@@ -214,8 +216,13 @@ class omegatc:
         return flag
 
     def measure(self):
-        temp = self.echo('X01')[3:-1]
-        return float(temp)
+        temp = self.echo('X01')
+        start = temp.rfind('X01')+3
+        stop = temp.rfind('\r')
+        if stop!=-1:
+            return float(temp[start:stop])
+        else:
+            return
 
     # c for "change" units. can use upper or lower case for celcius or fahrenheit
     # Calling this function with no 'selection' returns the meter setting.
@@ -251,7 +258,7 @@ class omegatc:
         self.echo('W'+code[1:4]+b.upper())
         flag = self.reset()
         if flag:
-            print('Units successfully changed to °' + selection.upper() + '.')
+            print(f'Units successfully changed to °{selection.upper()}.')
     
     # Omega displays customize how many decimal places are displayed on
     # the faceplate, and how many are written to the serial line.
@@ -276,7 +283,7 @@ class omegatc:
         self.echo('W' + code[1:4] + b)
         flag = self.reset()
         if flag:
-            print('Decimal point successfully changed to ' + str(n) + '.')
+            print(f'Decimal point successfully changed to {n}.')
     
     # type = type of probe. Can be: ['TC', 'RTD', 'PROCESS']
     # Range type will depend on which type of probe is called
@@ -418,4 +425,4 @@ if __name__ == '__main__':
     from serial_port import serial_ports
     import serial
     s = serial_ports()
-    o = omegatc(s[1])
+    o = omegatc(s[0])
