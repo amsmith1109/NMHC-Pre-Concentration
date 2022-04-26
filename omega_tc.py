@@ -388,25 +388,59 @@ class omegatc:
                         auto_tune=None,
                         analog=None,
                         ):
-        _indices = [0, 1, 2, 3, 4, 5, 6, 7]
+        _indices = [0, 1, 2, 4, 5, 6, 7]
         _addr = '0C'
         _dict = {'PID':PID,
                  'direction':direction,
                  'auto_PID':auto_PID,
-                 'null':None,
                  'anti_wind':anti_wind,
                  'auto_tune':auto_tune,
                  'analog':analog}
         _valid = {'PID':[0,1],
                  'direction':[0,1],
                  'auto_PID':[0,1],
-                 'null':[0,1],
                  'anti_wind':[0,1],
                  'auto_tune':[0,1],
                  'analog':[0,1]}
-        self.memory_process(_addr, _indices, _dict, _valid)
+        _valid_names = {'PID':['Time Proportional On/Off','Time Proportional PID'],
+                     'direction':['Reverse', 'Direct'],
+                     'auto_PID':['Disable','Enable'],
+                     'anti_wind':['Disable','Enable'],
+                     'auto_tune':['Stop','Start'],
+                     'analog':['0 - 20mA','4 - 20mA']}
+        self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
+    
+    def config_output_2(self,
+                               PID=None,
+                               direction=None,
+                               auto_PID=None,
+                               ramp=None,
+                               soak=None,
+                               damping=None):
+        _indices = [0, 1, 2, 3, 4, 5, 7]
+        _addr = '0C'
+        _dict = {'PID':PID,
+                 'direction':direction,
+                 'auto_PID':auto_PID,
+                 'ramp':ramp,
+                 'soak':soak,
+                 'damping':damping}
+        _valid = {'PID':[0,1],
+                 'direction':[0,1],
+                 'auto_PID':[0,1],
+                 'ramp':[0,1],
+                 'soak':[0,1],
+                 'damping':[0,7]}
+        _valid_names = {'PID':['Time Proportional On/Off','Time Proportional PID'],
+                     'direction':['Reverse', 'Direct'],
+                     'auto_PID':['Disable','Enable'],
+                     'ramp':['Disable','Enable'],
+                     'soak':['Disable','Enable'],
+                     'damping':['Damping '+str(x) for x in range(0,8)]}
+        self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
         
-    def memory_process(self, _addr, _indices, _dict, _valid):
+    
+    def memory_process(self, _addr, _indices, _dict, _valid, _valid_names):
         for i in _dict:
             if _dict[i]!=None:
                 if not(_valid[i][0] <= _dict[i] <= _valid[i][1]):
@@ -449,7 +483,7 @@ class omegatc:
                 return
             print('Successfully updated controller.')
         for n, i in enumerate(_dict):
-            print(i,': ',mem[n])
+            print(i,': ',_valid_names[i][mem[n]])
         return
         
 # Takes the hex code from the omega system and extracts the
@@ -467,6 +501,10 @@ class omegatc:
 # decimal 36 = 0b 00 10 01 00
 def extract(code, index):
     val = []
+    # Max val is used to ensure that the conversion to the binary value is the correct length.
+    # For an 8-bit number, 0x04 is printed as 0b100, but should be '0b00000100'. A large enough
+    # number is added to make 0x04 print as '0b100000100'. This reverses to '001000001b0'. The
+    # Reading the 1st to 8rd bit is then obtains from out_bin[0] to out_bin[7].
     max_val = 2**index[-1]
     if code < max_val:
         code = code + max_val
@@ -504,4 +542,4 @@ if __name__ == '__main__':
     import serial
     s = serial_ports()
     o = omegatc(s[0])
-    o.config_output_1()
+    o.config_output_2()

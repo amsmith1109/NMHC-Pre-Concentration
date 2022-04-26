@@ -20,9 +20,9 @@ while time.time() < (t0 + 900):
 data = []
 rt = []
 for n, i in enumerate(d):
-                    if i!=None:
-                        data.append(i)
-                        rt.append(t[n])
+    if i!=None:
+        data.append(i)
+        rt.append(t[n])
                         
 txt = 'Datalog - %s.csv'%dt.strftime('%d-%m-%Y, %H:%M:%S')
 np.savetxt(txt, np.vstack((rt,data)).T, delimiter=', ')
