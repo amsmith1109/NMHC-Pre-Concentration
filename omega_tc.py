@@ -217,7 +217,7 @@ class omegatc:
 
     def measure(self):
         temp = self.echo('X01')
-        start = temp.rfind('X01')+3
+        start = temp.rfind('X01') + 3
         stop = temp.rfind('\r')
         if stop!=-1:
             return float(temp[start:stop])
@@ -348,14 +348,17 @@ class omegatc:
             typ = _types[mem[0]]
         else:
             mem[0] = typ
+            
         if tc == None:
             tc = _tc_type[mem[1]]
         else:
             mem[1] = tc
+            
         if rtd == None:
             rtd = _rtd_type[mem[2]]
         else:
             mem[2] = rtd
+            
         if flag:
             new_val = compact(mem, _indices, 2)
             write = self.echo('W07' + new_val)
@@ -370,9 +373,84 @@ class omegatc:
             
         return typ, tc, rtd
 
+    # Omega thermal controllers do not initialize with the offset
+    # that is saved to the eeprom. This simply grabs it and pushes it
+    # to memory.
     def init_offset(self):
         msg = self.echo('R03')
         self.echo('P' + msg[1:-1])
+        
+    def config_output_1(self,
+                        PID=None,
+                        direction=None,
+                        auto_PID=None,
+                        anti_wind=None,
+                        auto_tune=None,
+                        analog=None,
+                        ):
+        _indices = [0, 1, 2, 3, 4, 5, 6, 7]
+        _addr = '0C'
+        _dict = {'PID':PID,
+                 'direction':direction,
+                 'auto_PID':auto_PID,
+                 'null':None,
+                 'anti_wind':anti_wind,
+                 'auto_tune':auto_tune,
+                 'analog':analog}
+        _valid = {'PID':[0,1],
+                 'direction':[0,1],
+                 'auto_PID':[0,1],
+                 'null':[0,1],
+                 'anti_wind':[0,1],
+                 'auto_tune':[0,1],
+                 'analog':[0,1]}
+        self.memory_process(_addr, _indices, _dict, _valid)
+        
+    def memory_process(self, _addr, _indices, _dict, _valid):
+        for i in _dict:
+            if _dict[i]!=None:
+                if not(_valid[i][0] <= _dict[i] <= _valid[i][1]):
+                    print('Invalid input range. ',i,
+                          ' must be between ',
+                          _valid[i][0], ' and ',
+                          _valid[1],'.')
+                    return
+        
+        msg = msg2dec(self.echo('R'+_addr))
+        
+        # Check for a request from the user to change parameters
+        # A flag is set as _dict may be changed depending on what is read
+        # from the controller.
+        if all(_dict[x] is None for x in _dict):
+            flag = False
+        else:
+            flag = True
+        
+        # mem is the extracted values that correspond to the memory location
+        # supplied by the controller at address _addr
+        mem = extract(msg, _indices)
+        
+        # The next step compares the current values with any values requested.
+        # If the user doesn't call to change a value, _dict is overwritten by
+        # what is stored on the controller.
+        for n, i in enumerate(_dict):
+            if _dict[i]!=None:
+                mem[n] = _dict[i]
+            
+        if flag:
+            new_val = compact(mem, _indices, 2)
+            write = self.echo('W' + _addr + new_val)
+            if write[0:3] != 'W'+_addr:
+                print(write)
+                return _dict
+            check = self.reset()
+            if check != True:
+                print('Failed to update controller.')
+                return
+            print('Successfully updated controller.')
+        for n, i in enumerate(_dict):
+            print(i,': ',mem[n])
+        return
         
 # Takes the hex code from the omega system and extracts the
 # individual components to return a list.
@@ -389,13 +467,13 @@ class omegatc:
 # decimal 36 = 0b 00 10 01 00
 def extract(code, index):
     val = []
+    max_val = 2**index[-1]
+    if code < max_val:
+        code = code + max_val
+    code_bin = bin(code)[::-1]
     for i in range(0, index.__len__()-1):
         start = index[i]
         stop = index[i+1]
-        max_val = 2**stop
-        if code < max_val:
-            code = code + 2**(max_val+1)
-        code_bin = bin(code)[::-1]
         out_bin = code_bin[start:stop]
         val.append(int(out_bin[::-1], 2))
     return val
@@ -426,3 +504,4 @@ if __name__ == '__main__':
     import serial
     s = serial_ports()
     o = omegatc(s[0])
+    o.config_output_1()
