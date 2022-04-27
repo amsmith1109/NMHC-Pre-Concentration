@@ -306,20 +306,11 @@ class omegatc:
     #
     # Note: SCASS-020 is a type-K TC
     def probe(self,
-              typ = None,
+              Type = None,
               tc = None,
               rtd = None):
         
-        # Check if changes are being called. This is used later to perform
-        # a write to memory
-        if all(x is None for x in [typ, tc, rtd]):
-            flag = False
-        else:
-            flag = True
-        
-        # Definitions of possible inputs
         _indices = [0, 2, 6, 7]
-        _types = ['TC', 'RTD']
         _tc_type = ['J',
                     'K',
                     'T',
@@ -333,90 +324,107 @@ class omegatc:
         _rtd_type = ['100 ohm',
                      '500 ohm',
                      '1000 ohm']
-        # If a user input the name without the index, this converts it to the index
-        if isinstance(typ, str):
-            typ = _types.index(typ.upper())
-        if isinstance(tc, str):
-            tc = _tc_type.index(tc.upper())
-        
-        # Grab the current memory state
-        prb_val = msg2dec(self.echo('R07'))
-        mem = extract(prb_val, _indices)
-        
-        # Assign grabbed values:
-        if typ == None:
-            typ = _types[mem[0]]
-        else:
-            mem[0] = typ
-            
-        if tc == None:
-            tc = _tc_type[mem[1]]
-        else:
-            mem[1] = tc
-            
-        if rtd == None:
-            rtd = _rtd_type[mem[2]]
-        else:
-            mem[2] = rtd
-            
-        if flag:
-            new_val = compact(mem, _indices, 2)
-            write = self.echo('W07' + new_val)
-            if write[0:3] != 'W07':
-                print(write)
-                return typ, tc, rtd
-            check = self.reset()
-            if check != True:
-                print('Probe parameters were not updated.')
-                return typ, tc, rtd
-            print('Successfully updated settings.')
-            
-        return typ, tc, rtd
-
+        _addr = '07'
+        _dict = {'Type':Type,
+                 'tc':tc,
+                 'rtd':rtd}
+        _valid = {'Type':[0,1],
+                 'tc':[0,9],
+                 'rtd':[0,2]}
+        _valid_names = {'Type':['TC','RTD'],
+                 'tc':_tc_type,
+                 'rtd':_rtd_type}
+        settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
+        return settings
+    
     # Omega thermal controllers do not initialize with the offset
     # that is saved to the eeprom. This simply grabs it and pushes it
     # to memory.
     def init_offset(self):
         msg = self.echo('R03')
         self.echo('P' + msg[1:-1])
-        
-    def config_output_1(self,
-                        PID=None,
-                        direction=None,
-                        auto_PID=None,
-                        anti_wind=None,
-                        auto_tune=None,
-                        analog=None,
-                        ):
-        _indices = [0, 1, 2, 4, 5, 6, 7]
-        _addr = '0C'
-        _dict = {'PID':PID,
-                 'direction':direction,
-                 'auto_PID':auto_PID,
-                 'anti_wind':anti_wind,
-                 'auto_tune':auto_tune,
-                 'analog':analog}
-        _valid = {'PID':[0,1],
-                 'direction':[0,1],
-                 'auto_PID':[0,1],
-                 'anti_wind':[0,1],
-                 'auto_tune':[0,1],
-                 'analog':[0,1]}
-        _valid_names = {'PID':['Time Proportional On/Off','Time Proportional PID'],
-                     'direction':['Reverse', 'Direct'],
-                     'auto_PID':['Disable','Enable'],
-                     'anti_wind':['Disable','Enable'],
-                     'auto_tune':['Stop','Start'],
-                     'analog':['0 - 20mA','4 - 20mA']}
-        self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
+    
+    def color(self,
+                normal=None,
+                alarm1=None,
+                alarm2=None):
+            _indices = [0, 2, 4, 6]
+            _addr = '11'
+            _dict = {'normal':normal,
+                     'alarm1':alarm1,
+                     'alarm2':alarm2}
+            _valid = {'normal':[0,2],
+                     'alarm1':[0,2],
+                     'alarm2':[0,2]}
+            _valid_names = {'normal':['Amber','Green','Red'],
+                         'alarm1':['Amber','Green','Red'],
+                         'alarm2':['Amber','Green','Red']}
+                    
+            settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
+            return settings
+    
+    def color(self,
+                normal=None,
+                alarm1=None,
+                alarm2=None):
+            _indices = [0, 2, 4, 6]
+            _addr = '11'
+            _dict = {'normal':normal,
+                     'alarm1':alarm1,
+                     'alarm2':alarm2}
+            _valid = {'normal':[0,2],
+                     'alarm1':[0,2],
+                     'alarm2':[0,2]}
+            _valid_names = {'normal':['Amber','Green','Red'],
+                         'alarm1':['Amber','Green','Red'],
+                         'alarm2':['Amber','Green','Red']}
+                    
+            settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
+            return settings    
+
+    def alarm_1_configuration(self,
+                            retransmission=None,
+                            Type=None,
+                            latch=None,
+                            normal=None,
+                            active=None,
+                            loop=None,
+                            power=None):
+        _indices = [0,1,2,3,4,6,7,8]
+        _addr = '09'
+        _dict = {'retransmission':retransmission,
+                 'Type':Type,
+                 'latch':latch,
+                 'normal':normal,
+                 'active':active,
+                 'loop':loop,
+                 'power':power}
+        _valid = {'retransmission':[0,1],
+                 'Type':[0,1],
+                 'latch':[0,1],
+                 'normal':[0,1],
+                 'active':[0,3],
+                 'loop':[0,1],
+                  'power':[0,1]}
+        _valid_names = {'retransmission':['Enable','Disable'],
+                     'Type':['Absolute', 'Deviation'],
+                     'latch':['Unlatch','Latch'],
+                     'normal':['Normally Open','Normally Closed'],
+                     'active':['Above','Below', 'Hi/Lo','Active Band'],
+                     'loop':['Disable','Enable'],
+                     'power':['Disable at Power On', 'Enable at Power On']}
+        settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
+        return settings
+    
+    
     
     def config_output_2(self,
-                               PID=None,
-                               direction=None,
-                               auto_PID=None,
-                               ramp=None,
-                               soak=None,
-                               damping=None):
+                       PID=None,
+                       direction=None,
+                       auto_PID=None,
+                       ramp=None,
+                       soak=None,
+                       damping=None):
         _indices = [0, 1, 2, 3, 4, 5, 7]
         _addr = '0C'
         _dict = {'PID':PID,
@@ -437,19 +445,39 @@ class omegatc:
                      'ramp':['Disable','Enable'],
                      'soak':['Disable','Enable'],
                      'damping':['Damping '+str(x) for x in range(0,8)]}
-        self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
-        
+                
+        settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
+        return settings
+    
+    
+    
+    
     
     def memory_process(self, _addr, _indices, _dict, _valid, _valid_names):
+        flag = False
         for i in _dict:
             if _dict[i]!=None:
-                if not(_valid[i][0] <= _dict[i] <= _valid[i][1]):
-                    print('Invalid input range. ',i,
-                          ' must be between ',
-                          _valid[i][0], ' and ',
-                          _valid[1],'.')
-                    return
-        
+                if isinstance(_dict[i],str):
+                    try:
+                        _dict[i] = _valid_names[i].index(_dict[i])
+                    except:
+                        print('Invalid input for',i,
+                              '. Please input something from the following:',
+                              _valid_names[i],
+                             'Or select a number in the range of',
+                              _valid[i],'.')
+                        print()
+                        flag = True
+                else:
+                    if not(_valid[i][0] <= _dict[i] <= _valid[i][1]):
+                        print('Invalid input range. ',i,
+                              ' must be between ',
+                              _valid[i][0], ' and ',
+                              _valid[1],'.')
+                        print()
+                        flag = True
+        if flag:
+            return
         msg = msg2dec(self.echo('R'+_addr))
         
         # Check for a request from the user to change parameters
@@ -470,7 +498,7 @@ class omegatc:
         for n, i in enumerate(_dict):
             if _dict[i]!=None:
                 mem[n] = _dict[i]
-            
+        settings = _dict   
         if flag:
             new_val = compact(mem, _indices, 2)
             write = self.echo('W' + _addr + new_val)
@@ -482,9 +510,14 @@ class omegatc:
                 print('Failed to update controller.')
                 return
             print('Successfully updated controller.')
-        for n, i in enumerate(_dict):
-            print(i,': ',_valid_names[i][mem[n]])
-        return
+        else:
+            for n, i in enumerate(_dict):
+                settings[i] = _valid_names[i][mem[n]]
+                print(i,': ',_valid_names[i][mem[n]])
+        if flag:
+            return
+        else:
+            return settings
         
 # Takes the hex code from the omega system and extracts the
 # individual components to return a list.
@@ -542,4 +575,34 @@ if __name__ == '__main__':
     import serial
     s = serial_ports()
     o = omegatc(s[0])
-    o.config_output_2()
+    o.alarm_1_configuration()
+    
+alarm_1_configuration
+# Below is the general code for memory calls.
+# Inputs are None by default, which indicate no changes to be made.
+# If the function is called without any inputs it will simply return
+# the current settings on the controller. Return settings, which is _dict
+# but with filled out values. Otherwise, new settings will be written to the
+# controller.
+# def config_output_2(self,
+#                     a=None,
+#                     b=None,
+#                     c=None,
+#                     d=None):
+#         _indices = [0, 1, 2, 3, 7]
+#         _addr = 'XX'
+#         _dict = {'a':a,
+#                  'b':b,
+#                  'c':c,
+#                  'd':d}
+#         _valid = {'a':[0,1],
+#                  'b':[0,1],
+#                  'c':[0,1],
+#                  'd':[0,7]}
+#         _valid_names = {'a':['on','off'],
+#                      'b':['on', 'off'],
+#                      'c':['Disable','Enable'],
+#                      'd':['Setting '+str(x) for x in range(0,8)]}
+#                 
+#         settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
+#         return settings
