@@ -416,7 +416,35 @@ class omegatc:
         settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
         return settings
     
-    
+    def alarm_2_configuration(self,
+                            enable=None,
+                            Type=None,
+                            latch=None,
+                            normal=None,
+                            active=None,
+                            retransmission=None):
+        _indices = [0,1,2,3,4,7,8]
+        _addr = '09'
+        _dict = {'enable':enable,
+                 'Type':Type,
+                 'latch':latch,
+                 'normal':normal,
+                 'active':active,
+                 'retransmission':retransmission}
+        _valid = {'enable':[0,1],
+                 'Type':[0,1],
+                 'latch':[0,1],
+                 'normal':[0,1],
+                 'active':[0,3],
+                 'retransmission':[0,1]}
+        _valid_names = {'enable':['Enable','Disable'],
+                     'Type':['Absolute', 'Deviation'],
+                     'latch':['Unlatch','Latch'],
+                     'normal':['Normally Open','Normally Closed'],
+                     'active':['Above','Below', 'Hi/Lo','Active Band'],
+                     'retransmission':['Disable','Enable']}
+        settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
+        return settings
     
     def config_output_2(self,
                        PID=None,
@@ -575,9 +603,8 @@ if __name__ == '__main__':
     import serial
     s = serial_ports()
     o = omegatc(s[0])
-    o.alarm_1_configuration()
+    o.alarm_2_configuration()
     
-alarm_1_configuration
 # Below is the general code for memory calls.
 # Inputs are None by default, which indicate no changes to be made.
 # If the function is called without any inputs it will simply return
