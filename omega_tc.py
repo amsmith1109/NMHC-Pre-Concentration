@@ -477,7 +477,30 @@ class omegatc:
         settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
         return settings
     
-    
+    # Note that changing communication parameters will require changing
+    # how this object interacts with the controller.
+    def communication_paramters(self,
+                    baud=None,
+                    parity=None,
+                    bit=None,
+                    stop=None):
+        _indices = [0, 3, 5, 6, 7]
+        _addr = '10'
+        _dict = {'baud':baud,
+                 'parity':parity,
+                 'bit':bit,
+                 'stop':stop}
+        _valid = {'baud':[0,6],
+                 'parity':[0,2],
+                 'bit':[0,1],
+                 'stop':[0,1]}
+        _valid_names = {'baud':['300','600','1200','2400','4800','9600','19200'],
+                     'parity':['No Parity', 'Odd', 'Even'],
+                     'bit':['7 bit','8 bit'],
+                     'stop':['1 Stop Bit','2 Stop Bit']}
+                
+        settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
+        return settings
     
     
     
@@ -603,7 +626,7 @@ if __name__ == '__main__':
     import serial
     s = serial_ports()
     o = omegatc(s[0])
-    o.alarm_2_configuration()
+    o.communication_paramters()
     
 # Below is the general code for memory calls.
 # Inputs are None by default, which indicate no changes to be made.
@@ -611,7 +634,7 @@ if __name__ == '__main__':
 # the current settings on the controller. Return settings, which is _dict
 # but with filled out values. Otherwise, new settings will be written to the
 # controller.
-# def config_output_2(self,
+# def config_setting(self,
 #                     a=None,
 #                     b=None,
 #                     c=None,
