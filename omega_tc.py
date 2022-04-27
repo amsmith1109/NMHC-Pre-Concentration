@@ -502,7 +502,37 @@ class omegatc:
         settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
         return settings
     
-    
+    def bus_format(self,
+                    modbus=None,
+                    feed=None,
+                    echo=None,
+                    rs=None,
+                    Type=None,
+                    terminator=None):
+        _indices = [0, 1, 2, 3, 4, 5, 6]
+        _addr = '1F'
+        _dict = {'modbus':modbus,
+                 'feed':feed,
+                 'echo':echo,
+                 'rs':rs,
+                 'Type':Type,
+                 'terminator':terminator}
+        _valid = {'modbus':[0,1],
+                 'feed':[0,1],
+                 'echo':[0,1],
+                 'rs':[0,1],
+                  'Type':[0,1],
+                  'terminator':[0,1]}
+        _valid_names = {'modbus':['No Modbus','Modbus'],
+                     'feed':['No Line Feed', 'Line Feed'],
+                     'echo':['No ECHO','ECHO'],
+                     'rs':['RS-232','RS-485'],
+                     'Type':['Continuous','Command'],
+                     'terminator':['Space','Carriage Return']}
+                
+        settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
+        return settings
+
     
     def memory_process(self, _addr, _indices, _dict, _valid, _valid_names):
         flag = False
@@ -626,7 +656,7 @@ if __name__ == '__main__':
     import serial
     s = serial_ports()
     o = omegatc(s[0])
-    o.communication_paramters()
+    o.bus_format()
     
 # Below is the general code for memory calls.
 # Inputs are None by default, which indicate no changes to be made.
