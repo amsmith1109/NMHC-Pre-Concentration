@@ -102,8 +102,12 @@ class omegatc:
             return
         if temp == None:
             val = []
+            if eeprom == True:
+                cd = 'R'
+            else:
+                cd = 'G'
             for i in ['1','2']:
-                msg = msg2dec(self.echo('R0' + i))
+                msg = msg2dec(self.echo(f'{cd}0{i}'))
                 bits = extract(msg, idx)
                 temp = bits[0] / (10**(bits[1]-1)) * ((-1)**bits[2])
                 val.append(temp)
@@ -363,25 +367,6 @@ class omegatc:
             settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
             return settings
     
-    def color(self,
-                normal=None,
-                alarm1=None,
-                alarm2=None):
-            _indices = [0, 2, 4, 6]
-            _addr = '11'
-            _dict = {'normal':normal,
-                     'alarm1':alarm1,
-                     'alarm2':alarm2}
-            _valid = {'normal':[0,2],
-                     'alarm1':[0,2],
-                     'alarm2':[0,2]}
-            _valid_names = {'normal':['Amber','Green','Red'],
-                         'alarm1':['Amber','Green','Red'],
-                         'alarm2':['Amber','Green','Red']}
-                    
-            settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
-            return settings    
-
     def alarm_1_configuration(self,
                             retransmission=None,
                             Type=None,
@@ -446,6 +431,37 @@ class omegatc:
         settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
         return settings
     
+    def config_output_1(self,
+                       PID=None,
+                       direction=None,
+                       auto_PID=None,
+                       anti_wind=None,
+                       auto_tune=None,
+                       analog=None):
+        _indices = [0, 1, 2, 4, 5, 6, 7]
+        _addr = '0C'
+        _dict = {'PID':PID,
+                 'direction':direction,
+                 'auto_PID':auto_PID,
+                 'anti_wind':anti_wind,
+                 'auto_tune':auto_tune,
+                 'analog':analog}
+        _valid = {'PID':[0,1],
+                 'direction':[0,1],
+                 'auto_PID':[0,1],
+                 'anti_wind':[0,1],
+                 'auto_tune':[0,1],
+                 'analog':[0,1]}
+        _valid_names = {'PID':['Time Proportional On/Off','Time Proportional PID'],
+                     'direction':['Reverse', 'Direct'],
+                     'auto_PID':['Disable','Enable'],
+                     'anti_wind':['Disable','Enable'],
+                     'auto_tune':['Stop','Start'],
+                     'analog':['0 - 20 mA', '4 - 20 mA']}
+                
+        settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
+        return settings
+    
     def config_output_2(self,
                        PID=None,
                        direction=None,
@@ -454,7 +470,7 @@ class omegatc:
                        soak=None,
                        damping=None):
         _indices = [0, 1, 2, 3, 4, 5, 7]
-        _addr = '0C'
+        _addr = '0D'
         _dict = {'PID':PID,
                  'direction':direction,
                  'auto_PID':auto_PID,
@@ -583,9 +599,11 @@ class omegatc:
         if flag:
             new_val = compact(mem, _indices, 2)
             write = self.echo('W' + _addr + new_val)
-            if write[0:3] != 'W'+_addr:
+            if write[0:3] != 'W'+_addr: #check for errors
                 print(write)
                 return _dict
+            write = self.echo(f'R{_addr}')
+            #print(write)
             check = self.reset()
             if check != True:
                 print('Failed to update controller.')
@@ -599,8 +617,55 @@ class omegatc:
             return
         else:
             return settings
-        
-# Takes the hex code from the omega system and extracts the
+
+    def defaults_value(self,read_write=False):       
+        default_values = {'01':'200000',
+                         '02':'200000',
+                         '03':'200000',
+                         '04':'400000',
+                         '05':'0000',
+                         '07':'04',
+                         '08':'4A',
+                         '09':'00',
+                         '0A':'00',
+                         '0B':'003B',
+                         '0C':'00',
+                         '0D':'60',
+                         '0E':'0000',
+                         '0F':'9186A0',
+                         '10':'0D',
+                         '11':'09',
+                         '12':'A003E8',
+                         '13':'200FA0',
+                         '14':'100001',
+                         '15':'A003E8',
+                         '16':'200FA0',
+                         '17':'00C8',
+                         '18':'00B4',
+                         '19':'0000',
+                         '1A':'07',
+                         '1C':'00C8',
+                         '1D':'07',
+                         '1E':'0000',
+                         '1F':'14',
+                         '20':'02',
+                         '21':'01',
+                         '22':'0010',
+                         '24':'00',
+                         '25':'200000',
+                         '26':'2A',
+                         '27':'00',
+                         '28':'63',
+                         '29':'00'}
+        if read_write:
+            for i in default_values:
+                self.echo(f'W{i}{default_values[i]}')
+        else:
+            for i in default_values:
+                print(self.echo(f'R{i}'))
+            
+            
+# extract() takes the hex code from the omega system and extracts the
 # individual components to return a list.
 #
 # Example:
@@ -619,7 +684,7 @@ def extract(code, index):
     # For an 8-bit number, 0x04 is printed as 0b100, but should be '0b00000100'. A large enough
     # number is added to make 0x04 print as '0b100000100'. This reverses to '001000001b0'. The
     # Reading the 1st to 8rd bit is then obtains from out_bin[0] to out_bin[7].
-    max_val = 2**index[-1]
+    max_val = 2**(index[-1]+2)
     if code < max_val:
         code = code + max_val
     code_bin = bin(code)[::-1]
@@ -651,13 +716,15 @@ def compact(code, index, length = None):
 def msg2dec(msg):
     return int(msg[3:-1], 16)
 
+def dec2hexstr(msg):
+    output = 0
+    return output
+
 if __name__ == '__main__':
     from serial_port import serial_ports
     import serial
     s = serial_ports()
     o = omegatc(s[0])
-    o.bus_format()
-    
 # Below is the general code for memory calls.
 # Inputs are None by default, which indicate no changes to be made.
 # If the function is called without any inputs it will simply return
