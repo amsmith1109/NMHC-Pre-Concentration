@@ -5,6 +5,7 @@
 import serial
 import time
 import codecs
+import bit_converter as bc
 
 degree_sign = u'\N{DEGREE SIGN}'
 
@@ -69,7 +70,7 @@ class omegatc:
         # Read values at 0x08 register
         idx = [0,3,5,8]
         msg = msg2dec(self.echo('R08'))
-        R08 = extract(msg, idx)
+        R08 = bc.extract(msg, idx)
         self.decimal = R08[0] - 1 # note: 0 = "not allowed", '1' = 0 ...
         if R08 == 0:
             self.units = '°C'
@@ -96,7 +97,6 @@ class omegatc:
     
     def set_point(self, temp = None, position = 1, eeprom=False):
         # Input checks to make sure a valid command is being requested.
-        idx = [0,20,23,24]
         if position > 2 or position < 1:
             print('Invalid set point target')
             return
@@ -108,8 +108,7 @@ class omegatc:
                 cd = 'G'
             for i in ['1','2']:
                 msg = msg2dec(self.echo(f'{cd}0{i}'))
-                bits = extract(msg, idx)
-                temp = bits[0] / (10**(bits[1]-1)) * ((-1)**bits[2])
+                temp = bc.hexstr2dec(msg)
                 val.append(temp)
             return val
             
@@ -117,32 +116,13 @@ class omegatc:
             msg = 'W'
         else:
             msg = 'P'
-        if temp > 9999 or temp < -9999:
-            print('Temperature setting is out of range.')
-            return
         msg = msg + '0' + str(position)
         
         # Process the input value and convert it to the machine readable value.
         # bits 0 - 19 = temperature value, 0 - 9999
         # bits 20 - 22 = decimal place, 0 - 4 (note 4 = F.FFF)
         # bit 23 = sign, 0 = positive, 1 = negative
-        
-        val = []
-        temp_string = str(abs(temp))
-        if '.' in temp_string[0:5]:
-            temp_string = temp_string[0:5]
-            dec = temp_string[::-1].find('.')
-        else:
-            temp_string = temp_string[0:4]
-            dec = 0
-        temp_val = int(round(abs(temp)*10**dec))
-        val.append(temp_val)
-        val.append(dec + 1)
-        if temp > 0:
-            val.append(0)
-        else:
-            val.append(1)
-        temp_hex = compact(val,idx,6)
+        temp_hex = bc.dec2hexstr(temp)
         
         # Compile the message and send it
         msg = msg + temp_hex
@@ -181,7 +161,8 @@ class omegatc:
                 msg = self.recognition + msg
             
         self.serial.write(msg)
-        
+    
+    
     def read(self):
         msg = self.serial.readall()
         msg = msg.decode("utf-8")
@@ -309,6 +290,31 @@ class omegatc:
     # on pg 22-23 of Communication Manual
     #
     # Note: SCASS-020 is a type-K TC
+
+
+            
+    def offset(self,
+                   offset=None,
+                   eeprom=False,
+                   target=None):
+        if target!=None and offset!=None:
+            print('You cannot select an offset and target value. Pick one or the other.')
+            return
+        _addr = '03'
+        # Compile the message and send it
+        if target==None:
+            check = self.value_process(_addr, offset, eeprom)
+        else:
+            current_val = self.measure()
+            offset = target - current_val
+            check = self.value_process(_addr, offset, eeprom=eeprom)
+        if offset == None and target == None:
+            return check
+        else:
+            if check[1:3]==_addr:
+                print(f'Offset updated to {offset}')
+                
+    
     def probe(self,
               Type = None,
               tc = None,
@@ -367,7 +373,7 @@ class omegatc:
             settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
             return settings
     
-    def alarm_1_configuration(self,
+    def config_alarm_1(self,
                             retransmission=None,
                             Type=None,
                             latch=None,
@@ -401,7 +407,7 @@ class omegatc:
         settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
         return settings
     
-    def alarm_2_configuration(self,
+    def config_alarm_2(self,
                             enable=None,
                             Type=None,
                             latch=None,
@@ -549,7 +555,31 @@ class omegatc:
         settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
         return settings
 
-    
+
+    # Value Process is the general code for reading/writing a value value that follows
+    # the hex format used on omega controllers. i.e. bit 23 = sign, bits 20-22 = exponent
+    # and bits 0 - 19 = data.
+    def value_process(self, _addr, value=None, eeprom=False):
+        if value==None:
+            if eeprom == True:
+                cmd = 'R'
+            else:
+                cmd = 'G'
+            msg = cmd + _addr
+            code = msg2dec(self.echo(msg))
+            val = bc.hexstr2dec(code)
+            return val
+        else:
+            if eeprom == True:
+                cmd = 'W'
+            else:
+                cmd = 'P'
+            data = bc.dec2hexstr(value)
+            msg = cmd + _addr + data
+            check = self.echo(msg)
+            return check
+        
+                
     def memory_process(self, _addr, _indices, _dict, _valid, _valid_names):
         flag = False
         for i in _dict:
@@ -585,9 +615,9 @@ class omegatc:
         else:
             flag = True
         
-        # mem is the extracted values that correspond to the memory location
+        # mem is the bc.extracted values that correspond to the memory location
         # supplied by the controller at address _addr
-        mem = extract(msg, _indices)
+        mem = bc.extract(msg, _indices)
         
         # The next step compares the current values with any values requested.
         # If the user doesn't call to change a value, _dict is overwritten by
@@ -597,7 +627,7 @@ class omegatc:
                 mem[n] = _dict[i]
         settings = _dict   
         if flag:
-            new_val = compact(mem, _indices, 2)
+            new_val = bc.compact(mem, _indices, 2)
             write = self.echo('W' + _addr + new_val)
             if write[0:3] != 'W'+_addr: #check for errors
                 print(write)
@@ -618,107 +648,61 @@ class omegatc:
         else:
             return settings
 
-    def defaults_value(self,read_write=False):       
-        default_values = {'01':'200000',
-                         '02':'200000',
-                         '03':'200000',
-                         '04':'400000',
-                         '05':'0000',
-                         '07':'04',
-                         '08':'4A',
-                         '09':'00',
-                         '0A':'00',
-                         '0B':'003B',
-                         '0C':'00',
-                         '0D':'60',
-                         '0E':'0000',
-                         '0F':'9186A0',
-                         '10':'0D',
-                         '11':'09',
-                         '12':'A003E8',
-                         '13':'200FA0',
-                         '14':'100001',
-                         '15':'A003E8',
-                         '16':'200FA0',
-                         '17':'00C8',
-                         '18':'00B4',
-                         '19':'0000',
-                         '1A':'07',
-                         '1C':'00C8',
-                         '1D':'07',
-                         '1E':'0000',
-                         '1F':'14',
-                         '20':'02',
-                         '21':'01',
-                         '22':'0010',
-                         '24':'00',
-                         '25':'200000',
-                         '26':'2A',
-                         '27':'00',
-                         '28':'63',
-                         '29':'00'}
+    def default_value(self,read_write=False):       
+        default_values = {'01':'200000', #Set Point 1
+                         '02':'200000',  #Set Point 2
+                         '03':'200000',  #RDGOFF
+                         '04':'400000',  #ANLOFF
+                         '05':'0000',    #ID
+                         '07':'04',      #Input Type
+                         '08':'4A',      #Reading Configuration
+                         '09':'00',      #Alarm 1 Configuration
+                         '0A':'00',      #Alarm 2 Configuration
+                         '0B':'003B',    #Loop Break Time
+                         '0C':'00',      #Output 1 Configuration
+                         '0D':'60',      #Output 2 Configuration
+                         '0E':'0000',    #Ramp Time
+                         '0F':'9186A0',  #Bus Format
+                         '10':'0D',      #Communication Parameters
+                         '11':'09',      #Color Display
+                         '12':'A003E8',  #Alarm 1 Low
+                         '13':'200FA0',  #Reading Scale Offset
+                         '14':'100001',  #RDGSCL
+                         '15':'A003E8',  #Alarm 2 Lo
+                         '16':'200FA0',  #Alarm 2 Hi
+                         '17':'00C8',    #PB1/Dead Band
+                         '18':'00B4',    #Reset 1
+                         '19':'0000',    #Rate 1
+                         '1A':'07',      #Cycle 1
+                         '1C':'00C8',    #PB2/Dead Band
+                         '1D':'07',      #Cycle 2
+                         '1E':'0000',    #Soak Time
+                         '1F':'14',      #Bus Format
+                         '20':'02',      #Data Format
+                         '21':'01',      #Address
+                         '22':'0010',    #Transit Time Interval
+                         '24':'00',      #Miscellaneous
+                         '25':'200000',  #C.J. Offset Adjust
+                         '26':'2A',      #Recognition Character
+                         '27':'00',      #% Low
+                         '28':'63',      #% Hi
+                         '29':'00'}      #Linearization Point
         if read_write:
             for i in default_values:
+                print(f'Writing {default_values[i]} to address {i}.')
                 self.echo(f'W{i}{default_values[i]}')
         else:
             for i in default_values:
                 print(self.echo(f'R{i}'))
-            
-            
-# extract() takes the hex code from the omega system and extracts the
-# individual components to return a list.
-#
-# Example:
-# 0x11 memory address contains three 2-bit sets of data
-# Each pertain to how colors are displayed
-# Normal color starts at bit 0
-# Alarm 1 color starts at bit 2
-# Alarm 2 color starts at bit 4
-# Normal_color = extract(36, 0, 1) -> 0
-# Alarm1 = extract(36, 2, 3) -> 1
-# Alarm2 = extract(36, 4, 5) -> 2
-# decimal 36 = 0b 00 10 01 00
-def extract(code, index):
-    val = []
-    # Max val is used to ensure that the conversion to the binary value is the correct length.
-    # For an 8-bit number, 0x04 is printed as 0b100, but should be '0b00000100'. A large enough
-    # number is added to make 0x04 print as '0b100000100'. This reverses to '001000001b0'. The
-    # Reading the 1st to 8rd bit is then obtains from out_bin[0] to out_bin[7].
-    max_val = 2**(index[-1]+2)
-    if code < max_val:
-        code = code + max_val
-    code_bin = bin(code)[::-1]
-    for i in range(0, index.__len__()-1):
-        start = index[i]
-        stop = index[i+1]
-        out_bin = code_bin[start:stop]
-        val.append(int(out_bin[::-1], 2))
-    return val
-
-# compact is effectively the inverse of extract.
-# Converts values located at a binary index to hex characters.
-def compact(code, index, length = None):
-    c_len = code.__len__()
-    i_len = index.__len__()
-    if (c_len != i_len) and (c_len != (i_len-1)):
-        print('Input values must match index length.')
-        return
-    val = 0
-    for n, i in enumerate(code):
-        val = val + i*(2**index[n])
-    output = hex(val)[2:].upper()
-    if length != None:
-        if output.__len__() < length:
-            while output.__len__() < length:
-                output = '0' + output
-    return output
 
 def msg2dec(msg):
     return int(msg[3:-1], 16)
 
-def dec2hexstr(msg):
-    output = 0
-    return output
+def c2f(val):
+    return val*1.8+32
+
+def f2c(val):
+    return (val-32)/1.8
 
 if __name__ == '__main__':
     from serial_port import serial_ports
