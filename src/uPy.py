@@ -6,7 +6,7 @@ class uPy:
                  port,
                  baudrate=115200,
                  timeout=0.05):
-        self.serial = Serial(port, baudrate=115200, timeout=0.05)
+        self.serial = Serial(port, baudrate=baudrate, timeout=timeout)
         if(self.serial.isOpen() == False):
             self.serial.open()
         
@@ -63,10 +63,7 @@ class uPy:
                     break
             else:
                 if (time.time()) > (t + timeout):
-                    check = False
-                    break
-        if isinstance(check, bool):
-            return check
+                    return False
         check = check[2:]
         stop = check.find('\r')
         return eval(check[:stop])
@@ -79,10 +76,8 @@ class uPy:
     def escape(self):
         self.write('\x1b')
         
-    
-        
 if __name__=='__main__':
-    vc = uPy('/dev/ttyACM0', baudrate=115200, timeout=.1)
-    vc.write('b = 2**8')
+    vc = uPy('/dev/ttyACM0')
+    vc.write('b = 2**16')
     a = vc.echo('b')
     print(a)
