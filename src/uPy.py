@@ -7,9 +7,12 @@ class uPy:
                  baudrate=115200,
                  timeout=0.05):
         self.serial = Serial(port, baudrate=115200, timeout=0.05)
+        if(self.serial.isOpen() == False):
+            self.serial.open()
         
     def write(self, message):
         # convert input to byte string
+        
         if isinstance(message, str):
             msg = message.encode('utf-8')
         elif isinstance(message, bytes):
@@ -23,23 +26,63 @@ class uPy:
         if msg[-1] != b'\r': 
             msg = msg + b'\r'
         
+        #clear serial buffer
+        self.read() 
         # Write to serial
         self.serial.write(msg)
+        t = time.time()
+        while self.serial.in_waiting < msg.__len__():
+            if time.time() > t + self.serial.timeout:
+                break
+        check = self.read(message.__len__())
+        if message==check:
+            return True
+        else:
+            return False
         
         
-    def read(self):
-        msg = self.serial.readall()
+    def read(self, n=None):
+        if n==None:
+            msg = self.serial.readall()
+        elif isinstance(n,int):
+            msg = self.serial.read(n)
         msg = msg.decode('utf-8')
         return msg
     
-    def echo(self, msg):
+    def echo(self, msg, timeout=None):
+        if timeout==None:
+            timeout = self.serial.timeout
         self.write(msg)
-        message = self.read()
-        return message
+        check = ''
+        t = time.time()
+        while True:
+            if self.serial.in_waiting > 0:
+                check += self.read(1)
+                t = time.time()
+                if check[-4:]  == '>>> ': #check for repl terminator
+                    break
+            else:
+                if (time.time()) > (t + timeout):
+                    check = False
+                    break
+        if isinstance(check, bool):
+            return check
+        check = check[2:]
+        stop = check.find('\r')
+        return eval(check[:stop])
     
+    # Software reboot. Note that this only works IF the device is accepting
+    # commands over serial.
+    def reboot(self):
+        self.write('\x04')
+    
+    def escape(self):
+        self.write('\x1b')
+        
+    
+        
 if __name__=='__main__':
-    vc = uPy('/dev/ttyACM0', baudrate=115200, timeout=.05)
-    vc.write('b=1')
-    print(vc.read())
-    vc.write('b')
-    print(vc.read())
+    vc = uPy('/dev/ttyACM0', baudrate=115200, timeout=.1)
+    vc.write('b = 2**8')
+    a = vc.echo('b')
+    print(a)
