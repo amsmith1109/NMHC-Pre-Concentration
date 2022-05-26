@@ -648,11 +648,7 @@ class omegatc:
         else:
             return settings
 
-<<<<<<< HEAD
-    def default_value(self,read_write=False):       
-=======
-    def defaults_value(self,read_write=False):       
->>>>>>> 29ffea3b5a9492f99d46fa29ebb89c3c348e5a27
+    def defaults_value(self,read_write=False):    
         default_values = {'01':'200000', #Set Point 1
                          '02':'200000',  #Set Point 2
                          '03':'200000',  #RDGOFF

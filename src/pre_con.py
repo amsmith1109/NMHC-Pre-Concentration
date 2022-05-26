@@ -1,6 +1,6 @@
 from serial import Serial
 from omega_tc import omegatc
-
+from uPy import uPy
 
 class Pre_con:
     def __init__(self,
@@ -18,17 +18,15 @@ class Pre_con:
         self.ads_trap_port = ads_trap_port
         self.h20_trap_port = h20_trap_port
         
-        vc = Serial(vc_port, baudrate=115200)
-        mfc = Serial(mfc_port, baudrate=115200)
+        vc = uPy(vc_port, baudrate=115200)
+        mfc = uPy(mfc_port, baudrate=115200)
         ads_trap = omegatc(ads_trap_port)
         h20_trap = omegatc(h20_trap_port)
         
     def reset(self):
         for i in range(0,8):
-            
+            i
         
 if __name__ == '__main__':
-    vc = Serial('/dev/ttyACM0', baudrate=115200, timeout=.25)
-    vc.write(b'a=2\r\n')
-    vc.write(b'a\r\n')
-    print(vc.readall())
+    print('testing pre_con')
+    
