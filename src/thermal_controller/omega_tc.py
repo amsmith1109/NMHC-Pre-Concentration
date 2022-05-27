@@ -5,7 +5,7 @@
 import serial
 import time
 import codecs
-import bit_converter as bc
+import thermal_controller.bit_converter as bc
 
 degree_sign = u'\N{DEGREE SIGN}'
 
