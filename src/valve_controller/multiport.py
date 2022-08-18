@@ -12,11 +12,14 @@ class multiport:
         for i in self.inPins:
             self.i.append(Pin(i, Pin.IN))        
         if outPins is None:
-            self.outPins = [2, 15, 16, 4, 17] # 1s, 2s, 4s, 8s, 10s
+            self.outPins = [2, 15, 16, 4, 5] # 1s, 2s, 4s, 8s, 10s
         for i in self.outPins:
-            self.o.append(Pin(i, Pin.OUT))        
+            if i==2:
+                self.o.append(Pin(i, Pin.OUT, value = 1))
+            else:
+                self.o.append(Pin(i, Pin.OUT, value = 0))
         if enPin is None:
-            self.enPin = Pin(5, Pin.OUT, value=0)
+            self.enPin = Pin(17, Pin.OUT, value = 0)
         else:
             self.enPin = Pin(enPin, Pin.OUT, value = 0)
         #self.step()

@@ -11,5 +11,6 @@ m = multiport()
 lst = [13, 12, 14, 27, 26, 25, 33, 32]
 v = []
 for i in lst:
-    v.append(Pin(i, Pin.OUT))
+    v.append(Pin(i, Pin.OUT, value=0))
     v[-1](0)
+    
