@@ -33,8 +33,24 @@ class pre_con:
                 else:
                     self.vc.write(f'v[{i}]({position[n]})\r')
         
+    def home_valves(self):
+        self.valve(range(0,8),0)
+        
 if __name__ == '__main__':
     pc = pre_con()
     #pc.valve(range(0,8),1)
     #ads = pc.h2o_trap
     v = pc.vc
+    
+    ## Rotate valves
+    
+    # Perform a rotation individually
+    #pc.valve(0,0)
+    
+    # Or do them all at once by passing a list or range
+    #pc.valve([1,2],0)
+    #pc.valve(range(3,8),0)
+    
+    # There is also a built in macro to home all of them
+    # This is equivalent to .valve(range(0,8),0)
+    #pc.home_valves()
