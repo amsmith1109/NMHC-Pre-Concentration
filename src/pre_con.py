@@ -23,6 +23,7 @@ class pre_con:
         #self.ads_trap = omegatc(ads_trap_port)
         #self.h2o_trap = omegatc(h2o_trap_port)
         
+############### Code for valve controller ###############
     def valve(self, V, position):
         if isinstance(V, int):
             self.vc.write(f'v[{V}]({position})\r')
@@ -35,6 +36,25 @@ class pre_con:
         
     def home_valves(self):
         self.valve(range(0,8),0)
+        
+    def stream(self, position=None):
+        if position==None:
+            val = self.vc.echo('m.readpos()')
+            print(val)
+        elif isinstance(position, int):
+            self.vc.write(f'm.actuate({position})')
+        elif isinstance(position, str):
+            if position.lower()=='home':
+                self.vc.write('m.home()')
+            elif position.lower()=='step':
+                self.vc.write('m.step()')
+            else:
+                print('Invalid stream select command. Use "home" or "step".')
+        else:
+            raise(ValueError)
+        
+        def step(self):
+            self.vc.write(f'm.step()\r')
         
 if __name__ == '__main__':
     pc = pre_con()
