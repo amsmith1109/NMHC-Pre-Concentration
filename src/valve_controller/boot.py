@@ -13,5 +13,3 @@ v = []
 for i in lst:
     v.append(Pin(i, Pin.OUT))
     v[-1](0)
-
-led = Pin(2, Pin.OUT)
