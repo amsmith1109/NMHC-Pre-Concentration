@@ -1,0 +1,67 @@
+{"standby":{
+	"valves": [0,0,1,0,0,0],
+	"h2o":    25,
+	"ads":    25,
+	"time":   30
+	},
+  "cool down":{
+	"valves": [1,0,1,0,0,0],
+	"h2o":    -45,
+	"ads":    -40,
+	"time":   10
+	},
+  "sampling":{
+	"valves": [0,0,0,0,0,0],
+	"h2o":    -45,
+	"ads":    -40,
+	"time":   12
+	},
+  "backflush":{
+	"valves": [0,0,0,0,0,0],
+	"h2o":    -45,
+	"ads":    -40,
+	"time":   1
+	},
+  "flashheat":{
+	"valves": [0,0,0,0,0,0],
+	"h2o":    -45,
+	"ads":    310,
+	"time":   0.2
+	},
+  "inject":{
+	"valves": [0,0,0,0,0,0],
+	"h2o":    -45,
+	"ads":    310,
+	"time":   0.2
+	},
+  "analysis":{
+	"valves": [0,0,0,0,0,0],
+	"h2o":    80,
+	"ads":    310,
+	"time":   23
+	},
+  "bakeout":{
+	"valves": [0,0,0,0,0,0],
+	"h2o":    80,
+	"ads":    325,
+	"time":   1
+	},
+  "purge":{
+	"valves": [0,0,0,0,0,0],
+	"h2o":    25,
+	"ads":    80,
+	"time":   20
+	},
+  "off":{
+	"valves": [0,0,0,0,0,0],
+	"h2o":    25,
+	"ads":    25,
+	"time":   0
+	},
+  "on":{
+	"valves": [1,1,1,1,1,1],
+	"h2o":    25,
+	"ads":    25,
+	"time":   20
+	}
+}
