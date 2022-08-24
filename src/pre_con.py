@@ -24,21 +24,24 @@ class pre_con:
         self.mfc = uPy(mfc_port)
         #self.ads = omegatc(ads_trap_port)
         #self.h2o = omegatc(h2o_trap_port)
-        self.current_state = {'valves': [0,0,0,0,0,0],
-                              'h2o':    25,
-                              'ads':    25,
-                              'time':   0}
+        self.current_state = {'valves':    [0,0,0,0,0,0],
+                              'h2o':       25,
+                              'ads':       25,
+                              'sampleMFC': 0,
+                              'carrierMFC':0,
+                              'pump':      'off',
+                              'time':      0}
         
 ############### Code for valve controller ###############
     def valve(self, V, position):
         if isinstance(V, int):
-            self.vc.write(f'v[{V}]({position})\r')
+            return self.vc.write(f'v[{V}]({position})')
         elif isinstance(V, list) or isinstance(V, range):
             for n, i in enumerate(V):
                 if isinstance(position, int):
-                    self.vc.write(f'v[{i}]({position})\r')
+                    return self.vc.write(f'v[{i}]({position})')
                 else:
-                    self.vc.write(f'v[{i}]({position[n]})\r')
+                    return self.vc.write(f'v[{i}]({position[n]})')
         
     def home_valves(self):
         self.valve(range(0,8),0)
@@ -166,12 +169,34 @@ class pre_con:
             print('Shutting off.')
             t = pc.state('off')
             time.sleep(t)
-                
+    
+    def pump(self, command = None):
+        
+        if command == None:
+            print(f"The pump is currently turned {self.current_state['pump']}.")
+            
+        elif (command =='off') or (command == 0):
+            check = self.valve(7, 0)
+            if check:
+                self.current_state['pump'] = 'off'
+            else:
+                print('Failed to turn on pump.')
+            
+        elif (command == 'on') or (command == 1):
+            check = self.valve(7, 1)
+            if check:
+                self.current_state['pump'] = 'on'
+            else:
+                print('Failed to turn on pump.')
+            
+        else:
+            print('Invalid input, must be 0 or 1, or "off or "on". Use no input to return the current pump state.')
+            
 if __name__ == '__main__':
     pc = pre_con()
     #pc.valve(range(0,8),1)
     #ads = pc.h2o_trap
-    v = pc.vc
+    pc.mfc.echo('sampleMFC(100)')
 
     ## Rotate valves
     
