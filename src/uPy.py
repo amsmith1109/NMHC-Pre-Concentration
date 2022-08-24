@@ -65,8 +65,13 @@ class uPy:
                 if (time.time()) > (t + timeout):
                     return False
         check = check[2:]
-        stop = check.find('\r')
-        return eval(check[:stop])
+        stop = check.find('\r>>>')
+        try:
+            return eval(check[:stop])
+        except:
+            print(check[:-4])
+            return(check[:-4])
+            
     
     # Software reboot. Note that this only works IF the device is accepting
     # commands over serial.
