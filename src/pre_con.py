@@ -2,6 +2,7 @@ from serial import Serial
 from thermal_controller.omega_tc import omegatc
 from uPy import uPy
 import json
+import time
 
 class pre_con:
     def __init__(self,
@@ -77,7 +78,7 @@ class pre_con:
         if name == 'help':
             print(state_help())
             return
-        elif name == 'print':
+        elif name == None:
             position = ['off', 'on']
             string = 'Current state of the system: \n'
             for n, i in enumerate(self.current_state['valves']):
@@ -91,7 +92,7 @@ class pre_con:
         try:
             new_state = states[name.lower()]
         except KeyError:
-            print('State name does not exist!')
+            print(f'State "{name}" name does not exist!')
             print(state_help())
             return
                 
@@ -122,14 +123,56 @@ class pre_con:
 #            self.ads.set_point(ads)
         
         self.current_state = new_state
+        return new_state['time']
         
-        
+    def run(self):
+            print('Entering standby mode.')
+            t = pc.state('standby')
+            time.sleep(t)
+            
+            print('Entering cool down mode.')
+            t = pc.state('cool down')
+            time.sleep(t)
+            
+            print('Beginning sampling.')
+            t = pc.state('sampling')
+            time.sleep(t)
+            
+            print('Backflushing adsorbent trap.')
+            t = pc.state('backflush')
+            time.sleep(t)
+            
+            print('Flash heating trap.')
+            t = pc.state('flash heat')
+            time.sleep(t)
+            
+            print('Injecting sample to the GC.')
+            t = pc.state('inject')
+            time.sleep(t)
+            
+            print('Begin analysis - sample is on the GC.')
+            t = pc.state('analysis')
+            time.sleep(t)
+            
+            print('Beginning bake out of both traps.')
+            t = pc.state('bake out')
+            time.sleep(t)
+            
+            print('Purging ads and water trap.')
+            t = pc.state('purge')
+            time.sleep(t)
+            
+            
+            print('Shutting off.')
+            t = pc.state('off')
+            time.sleep(t)
+                
 if __name__ == '__main__':
     pc = pre_con()
     #pc.valve(range(0,8),1)
     #ads = pc.h2o_trap
     v = pc.vc
-    pc.state('print')
+
     ## Rotate valves
     
     # Perform a rotation individually
