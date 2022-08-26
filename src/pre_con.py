@@ -21,7 +21,7 @@ class pre_con:
         self.h2o_trap_port = h2o_trap_port
         
         self.vc = uPy(vc_port)
-        self.mfc = uPy(mfc_port)
+        #self.mfc = uPy(mfc_port)
         #self.ads = omegatc(ads_trap_port)
         #self.h2o = omegatc(h2o_trap_port)
         self.current_state = {'valves':    [0,0,0,0,0,0],
@@ -29,20 +29,32 @@ class pre_con:
                               'ads':       25,
                               'sampleMFC': 0,
                               'carrierMFC':0,
-                              'pump':      'off',
+                              'pump':      0,
                               'time':      0}
         
 ############### Code for valve controller ###############
     def valve(self, V, position):
         if isinstance(V, int):
-            return self.vc.write(f'v[{V}]({position})')
+            check = self.vc.write(f'v[{V}]({position})')
+            if V < 6:
+                self.current_state['valves'][V] = position
+            return check
         elif isinstance(V, list) or isinstance(V, range):
+            check = []
+            print(V)
             for n, i in enumerate(V):
                 if isinstance(position, int):
-                    return self.vc.write(f'v[{i}]({position})')
+                    check.append(self.vc.write(f'v[{i}]({position})'))
+                    if n < 6:
+                        self.current_state['valves'][i] = position
+                        
                 else:
-                    return self.vc.write(f'v[{i}]({position[n]})')
-        
+                    check.append(self.vc.write(f'v[{i}]({position[n]})'))
+                    if n < 6:
+                        self.current_state['valves'][i] = position[n]
+                        
+            return check
+            
     def home_valves(self):
         self.valve(range(0,8),0)
         
@@ -65,6 +77,30 @@ class pre_con:
     def step(self):
         self.vc.write(f'm.step()\r')
             
+    def pump(self, command = None):
+        
+        if command == None:
+            print(f"The pump is currently turned {self.current_state['pump']}.")
+            
+        elif (command =='off') or (command == 0):
+            check = self.valve(7, 0)
+            if check:
+                self.current_state['pump'] = 0
+            else:
+                print('Failed to turn on pump.')
+            
+        elif (command == 'on') or (command == 1):
+            check = self.valve(7, 1)
+            if check:
+                self.current_state['pump'] = 1
+            else:
+                print('Failed to turn on pump.')
+            
+        else:
+            print('Invalid input, must be 0 or 1, or "off or "on". Use no input to return the current pump state.')
+
+
+
     def state(self, name = None):
         # Import the file precon_states where each system state
         # is defined by the file.
@@ -86,12 +122,12 @@ class pre_con:
             string = 'Current state of the system: \n'
             for n, i in enumerate(self.current_state['valves']):
                 string += 'Valve ' + str(n) + ': ' + position[i] + '\n'
-            string += 'H2O Trap Temperature = ' + str(self.current_state['h2o']) + '\n'
-            string += 'ADS Trap Temperature = ' + str(self.current_state['ads'])
+            string += f"H2O Trap Temperature = {str(self.current_state['h2o'])}"+'\n'
+            string += f"ADS Trap Temperature = {str(self.current_state['ads'])}"+'\n'
+            string += f"Pump is {position[self.current_state['pump']]}"
             print(string)
             return
             
-        
         try:
             new_state = states[name.lower()]
         except KeyError:
@@ -127,7 +163,7 @@ class pre_con:
         
         self.current_state = new_state
         return new_state['time']
-        
+
     def run(self):
             print('Entering standby mode.')
             t = pc.state('standby')
@@ -169,34 +205,12 @@ class pre_con:
             print('Shutting off.')
             t = pc.state('off')
             time.sleep(t)
-    
-    def pump(self, command = None):
-        
-        if command == None:
-            print(f"The pump is currently turned {self.current_state['pump']}.")
-            
-        elif (command =='off') or (command == 0):
-            check = self.valve(7, 0)
-            if check:
-                self.current_state['pump'] = 'off'
-            else:
-                print('Failed to turn on pump.')
-            
-        elif (command == 'on') or (command == 1):
-            check = self.valve(7, 1)
-            if check:
-                self.current_state['pump'] = 'on'
-            else:
-                print('Failed to turn on pump.')
-            
-        else:
-            print('Invalid input, must be 0 or 1, or "off or "on". Use no input to return the current pump state.')
-            
+
 if __name__ == '__main__':
     pc = pre_con()
     #pc.valve(range(0,8),1)
     #ads = pc.h2o_trap
-    pc.mfc.echo('sampleMFC(100)')
+    
 
     ## Rotate valves
     
