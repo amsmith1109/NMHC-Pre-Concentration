@@ -149,7 +149,10 @@ class pre_con:
         if self.current_state['h2o'] != new_state['h2o']:
             h2o = new_state['h2o']
         if self.current_state['ads'] != new_state['ads']:
-            h2o = new_state['ads']
+            ads = new_state['ads']
+        if self.current_state['pump'] ! = new_state['pump']:
+            self.pump(new_state['pump'])
+            
             
         # Execute commands
         if valve != []:

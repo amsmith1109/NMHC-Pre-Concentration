@@ -4,6 +4,7 @@
 	"ads":    		20,
 	"sampleMFC":	0,
 	"carrierMFC":	0,
+	"pump":			1,
 	"time":   		30
 	},
   "cool down":{
@@ -12,6 +13,7 @@
 	"ads":    		-40,
 	"sampleMFC":	50,
 	"carrierMFC":	0,
+	"pump":			1,
 	"time":   		10
 	},
   "sampling":{
@@ -20,6 +22,7 @@
 	"ads":    		-40,
 	"sampleMFC":	50,
 	"carrierMFC":	0,
+	"pump":			1,
 	"time":   		12
 	},
   "backflush":{
@@ -36,6 +39,7 @@
 	"ads":    		300,
 	"sampleMFC":	0,
 	"carrierMFC":	25,
+	"pump":			1,
 	"time":   		0.2
 	},
   "inject":{
@@ -44,6 +48,7 @@
 	"ads":    		300,
 	"sampleMFC":	0,
 	"carrierMFC":	0,
+	"pump":			1,
 	"time":   		0.2
 	},
   "analysis":{
@@ -52,6 +57,7 @@
 	"ads":    		310,
 	"sampleMFC":	0,
 	"carrierMFC":	0,
+	"pump":			1,
 	"time":   		2
 	},
   "bake out":{
@@ -60,6 +66,7 @@
 	"ads":    		325,
 	"sampleMFC":	0,
 	"carrierMFC":	0,
+	"pump":			1,
 	"time":   		1
 	},
   "purge":{
@@ -68,6 +75,7 @@
 	"ads":    		20,
 	"sampleMFC":	500,
 	"carrierMFC":	0,
+	"pump":			1,
 	"time":   		20
 	},
   "off":{
@@ -76,6 +84,7 @@
 	"ads":    		20,
 	"sampleMFC":	0,
 	"carrierMFC":	0,
+	"pump":			0,
 	"time":   		0
 	}
 }
