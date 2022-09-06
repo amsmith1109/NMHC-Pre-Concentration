@@ -1,0 +1,3 @@
+[submodule "mcculw"]
+	path = mcculw
+	url = http://www.github.com/mccdaq/mcculw
