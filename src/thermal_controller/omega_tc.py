@@ -2,10 +2,11 @@
 # Setting/tuning offsets in 03
 # 04, 05, 09 & beyond
 # Alarms D01 - E04, X02 - V01
+from __future__ import absolute_import
 import serial
 import time
 import codecs
-import thermal_controller.bit_converter as bc
+import src.thermal_controller.bit_converter as bc
 
 degree_sign = u'\N{DEGREE SIGN}'
 
@@ -704,11 +705,6 @@ def c2f(val):
 def f2c(val):
     return (val-32)/1.8
 
-if __name__ == '__main__':
-    from serial_port import serial_ports
-    import serial
-    s = serial_ports()
-    o = omegatc(s[0])
 # Below is the general code for memory calls.
 # Inputs are None by default, which indicate no changes to be made.
 # If the function is called without any inputs it will simply return

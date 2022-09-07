@@ -30,7 +30,8 @@
 	"h2o":    		-45,
 	"ads":    		-40,
 	"sampleMFC":	0,
-	"carrierMFC":	25,
+	"carrierMFC":	25,	
+	"pump":			1,
 	"time":   		1
 	},
   "flash heat":{

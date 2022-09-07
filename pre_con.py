@@ -1,8 +1,11 @@
 from serial import Serial
-from thermal_controller.omega_tc import omegatc
-from uPy import uPy
 import json
 import time
+
+from lib.mcculw import mcculw.ul
+
+from src.thermal_controller.omega_tc import omegatc
+from src.uPy import uPy
 
 class pre_con:
     def __init__(self,
@@ -104,7 +107,7 @@ class pre_con:
     def state(self, name = None):
         # Import the file precon_states where each system state
         # is defined by the file.
-        with open('precon_states') as f:
+        with open('src/precon_states') as f:
             data = f.read()
         states = json.loads(data)
         def state_help():
@@ -150,7 +153,7 @@ class pre_con:
             h2o = new_state['h2o']
         if self.current_state['ads'] != new_state['ads']:
             ads = new_state['ads']
-        if self.current_state['pump'] ! = new_state['pump']:
+        if self.current_state['pump'] != new_state['pump']:
             self.pump(new_state['pump'])
             
             
