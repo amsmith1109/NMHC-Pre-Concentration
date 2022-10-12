@@ -2,10 +2,9 @@ from serial import Serial
 import json
 import time
 
-from lib.mcculw import mcculw.ul
-
 from src.thermal_controller.omega_tc import omegatc
 from src.uPy import uPy
+from src.switch import switch
 
 class pre_con:
     def __init__(self,
@@ -34,6 +33,25 @@ class pre_con:
                               'carrierMFC':0,
                               'pump':      0,
                               'time':      0}
+        self.switch = switch(print=0, connected_obj=self)
+        self._switch_state = self.switch.state
+        
+    @property
+    def switch_state(self):
+        return self._switch_state
+        
+    @switch_state.setter
+    def switch_state(self, newState):
+        self._switch_state = newState
+        self.manual_override()
+        
+    def manual_override(self):
+        if self.switch.state['enable']:
+            positions = [x for x in self.switch.state.values()]
+            pos = positions[1:-1]
+            pos.append(0)
+            pos.append(positions[-1])
+            self.valve(range(0,8), pos)
         
 ############### Code for valve controller ###############
     def valve(self, V, position):
@@ -44,7 +62,6 @@ class pre_con:
             return check
         elif isinstance(V, list) or isinstance(V, range):
             check = []
-            print(V)
             for n, i in enumerate(V):
                 if isinstance(position, int):
                     check.append(self.vc.write(f'v[{i}]({position})'))
@@ -81,7 +98,6 @@ class pre_con:
         self.vc.write(f'm.step()\r')
             
     def pump(self, command = None):
-        
         if command == None:
             print(f"The pump is currently turned {self.current_state['pump']}.")
             
@@ -101,7 +117,6 @@ class pre_con:
             
         else:
             print('Invalid input, must be 0 or 1, or "off or "on". Use no input to return the current pump state.')
-
 
 
     def state(self, name = None):
