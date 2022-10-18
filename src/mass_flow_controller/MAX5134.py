@@ -7,25 +7,32 @@ _POWER_CONTROL  =   0x03
 _LINEARITY      =   b'\x05\x02\x00'
 _WRITE          =   0x10
 _WRITE_THROUGH  =   0x30
+_DEVICES        =   [5134, 5135, 5136, 5137]
+_CHANNELS       =   [4, 4, 2, 2]
+_RESOLUTION     =   [16, 12, 16, 12]
 
 # Datasheet available at https://datasheets.maximintegrated.com/en/ds/MAX5134-MAX5137.pdf
-class MAX5134:
-    def __init__(self, CS, SPI, max=None, mz = False):
-        if max is None:
-            max = 5 #Assumes a default of 5 V max
+# Declare which device is connected to get the proper functionality.
+class MAX513X:
+    def __init__(self, CS, SPI, maximum=None, mz=False, device=5136):
+        if maximum is None:
+            maximum = 5 #Assumes a default of 5 V max
         self.cs = CS
         self.spi = SPI
-        self.max = max
+        self.max = maximum
         self.power = 1
+        idx = _DEVICES.index(device)
+        channels = _CHANNELS[idx]
         # self.setpoint saves the current output setting of the DAC
         # The startup behavior of the MAX5134 depends on how the M/Z
         # pin has been wired. 0 = ground, 1 = 5 V.
         # Setting a logic high defaults the output to the halfway point.
-        if mz == False:
-            self.setpoint = [0, 0, 0, 0]
-        elif mz == True:
-            self.setpoint = [1, 1, 1, 1] * self.max * 0.5
-        self.register = [0, 0, 0, 0]
+        self.resolution = self.max / (2 ** _RESOLUTION[idx])
+        self.setpoint = []
+        self.register = []
+        for i in range(0, channels):
+            self.setpoint.append(mz * self.max * 0.5)
+            self.register.append(0)
 
     # Uses the write-through command on the MAX5134 to immediately
     # output the desired voltage to the specified channels.
