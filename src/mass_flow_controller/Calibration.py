@@ -1,0 +1,134 @@
+class calibration:
+    def __init__(self,
+                 input_val = None,
+                 output_val = None,
+                 cal_file = None,
+                 units = None,
+                 cal_type = 'Linear'):
+        if (input_val == None) and (output_val==None) and (cal_file==None) and (units==None):
+            try:
+                self.read('default cal.txt')
+            # If the default calibration file doesn't exist it creates it.
+            except:
+                print('Creating default calibration file.')
+                self.calibration(input_val = [0, 100],
+                              output_val = [0.2, 5],
+                              cal_file = 'default cal.txt',
+                              units = '%',
+                              cal_type = cal_type)
+        else:
+            self.calibration(input_val = input_val,
+                      output_val = output_val,
+                      cal_file = cal_file,
+                      units = units,
+                      cal_type = cal_type)
+
+
+    def calibration(self,
+                  input_val = None,
+                  output_val = None,
+                  units = None,
+                  cal_file = None,
+                  cal_type = None):
+        check = [(input_val == None) and (output_val == None), cal_file == None]
+        if check[0] and check[1]:
+            # Return current calibration data
+            print(self.read(self.filename))
+            return
+        elif check[0] and not check[1]:
+            # Read specified calibration file
+            self.read(cal_file)
+            return
+        elif not check[0]:
+            # Calibrate the system
+            results = {}
+            results['units'] = units
+            results['type'] = cal_type
+            # No calibration type besides Linear exists at this time.
+            if cal_type == 'Linear':
+                offset, scale = self.linear_calibration(output_val = output_val, input_val = input_val)
+                results['offset'] = offset
+                results['scale'] = scale
+                self.offset = offset
+                self.scale = scale
+            self.units = units
+            self.cal_type = cal_type
+            if cal_file != None:
+                self.write(results, cal_file)
+                print('Calibration complete! Results saved to "{}"\n{}'.format(cal_file, results))
+            else:
+                print('Calibration complete! Results were not saved.\n{}'.format(results))
+            return
+            
+    # Perform a regression on a set of inputs to obtain the offset and scale parameters.
+    # The linear regression is written out explicitly to save space vs importing a library.
+    def linear_calibration(self, output_val, input_val):
+            count = len(input_val)
+            if count != len(output_val):
+                print('Inputs must be the same size!')
+                return
+            if count==2:
+                scale = (output_val[1] - output_val[0])/(input_val[1] - input_val[0])
+                offset = output_val[0] - scale*input_val[0]
+                return offset, scale
+            sum_y = sum(output_val)
+            sum_x = sum(input_val)
+            sum_x2 = sum([i**2 for i in input_val])
+            sum_xy = sum([i*j for i,j in zip(input_val, output_val)])        
+            _delta = count*sum_x2 - sum_x**2
+            scale = (count*sum_xy - sum_x*sum_y)/_delta
+            offset = (sum_y*sum_x2 - sum_x*sum_xy)/_delta
+            return offset, scale
+
+
+    def write(self, results, filename):               
+        results['filename'] = filename
+        txt = ''
+        for i in results.items():
+            txt += '{}: {}\n'.format(i[0], i[1])
+        with open(filename, 'w') as f:
+            f.write(txt)
+    
+    def read(self, filename):
+        data = open(filename).read()
+        keys = ['units', 'filename']
+        cal_type = self.find(data, 'type')
+        if cal_type == 'Linear':
+            keys += 'offset', 'scale'
+            results = {}
+            for i in keys:
+                results[i] = self.find(data, i)
+            self.offset = results['offset']
+            self.scale = results['scale']
+        self.units = results['units']
+        self.filename = results['filename']
+        self.cal_type = cal_type
+        return results
+    
+    
+    def find(self, data, field):
+        IDX = data.find(field)
+        RNG = [data[IDX:].find(':') + IDX,
+                 data[IDX:].find('\n') + IDX]
+        if RNG[1] < RNG[0]:
+            offsetRNG[1] = -1
+        value = data[RNG[0]+2:RNG[1]]
+        try:
+            result = float(data[RNG[0]+2:RNG[1]])
+        except:
+            result = data[RNG[0]+2:RNG[1]]
+        return result
+    
+    # return y from y = mx + b (x is provided)
+    def convert(self, x):
+        if self.cal_type == 'Linear':
+            y = x*self.scale + self.offset
+            return y
+    
+    # Return x from y = mx + b (y is provided)
+    def invert(self, y):
+        if self.cal_type == 'Linear':
+            x = (y - self.offset)/self.scale
+            return x
+        
+
