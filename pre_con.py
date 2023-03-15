@@ -9,9 +9,9 @@ from src.switch import switch
 class pre_con:
     def __init__(self,
                  vc_port = '/dev/ttyACM0',
-                 mfc_port = '/dev/ttyUSB2',
-                 ads_trap_port = '/dev/ttyUSB0',
-                 h2o_trap_port = '/dev/ttyUSB1'):
+                 mfc_port = '/dev/ttyUSB0',
+                 ads_trap_port = '/dev/ttyUSB1',
+                 h2o_trap_port = '/dev/ttyUSB2'):
         
         # It is very important that the USB configuration matches the usb ports
         # Improvements should be made to automatically determine where each
@@ -20,10 +20,12 @@ class pre_con:
         self.vc_port = vc_port
         self.mfc_port = mfc_port
         self.ads_trap_port = ads_trap_port
-        self.h2o_trap_port = h2o_trap_port
+        #self.h2o_trap_port = h2o_trap_port
         
         self.vc = uPy(vc_port)
-        #self.mfc = uPy(mfc_port)
+        self.mfc = uPy(mfc_port)
+        self.mfc.sample = 'MFC0'
+        self.mfc.backflush = 'MFC1'
         #self.ads = omegatc(ads_trap_port)
         #self.h2o = omegatc(h2o_trap_port)
         self.current_state = {'valves':    [0,0,0,0,0,0],
@@ -52,7 +54,15 @@ class pre_con:
             pos.append(0)
             pos.append(positions[-1])
             self.valve(range(0,8), pos)
+       
+############### Code for Mass Flow controller ###############
+    def sampleflow(self, flowrate):
+        self.mfc.echo('{}.flowrate({})'.format(self.mfc.sample, flowrate))
         
+    def backflow(self, flowrate):
+        self.mfc.echo('{}.flowrate({})'.format(self.mfc.backflush, flowrate))
+    
+       
 ############### Code for valve controller ###############
     def valve(self, V, position):
         if isinstance(V, int):
