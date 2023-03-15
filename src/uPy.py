@@ -9,6 +9,9 @@ class uPy:
         self.serial = Serial(port, baudrate=baudrate, timeout=timeout)
         if(self.serial.isOpen() == False):
             self.serial.open()
+        # Enter normal REPL mode
+        self.echo('\x02')
+        
         
     def write(self, message):
         # convert input to byte string
@@ -64,7 +67,7 @@ class uPy:
             else:
                 if (time.time()) > (t + timeout):
                     return False
-        check = check[2:]
+        check = check[1:]
         stop = check.find('\r>>>')
         try:
             return eval(check[:stop])
@@ -81,8 +84,13 @@ class uPy:
     def escape(self):
         self.write('\x1b')
         
+    def close(self):
+        self.serial.close()
+        
 if __name__=='__main__':
-    vc = uPy('/dev/ttyACM0')
-    vc.write('b = 2**16')
-    a = vc.echo('b')
-    print(a)
+    vc_port = '/dev/ttyACM0'
+    mfc_port = '/dev/ttyUSB0'
+    vc = uPy(vc_port)
+    vc.echo('dir()')
+    mfc = uPy(mfc_port)
+    mfc.echo('dir()')
