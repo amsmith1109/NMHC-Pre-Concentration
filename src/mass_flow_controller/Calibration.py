@@ -59,7 +59,7 @@ class calibration:
             else:
                 print('Calibration complete! Results were not saved.\n{}'.format(results))
             return
-            
+          
     # Perform a regression on a set of inputs to obtain the offset and scale parameters.
     # The linear regression is written out explicitly to save space vs importing a library.
     def linear_calibration(self, output_val, input_val):
@@ -131,4 +131,3 @@ class calibration:
             x = (y - self.offset)/self.scale
             return x
         
-
