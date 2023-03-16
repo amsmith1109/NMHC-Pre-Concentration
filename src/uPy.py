@@ -37,8 +37,8 @@ class uPy:
         while self.serial.in_waiting < msg.__len__():
             if time.time() > t + self.serial.timeout:
                 break
-        check = self.read(message.__len__())
-        if message==check:
+        result = self.read(message.__len__())
+        if result == message:
             return True
         else:
             return False
@@ -56,24 +56,27 @@ class uPy:
         if timeout==None:
             timeout = self.serial.timeout
         self.write(msg)
-        check = ''
+        result = ''
         t = time.time()
         while True:
             if self.serial.in_waiting > 0:
-                check += self.read(1)
+                result += self.read(1)
                 t = time.time()
-                if check[-4:]  == '>>> ': #check for repl terminator
+                if result[-4:]  == '>>> ': #check for repl terminator
                     break
             else:
                 if (time.time()) > (t + timeout):
                     return False
-        check = check[1:]
-        stop = check.find('\r>>>')
+        result = result[1:]
+        result = result.strip('\r\n')
+        result = result.strip('>>> ')
         try:
-            return eval(check[:stop])
+            if result == '':
+                return
+            return eval(result)
         except:
-            print(check[:-4])
-            return(check[:-4])
+            print(result)
+            return
             
     
     # Software reboot. Note that this only works IF the device is accepting
@@ -88,9 +91,6 @@ class uPy:
         self.serial.close()
         
 if __name__=='__main__':
-    vc_port = '/dev/ttyACM0'
-    mfc_port = '/dev/ttyUSB0'
-    vc = uPy(vc_port)
-    vc.echo('dir()')
-    mfc = uPy(mfc_port)
-    mfc.echo('dir()')
+    port = '/dev/ttyACM0'
+    dev = uPy(port)
+    dev.echo('dir()')
