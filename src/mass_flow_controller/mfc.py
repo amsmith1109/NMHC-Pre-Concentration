@@ -1,4 +1,5 @@
 import time
+import stats
 from Calibration import calibration
 
 class massFlowController:
@@ -8,7 +9,8 @@ class massFlowController:
                  port = None,
                  units = None,
                  cal_file = None,
-                 timeout = 5):
+                 maxFlow = None,
+                 timeout = 15):
         
         if DAC==None:
             print('No DAC provided.')
@@ -26,30 +28,49 @@ class massFlowController:
         else:
             self.cal = calibration(cal_file = cal_file)                
         self.setpoint = 0
-        self.maxFlow = self.cal.invert(5)
+        if maxFlow == None:
+            self.maxFlow = self.cal.invert(5)
+        else:
+            self.maxFlow = maxFlow
     
     def flowrate(self,
                  flow=None,
-                 waiting=None):
+                 waiting=True,
+                 display=True):
         if flow == None:
             voltage = self.adc.single(self.port)
             flow = self.cal.invert(voltage)
-            print('{} {}'.format(flow, self.cal.units))
+            if display:
+                print('{} {}'.format(flow, self.cal.units))
             return flow
         else:
             if flow > self.maxFlow:
                 flow = self.maxFlow
-                print('Output capped at {} {}.'.format(flow, self.units))
+                print('Output capped at {} {}.'.format(flow, self.cal.units))
             voltage = self.cal.convert(flow)
             self.dac.write(self.port, voltage)
             self.setpoint = flow
-            timeout = 0
+            if flow == 0:
+                print('MFC flow disabled.')
+                return
             if waiting:
                 count = 0
-                time_stop = time.time() + self.timeout
-                while (time.time() < time_stop):
-                    reading = self.check()
-                    if abs(reading - flow)/flow < 0.01:
+                time_stop = time.ticks_ms() + self.timeout*1000
+                reading = []
+                if flow < (.051 * self.maxFlow):
+                    tolerance = .1
+                else:
+                    tolerance = .01
+                while (time.ticks_ms() < time_stop):
+                    reading.append(self.flowrate(display=False))
+                    error = abs((reading[-1] - flow)/flow)
+                    accurate = error < tolerance
+                    if len(reading) > 4:
+                        std = stats.stdev(reading[-5:])
+                        stable = std < tolerance*10
+                    else:
+                        stable = False
+                    if accurate and stable:
                         count += 1
                     else:
                         count = 0
@@ -58,12 +79,16 @@ class massFlowController:
                     # for over/under-shoot. It will timeout if it does not reach
                     # stability within 5 seconds.
                     if count > 5:
-                        timeout = time.time() - t_stop + self.timeout
+                        timeout = (time.ticks_ms() - time_stop)/1000 + self.timeout
                         break
                     timeout = True
                     time.sleep(.1)
                 if timeout==True:
                     print('Setpoint not reached before the timeout of {} s.'.format(self.timeout))
+                    self.flowrate()
                 else:
-                    print('Setpoint of {} {} reached in {} s.'.format(flow, self.cal.units, time))
-    
+                    print('Setpoint of {} {} reached in {} s.'.format(flow, self.cal.units, timeout))
+                
+
+    #def autotune(self):
+        
