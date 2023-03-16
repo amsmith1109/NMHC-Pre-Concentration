@@ -11,6 +11,7 @@ class uPy:
             self.serial.open()
         # Enter normal REPL mode
         self.echo('\x02')
+        self.port = port
         
         
     def write(self, message):

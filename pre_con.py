@@ -17,15 +17,21 @@ class pre_con:
         # Improvements should be made to automatically determine where each
         # device is actually located. The ESP32 & ESP8266 can easily be programmed
         # to respond some form of identifier.
-        self.vc_port = vc_port
-        self.mfc_port = mfc_port
         self.ads_trap_port = ads_trap_port
         #self.h2o_trap_port = h2o_trap_port
         
         self.vc = uPy(vc_port)
+        check = self.vc.echo('dir()')
+        if check==False:
+            print('Failed to connect to valve controller. Try a hardware reset.\n')
         self.mfc = uPy(mfc_port)
-        self.mfc.sample = 'MFC0'
-        self.mfc.backflush = 'MFC1'
+        check = self.mfc.echo('dir()')
+        if check==False:
+            print('Failed to connect to Mass Flow Controllers. Try a hardware reset.')
+        self.mfc.sample = 0
+        self.mfc.backflush = 1
+        self.mfc.ports = self.mfc.echo('len(MFC)')
+        self.mfc.timeout = self.mfc.echo('timeout')
         #self.ads = omegatc(ads_trap_port)
         #self.h2o = omegatc(h2o_trap_port)
         self.current_state = {'valves':    [0,0,0,0,0,0],
@@ -56,11 +62,14 @@ class pre_con:
             self.valve(range(0,8), pos)
        
 ############### Code for Mass Flow controller ###############
-    def sampleflow(self, flowrate):
-        self.mfc.echo('{}.flowrate({})'.format(self.mfc.sample, flowrate))
-        
-    def backflow(self, flowrate):
-        self.mfc.echo('{}.flowrate({})'.format(self.mfc.backflush, flowrate))
+    def flowrate(self, position = None, flowrate = None):
+        if position == None:
+            position = range(self.mfc.ports)
+        else:
+            position = [position]
+        for i in position:
+            self.mfc.echo('MFC[{}].flowrate({})'.format(i, flowrate),
+                                  timeout = self.mfc.timeout)
     
        
 ############### Code for valve controller ###############
