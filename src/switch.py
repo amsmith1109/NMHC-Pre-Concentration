@@ -17,14 +17,14 @@ class switch:
             self.connected_obj.switch_state = self.state
     
     def __init__(self,
-                 pins = {'enable': 21,
-                         'V0': 20,
-                         'V1': 16,
-                         'V2': 12,
-                         'V3': 26,
-                         'V4': 19,
-                         'V5': 13,
-                         'pump': 6},
+                 pins = {'enable': 21,  # Pin 40
+                         'V0': 20,      # Pin 38
+                         'V1': 16,      # Pin 36
+                         'V2': 12,      # Pin 32
+                         'V3': 26,      # Pin 37
+                         'V4': 19,      # Pin 35
+                         'V5': 13,      # Pin 33
+                         'pump': 6},    # Pin 31
                          print=1,
                          connected_obj=None):
         self.pins = pins
