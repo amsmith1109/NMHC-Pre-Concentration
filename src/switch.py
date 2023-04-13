@@ -17,16 +17,15 @@ class switch:
             self.connected_obj.switch_state = self.state
     
     def __init__(self,
-                 pins = {'enable': 21,  # Pin 40
-                         'V0': 20,      # Pin 38
-                         'V1': 16,      # Pin 36
-                         'V2': 12,      # Pin 32
-                         'V3': 26,      # Pin 37
-                         'V4': 19,      # Pin 35
-                         'V5': 13,      # Pin 33
-                         'pump': 6},    # Pin 31
-                         print=1,
-                         connected_obj=None):
+                 pins = {'enable': 6,   # Pin 31
+                         'V0': 13,      # Pin 33
+                         'V1': 19,      # Pin 35
+                         'V2': 26,      # Pin 37
+                         'V3': 12,      # Pin 32
+                         'V4': 16,      # Pin 36
+                         'V5': 20,      # Pin 38
+                         'pump': 21},   # Pin 40
+                         connected_obj=None):                 
         self.pins = pins
         self.keys = [x for x in pins.keys()]
         self.pin_list = [x for x in pins.values()]
@@ -48,4 +47,3 @@ class switch:
         
 if __name__ == '__main__':
     sw = switch()
-    print('hello')
