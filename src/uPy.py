@@ -1,5 +1,7 @@
 from serial import Serial
 import time
+import signal
+
 
 class uPy:
     def __init__(self,
@@ -9,9 +11,14 @@ class uPy:
         self.serial = Serial(port, baudrate=baudrate, timeout=timeout)
         if(self.serial.isOpen() == False):
             self.serial.open()
+        self.port = port
         # Enter normal REPL mode
         self.echo('\x02')
-        self.port = port
+        if not(self.reboot()):
+            print('Failed to connect to micropython device.')
+        else:
+            print(self.readline(timeout=2))
+        signal.signal(signal.SIGINT, self.signal_handler)
         
         
     def write(self, message):
@@ -53,6 +60,24 @@ class uPy:
         msg = msg.decode('utf-8')
         return msg
     
+    
+    def readline(self, timeout=None):
+        if timeout==None:
+            timeout = self.serial.timeout
+        result = ''
+        t = time.time()
+        while True:
+            if self.serial.in_waiting > 0:
+                result += self.read(1)
+                t = time.time()
+                if result[-2:] == '\r\n':
+                    break
+            else:
+                if (time.time()) > (t + timeout):
+                    return False
+        return result
+        
+    
     def echo(self, msg, timeout=None):
         if timeout==None:
             timeout = self.serial.timeout
@@ -76,20 +101,42 @@ class uPy:
                 return
             return eval(result)
         except:
-            print(result)
-            return
+            return result
             
     
     # Software reboot. Note that this only works IF the device is accepting
     # commands over serial.
     def reboot(self):
+        self.read()
         self.write('\x04')
-    
+        t = time.time()
+        timeout = 1
+        while self.serial.in_waiting==0:
+            if time.time() > t + timeout:
+                return False
+        result = ''
+        t = time.time()
+        while True:
+            if self.serial.in_waiting > 0:
+                result += self.read(1)
+                t = time.time()
+                if result[-13:]  == 'soft reboot\r\n': #check for repl terminator
+                    break
+            else:
+                if (time.time()) > (t + timeout):
+                    return False
+        return True
+                
     def escape(self):
         self.write('\x1b')
         
     def close(self):
+        self.write('\x01')
         self.serial.close()
+    
+    def signal_handler(sig, frame):
+        self.close()
+        sys.exit(0)
         
 if __name__=='__main__':
     port = '/dev/ttyACM0'

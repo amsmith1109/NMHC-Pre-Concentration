@@ -1,7 +1,14 @@
 from serial import Serial
 import json
 import time
+import sys, os
 
+def blockPrint():
+    sys.stdout = open(os.devnull, 'w')
+
+def enablePrint():
+    sys.stdout = sys.__stdout__
+    
 from src.thermal_controller.omega_tc import omegatc
 from src.uPy import uPy
 from src.switch import switch
@@ -13,17 +20,17 @@ class pre_con:
                  ads_trap_port = '/dev/ttyUSB1',
                  h2o_trap_port = '/dev/ttyUSB2'):
         
-        # It is very important that the USB configuration matches the usb ports
-        # Improvements should be made to automatically determine where each
-        # device is actually located. The ESP32 & ESP8266 can easily be programmed
-        # to respond some form of identifier.
-        self.ads_trap_port = ads_trap_port
-        #self.h2o_trap_port = h2o_trap_port
-        
-        self.vc = uPy(vc_port)
+        ##### Connect to Valve Controller #####
+        self.vc = uPy(vc_port)        
         check = self.vc.echo('dir()')
         if check==False:
-            print('Failed to connect to valve controller. Try a hardware reset.\n')
+            self.vc.write('\x01')
+            if self.vc.readline()==False:
+                print('Failed to connect to valve controller. Try a hardware reset.\n')
+            else:
+                self.vc.reboot()
+                
+        ##### Connect to Mass Flow Controller #####
         self.mfc = uPy(mfc_port)
         check = self.mfc.echo('dir()')
         if check==False:
@@ -32,8 +39,23 @@ class pre_con:
         self.mfc.backflush = 1
         self.mfc.ports = self.mfc.echo('len(MFC)')
         self.mfc.timeout = self.mfc.echo('timeout')
-        #self.ads = omegatc(ads_trap_port)
-        #self.h2o = omegatc(h2o_trap_port)
+        
+        ##### Connect to ADS PID #####
+        blockPrint()
+        self.ads = omegatc(ads_trap_port)
+        enablePrint()
+        if self.ads.connected:
+            print('Successfully connected to adsorbent trap!')
+        else:
+            print('Failed to connect to adsorbent trap. :(')
+            
+        ##### Connect to H2O PID #####
+#         self.h2o = omegatc(h2o_trap_port)
+#         if self.h2o.connected:
+#             print('Successfully connected to water trap!')
+#         else:
+#             print('Failed to connect to water trap. :(')
+            
         self.current_state = {'valves':    [0,0,0,0,0,0],
                               'h2o':       25,
                               'ads':       25,
@@ -67,10 +89,17 @@ class pre_con:
             position = range(self.mfc.ports)
         else:
             position = [position]
+        val = []
         for i in position:
-            self.mfc.echo('MFC[{}].flowrate({})'.format(i, flowrate),
-                                  timeout = self.mfc.timeout)
+            val.append(self.mfc.echo('MFC[{}].flowrate({})'.format(i, flowrate),
+                                  timeout = self.mfc.timeout))
+        return val
     
+    def sampleFlow(self, flowrate=None):
+        return self.flowrate(position=0, flowrate=flowrate)
+    
+    def carrierFlow(self, flowrate=None):
+        return self.flowrate(position=1, flowrate=flowrate)
        
 ############### Code for valve controller ###############
     def valve(self, V, position):
