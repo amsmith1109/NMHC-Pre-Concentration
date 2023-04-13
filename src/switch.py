@@ -32,7 +32,6 @@ class switch:
         self.state = {}
         self.connected_obj = connected_obj
         
-        
         GPIO.setmode(GPIO.BCM)
         keys = self.pins.keys()
         for n, i in enumerate(self.pin_list):
