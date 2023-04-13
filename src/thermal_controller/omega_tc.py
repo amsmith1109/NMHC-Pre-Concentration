@@ -41,10 +41,14 @@ class omegatc:
         while True:
             time.sleep(0.01)
             if self.serial.in_waiting==9:
+                self.connected = True
                 break
             if abs(time.time() - t) > 5:
-                print('Unable to connect with omega device.')
+                if __name__ == '__main__':
+                    print('Unable to connect with omega device.')
+                self.connected = False
                 return
+        
         print('Connection to Omega TC successful!')        
         # check returns the communication configuration:
         # Byte 1 - Recognition character
@@ -56,7 +60,6 @@ class omegatc:
         
         recognition = codecs.decode(check[0:2],'hex')
         self.recognition = recognition
-        
         # init_offset is called any time the instrument is reset
         # offset values stored in eeprom, but not passed to memory.
         # .init_offset() grabs what's stored in the eeprom and pushes
