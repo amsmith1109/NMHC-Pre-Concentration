@@ -9,10 +9,10 @@ def signal_handler(sig, frame):
     
 class remote():
     ##### Detection Events #####
-    def ready_detected():
+    def ready_detected(self):
         print('Ready signal detected.')
     
-    def start_detected():
+    def start_detected(self):
         print('Start signal detected.')
         
     
@@ -27,17 +27,15 @@ class remote():
                         'config':27},    # Pin 13, 3
                          connected_obj=None):
         
-        ##### Store pin names & locations #####                
-        self.inKeys =  [x for x in inPins.keys()]
-        self.inPins =  [x for x in inPins.values()]
-        self.outKeys = [x for x in outPins.keys()]
-        self.outPins = [x for x in outPins.values()]
+        ##### Store pin names & locations #####      
+        self.inPins =  inPins
+        self.outPins = outPins
         
         ##### Setup GPIO Input/Outputs #####
         GPIO.setmode(GPIO.BCM)
-        for i in self.inPins:
+        for i in inPins.values():
             GPIO.setup(i, GPIO.IN)
-        for i in self.outPins:
+        for i in outPins.values():
             GPIO.setup(i, GPIO.OUT, initial=1)
         """
         The "set" pins are attached to a relay on the GC.
@@ -48,14 +46,13 @@ class remote():
         GPIO.output(outPins['set ready'], 0)
         
         ##### Configure input detection events #####
-       
-        GPIO.add_event_detect(self.inPin['ready'],
-                              GPIO.LOW,
-                              callback=self.ready_detected(),
+        GPIO.add_event_detect(inPins['ready'],
+                              GPIO.FALLING,
+                              callback=self.ready_detected,
                               bouncetime=1)
-        GPIO.add_event_detect(self.inPin['start'],
-                              GPIO.LOW,
-                              callback=self.start_detected(),
+        GPIO.add_event_detect(inPins['start'],
+                              GPIO.FALLING,
+                              callback=self.start_detected,
                               bouncetime=1)
 
         signal.signal(signal.SIGINT, signal_handler)
