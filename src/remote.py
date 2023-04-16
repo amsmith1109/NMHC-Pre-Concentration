@@ -15,7 +15,6 @@ class remote():
     def start_detected(self):
         print('Start signal detected.')
         
-    
     def __init__(self,
              # Declared pin = RPi GPIO, Pin comments are "RPi Pin #, HP5890 Pin #"
              inPins =  {'ready':25,      # Pin 22, 9
