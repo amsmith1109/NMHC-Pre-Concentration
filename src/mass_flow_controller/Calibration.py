@@ -7,13 +7,13 @@ class calibration:
                  cal_type = 'Linear'):
         if (input_val == None) and (output_val==None) and (cal_file==None) and (units==None):
             try:
-                self.read('default cal.txt')
+                self.read('cal_default.txt')
             # If the default calibration file doesn't exist it creates it.
             except:
                 print('Creating default calibration file.')
                 self.calibration(input_val = [0, 100],
                               output_val = [0.2, 5],
-                              cal_file = 'default cal.txt',
+                              cal_file = 'cal_default.txt',
                               units = '%',
                               cal_type = cal_type)
         else:
@@ -29,7 +29,7 @@ class calibration:
                   output_val = None,
                   units = None,
                   cal_file = None,
-                  cal_type = None):
+                  cal_type = 'Linear'):
         check = [(input_val == None) and (output_val == None), cal_file == None]
         if check[0] and check[1]:
             # Return current calibration data
@@ -44,6 +44,8 @@ class calibration:
             results = {}
             results['units'] = units
             results['type'] = cal_type
+            results['data: flowrate'] = input_val
+            results['data: voltage'] = output_val
             # No calibration type besides Linear exists at this time.
             if cal_type == 'Linear':
                 offset, scale = self.linear_calibration(output_val = output_val, input_val = input_val)
@@ -84,8 +86,9 @@ class calibration:
     def write(self, results, filename):               
         results['filename'] = filename
         txt = ''
-        for i in results.items():
-            txt += '{}: {}\n'.format(i[0], i[1])
+        keys = sorted(results)
+        for i in keys:
+            txt += '{}: {}\n'.format(i, results[i])
         with open(filename, 'w') as f:
             f.write(txt)
     

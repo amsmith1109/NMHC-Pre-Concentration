@@ -14,15 +14,18 @@ class massFlowController:
         
         if DAC==None:
             print('No DAC provided.')
+            return
         if ADC==None:
             print('No ADC provided.')
+            return
         if port==None:
             print('Please specify the port used for the ADC/DAC.')
+            return
         
         self.dac = DAC
         self.adc = ADC
         self.port = port
-        self.timeout = timeout #Note that these are in seconds
+        self.timeout = timeout # in seconds
         if cal_file==None:
             self.cal = calibration()
         else:
@@ -36,7 +39,7 @@ class massFlowController:
     def flowrate(self,
                  flow=None,
                  waiting=True,
-                 display=True):
+                 display=False):
         if flow == None:
             voltage = self.adc.single(self.port)
             flow = self.cal.invert(voltage)
@@ -51,6 +54,7 @@ class massFlowController:
             self.dac.write(self.port, voltage)
             self.setpoint = flow
             if flow == 0:
+                self.dac.write(self.port, 0)
                 print('MFC flow disabled.')
                 return
             if waiting:
@@ -63,6 +67,8 @@ class massFlowController:
                     tolerance = .01
                 while (time.ticks_ms() < time_stop):
                     reading.append(self.flowrate(display=False))
+                    if display:
+                        print(reading[-1])
                     error = abs((reading[-1] - flow)/flow)
                     accurate = error < tolerance
                     if len(reading) > 4:
