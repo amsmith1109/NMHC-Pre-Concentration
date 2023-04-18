@@ -39,7 +39,7 @@ class switch:
             GPIO.add_event_detect(i,
                                   GPIO.BOTH,
                                   callback=self.switch_detected,
-                                  bouncetime=50)
+                                  bouncetime=10)
             self.state[self.keys[n]] = GPIO.input(i)
             
         signal.signal(signal.SIGINT, signal_handler)

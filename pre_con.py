@@ -63,7 +63,7 @@ class pre_con:
                               'carrierMFC':0,
                               'pump':      0,
                               'time':      0}
-        self.switch = switch(print=0, connected_obj=self)
+        self.switch = switch(connected_obj=self)
         self._switch_state = self.switch.state
         
     @property

@@ -58,13 +58,16 @@ class remote():
     
     ##### Configure output functions #####
     def start(self):
-        GPIO.output(self.outPins['start'],0)
+        GPIO.output(self.outPins['start'], 0)
+        
+    def stop(self):
+        GPIO.output(self.outPins['start'], 1)
     
     def ready(self):
-        GPIO.output(self.outPins['ready'],0)
+        GPIO.output(self.outPins['ready'], 0)
         
     def config(self):
-        GPIO.output(self.outPins['config'],0)
+        GPIO.output(self.outPins['config'], 0)
     
 if __name__ == '__main__':
     rm = remote()
