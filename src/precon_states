@@ -8,7 +8,7 @@
 	"time":   		30
 	},
   "cool down":{
-	"valves": 		[0,0,1,0,0,0],
+	"valves": 		[0,0,0,0,0,0],
 	"h2o":    		-45,
 	"ads":    		-40,
 	"sampleMFC":	50,
@@ -16,8 +16,17 @@
 	"pump":			1,
 	"time":   		10
 	},
+  "loop sample":{
+	"valves": 		[0,0,0,0,0,0],
+	"h2o":    		-45,
+	"ads":    		-40,
+	"sampleMFC":	15,
+	"carrierMFC":	0,
+	"pump":			1,
+	"time":   		2
+	},
   "sampling":{
-	"valves": 		[0,1,1,0,0,0],
+	"valves": 		[0,1,0,0,0,0],
 	"h2o":    		-45,
 	"ads":    		-40,
 	"sampleMFC":	50,
@@ -26,7 +35,7 @@
 	"time":   		12
 	},
   "backflush":{
-	"valves": 		[0,1,0,1,0,0],
+	"valves": 		[0,1,1,1,0,0],
 	"h2o":    		-45,
 	"ads":    		-40,
 	"sampleMFC":	0,

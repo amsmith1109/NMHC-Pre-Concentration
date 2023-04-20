@@ -9,17 +9,20 @@ class uPy:
                  baudrate=115200,
                  timeout=0.05):
         self.serial = Serial(port, baudrate=baudrate, timeout=timeout)
-        if(self.serial.isOpen() == False):
-            self.serial.open()
         self.port = port
         # Enter normal REPL mode
+        self.connect()
+        signal.signal(signal.SIGINT, self.signal_handler)
+        
+        
+    def connect(self):
+        if(self.serial.isOpen() == False):
+            self.serial.open()
         self.echo('\x02')
         if not(self.reboot()):
             print('Failed to connect to micropython device.')
         else:
             print(self.readline(timeout=2))
-        signal.signal(signal.SIGINT, self.signal_handler)
-        
         
     def write(self, message):
         # convert input to byte string
@@ -110,7 +113,7 @@ class uPy:
         self.read()
         self.write('\x04')
         t = time.time()
-        timeout = 1
+        timeout = 2
         while self.serial.in_waiting==0:
             if time.time() > t + timeout:
                 return False

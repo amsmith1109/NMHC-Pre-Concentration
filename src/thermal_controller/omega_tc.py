@@ -295,8 +295,6 @@ class omegatc:
     #
     # Note: SCASS-020 is a type-K TC
 
-
-            
     def offset(self,
                    offset=None,
                    eeprom=False,
