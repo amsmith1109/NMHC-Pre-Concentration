@@ -1,6 +1,6 @@
 import signal
 import sys
-
+import time
 import RPi.GPIO as GPIO
 
 def signal_handler(sig, frame):
@@ -9,21 +9,23 @@ def signal_handler(sig, frame):
     
 class remote():
     ##### Detection Events #####
-    def ready_detected(self):
-        print('Ready signal detected.')
+    def ready_detected(self, pin):
+        self.gc_ready = self.check_ready()
+        if self.ready:
+            print('GC ready.')
     
-    def start_detected(self):
-        print('Start signal detected.')
+    def start_detected(self, pin):
+        print('GC Run Started.')
         
     def __init__(self,
              # Declared pin = RPi GPIO, Pin comments are "RPi Pin #, HP5890 Pin #"
-             inPins =  {'ready':25,      # Pin 22, 9
-                        'start':24},     # Pin 18, 8}
-             outPins = {'set ready':22,  # Pin 15, 5
-                        'set start':23,  # Pin 16, 7
-                        'start':17,      # Pin 11, 1
-                        'ready':18,      # Pin 12, 12
-                        'config':27},    # Pin 13, 3
+             inPins =  {'ready':27,      # Pin , 9
+                        'start':24},     # Pin , 8
+             outPins = {'set ready':23,  # Pin , 5
+                        'set start':25,  # Pin , 7
+                        'start':17,      # Pin , 1
+                        'ready':18,      # Pin , 12
+                        'config':22},    # Pin , 3
                          connected_obj=None):
         
         ##### Store pin names & locations #####      
@@ -46,28 +48,32 @@ class remote():
         
         ##### Configure input detection events #####
         GPIO.add_event_detect(inPins['ready'],
-                              GPIO.FALLING,
+                              GPIO.BOTH,
                               callback=self.ready_detected,
-                              bouncetime=1)
+                              bouncetime=5)
         GPIO.add_event_detect(inPins['start'],
-                              GPIO.FALLING,
+                              GPIO.BOTH,
                               callback=self.start_detected,
-                              bouncetime=1)
-
+                              bouncetime=5)
+        self.gc_ready = self.check_ready()
+        self.config(0)
         signal.signal(signal.SIGINT, signal_handler)
     
     ##### Configure output functions #####
     def start(self):
         GPIO.output(self.outPins['start'], 0)
-        
-    def stop(self):
+        time.sleep(.06)
         GPIO.output(self.outPins['start'], 1)
     
-    def ready(self):
-        GPIO.output(self.outPins['ready'], 0)
+    def ready(self, val=1):
+        GPIO.output(self.outPins['ready'], val)
         
-    def config(self):
-        GPIO.output(self.outPins['config'], 0)
+    def config(self, val=1):
+        GPIO.output(self.outPins['config'], val)
+    
+    def check_ready(self):
+        return not GPIO.input(self.inPins['ready'])
     
 if __name__ == '__main__':
     rm = remote()
+        

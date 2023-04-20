@@ -3,6 +3,7 @@ import json
 import time
 import sys, os
 
+
 def blockPrint():
     sys.stdout = open(os.devnull, 'w')
 
@@ -12,6 +13,7 @@ def enablePrint():
 from src.thermal_controller.omega_tc import omegatc
 from src.uPy import uPy
 from src.switch import switch
+from src.remote import remote
 
 class pre_con:
     def __init__(self,
@@ -24,8 +26,9 @@ class pre_con:
         self.vc = uPy(vc_port)        
         check = self.vc.echo('dir()')
         if check==False:
-            self.vc.write('\x01')
-            if self.vc.readline()==False:
+            self.vc.close()
+            self.vc.connect()
+            if self.vc.readline(timeout=2)==False:
                 print('Failed to connect to valve controller. Try a hardware reset.\n')
             else:
                 self.vc.reboot()
@@ -63,8 +66,10 @@ class pre_con:
                               'carrierMFC':0,
                               'pump':      0,
                               'time':      0}
+        self.state('standby')
         self.switch = switch(connected_obj=self)
         self._switch_state = self.switch.state
+        self.remote = remote()
         
     @property
     def switch_state(self):
@@ -102,9 +107,12 @@ class pre_con:
         return self.flowrate(position=1, flowrate=flowrate)
        
 ############### Code for valve controller ###############
-    def valve(self, V, position):
+    def valve(self, V, position, time=None):
         if isinstance(V, int):
-            check = self.vc.write(f'v[{V}]({position})')
+            if time==None:
+                check = self.vc.write(f'v[{V}]({position})')
+            else:
+                check = self.vc.write(f'pulse(v[{V}],sleep={time})')
             if V < 6:
                 self.current_state['valves'][V] = position
             return check
