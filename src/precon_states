@@ -1,100 +1,151 @@
 {"standby":{
 	"valves": 		[0,0,0,0,0,0],
-	"h2o":    		20,
-	"ads":    		20,
+	"h2o":    		-99,
+	"ads":    		-99,
 	"sampleMFC":	0,
 	"carrierMFC":	0,
 	"pump":			1,
-	"time":   		30
+	"condition":	null,
+	"value":   		null
 	},
   "cool down":{
 	"valves": 		[0,0,0,0,0,0],
-	"h2o":    		-45,
-	"ads":    		-40,
-	"sampleMFC":	50,
-	"carrierMFC":	0,
+	"h2o":    		-40,
+	"ads":    		-30,
+	"sampleMFC":	null,
+	"carrierMFC":	null,
 	"pump":			1,
-	"time":   		10
+	"condition":	"temp",
+	"value":   		"less"
 	},
-  "loop sample":{
+  "flush":{
 	"valves": 		[0,0,0,0,0,0],
-	"h2o":    		-45,
-	"ads":    		-40,
-	"sampleMFC":	15,
-	"carrierMFC":	0,
+	"h2o":    		null,
+	"ads":    		null,
+	"sampleMFC":	50,
+	"carrierMFC":	null,
 	"pump":			1,
-	"time":   		2
+	"condition":	"time",
+	"value":   		1
 	},
   "sampling":{
 	"valves": 		[0,1,0,0,0,0],
 	"h2o":    		-45,
-	"ads":    		-40,
+	"ads":    		-30,
 	"sampleMFC":	50,
 	"carrierMFC":	0,
 	"pump":			1,
-	"time":   		12
+	"condition":	"Pulse",
+	"value":   		12
+	},
+  "long sampling":{
+	"valves": 		[0,1,0,0,0,0],
+	"h2o":    		-45,
+	"ads":    		-30,
+	"sampleMFC":	50,
+	"carrierMFC":	0,
+	"pump":			1,
+	"condition":	"Pulse",
+	"value":   		30
+	},
+  "fast sampling":{
+	"valves": 		[0,1,0,0,0,0],
+	"h2o":    		-99,
+	"ads":    		-99,
+	"sampleMFC":	200,
+	"carrierMFC":	0,
+	"pump":			1,
+	"condition":	"Toggle",
+	"value":   		3
+	},
+  "pre-backflush":{
+	"valves": 		[0,0,1,1,0,0],
+	"h2o":    		-45,
+	"ads":    		-30,
+	"sampleMFC":	0,
+	"carrierMFC":	25,	
+	"pump":			1,
+	"condition":	"time",
+	"value":   		0.25
 	},
   "backflush":{
 	"valves": 		[0,1,1,1,0,0],
 	"h2o":    		-45,
-	"ads":    		-40,
+	"ads":    		-30,
 	"sampleMFC":	0,
 	"carrierMFC":	25,	
 	"pump":			1,
-	"time":   		1
+	"condition":	"time",
+	"value":   		2
+	},
+  "pre-heat":{
+	"valves": 		[1,0,1,1,0,0],
+	"h2o":    		-45,
+	"ads":    		-30,
+	"sampleMFC":	0,
+	"carrierMFC":	0,	
+	"pump":			1,
+	"condition":	"GC",
+	"value":   		null
 	},
   "flash heat":{
-	"valves": 		[0,0,0,1,0,0],
+	"valves": 		[1,0,0,1,0,0],
 	"h2o":    		-45,
-	"ads":    		300,
+	"ads":    		100,
 	"sampleMFC":	0,
 	"carrierMFC":	25,
 	"pump":			1,
-	"time":   		0.2
+	"condition":	"time",
+	"value":   		0.167
 	},
   "inject":{
-	"valves": 		[1,0,0,1,0,0],
+	"valves": 		[1,1,0,1,0,0],
 	"h2o":    		-45,
-	"ads":    		300,
+	"ads":    		100,
 	"sampleMFC":	0,
 	"carrierMFC":	0,
 	"pump":			1,
-	"time":   		0.2
-	},
-  "analysis":{
-	"valves": 		[0,0,0,1,0,1],
-	"h2o":    		80,
-	"ads":    		310,
-	"sampleMFC":	0,
-	"carrierMFC":	0,
-	"pump":			1,
-	"time":   		2
+	"condition":	"GC",
+	"value":   		0.2
 	},
   "bake out":{
-	"valves": 		[0,0,0,1,0,1],
+	"valves": 		[0,1,1,1,1,1],
 	"h2o":    		80,
-	"ads":    		325,
+	"ads":    		150,
 	"sampleMFC":	0,
-	"carrierMFC":	0,
+	"carrierMFC":	50,
 	"pump":			1,
-	"time":   		1
+	"condition":	"time",
+	"value":   		5
 	},
-  "purge":{
-	"valves": 		[0,1,0,0,0,1],
-	"h2o":    		80,
-	"ads":    		20,
-	"sampleMFC":	500,
-	"carrierMFC":	0,
-	"pump":			1,
-	"time":   		20
+  "loop inject":{
+	"valves": 		[1,0,0,0,0,0],
+	"h2o":    		null,
+	"ads":    		null,
+	"sampleMFC":	0,
+	"carrierMFC":	null,
+	"pump":			0,
+	"condition":	"pulse",
+	"value":   		0.2
+	},
+  "loop sample":{
+	"valves": 		[0,0,0,0,0,1],
+	"h2o":    		null,
+	"ads":    		null,
+	"sampleMFC":	50,
+	"carrierMFC":	null,
+	"pump":			0,
+	"condition":	"time",
+	"value":   		0.25
 	},
   "off":{
 	"valves": 		[0,0,0,0,0,0],
-	"h2o":    		20,
-	"ads":    		20,
+	"h2o":    		-99,
+	"ads":    		-99,
 	"sampleMFC":	0,
 	"carrierMFC":	0,
 	"pump":			0,
-	"time":   		0
+	"condition":	null,
+	"value":   		null
 	}
 }

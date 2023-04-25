@@ -11,23 +11,25 @@ class remote():
     ##### Detection Events #####
     def ready_detected(self, pin):
         self.gc_ready = self.check_ready()
-        if self.ready:
-            print('GC ready.')
+#         if self.ready:
+#             print('GC ready.')
+        
     
     def start_detected(self, pin):
         print('GC Run Started.')
         
     def __init__(self,
              # Declared pin = RPi GPIO, Pin comments are "RPi Pin #, HP5890 Pin #"
-             inPins =  {'ready':27,      # Pin , 9
-                        'start':24},     # Pin , 8
+             inPins =  {'ready':    27,      # Pin , 9
+                        'start':    24},     # Pin , 8
              outPins = {'set ready':23,  # Pin , 5
                         'set start':25,  # Pin , 7
-                        'start':17,      # Pin , 1
-                        'ready':18,      # Pin , 12
-                        'config':22},    # Pin , 3
+                        'start':    17,      # Pin , 1
+                        'ready':    18,      # Pin , 12
+                        'config':   22},    # Pin , 3
                          connected_obj=None):
         
+        self.stime = time.time()
         ##### Store pin names & locations #####      
         self.inPins =  inPins
         self.outPins = outPins
@@ -50,11 +52,11 @@ class remote():
         GPIO.add_event_detect(inPins['ready'],
                               GPIO.BOTH,
                               callback=self.ready_detected,
-                              bouncetime=5)
+                              bouncetime=100)
         GPIO.add_event_detect(inPins['start'],
                               GPIO.BOTH,
                               callback=self.start_detected,
-                              bouncetime=5)
+                              bouncetime=45)
         self.gc_ready = self.check_ready()
         self.config(0)
         signal.signal(signal.SIGINT, signal_handler)
