@@ -10,7 +10,7 @@ class massFlowController:
                  units = None,
                  cal_file = None,
                  maxFlow = None,
-                 timeout = 15):
+                 timeout = 20):
         
         if DAC==None:
             print('No DAC provided.')
@@ -54,8 +54,10 @@ class massFlowController:
             self.dac.write(self.port, voltage)
             self.setpoint = flow
             if flow == 0:
-                self.dac.write(self.port, 0)
                 print('MFC flow disabled.')
+                dV =  (self.cal.convert(self.maxFlow) - self.cal.convert(0))*.05
+                voltage = self.cal.convert(0) - dV
+                self.dac.write(self.port, voltage)
                 return
             if waiting:
                 count = 0
@@ -89,11 +91,15 @@ class massFlowController:
                         break
                     timeout = True
                     time.sleep(.1)
+                
                 if timeout==True:
-                    print('Setpoint not reached before the timeout of {} s.'.format(self.timeout))
-                    self.flowrate()
+                    if display:
+                        print('Setpoint not reached before the timeout of {} s.'.format(self.timeout))
+                    return False
                 else:
-                    print('Setpoint of {} {} reached in {} s.'.format(flow, self.cal.units, timeout))
+                    if display:
+                        print('Setpoint of {} {} reached in {} s.'.format(flow, self.cal.units, timeout))
+                    return True
                 
 
     #def autotune(self):

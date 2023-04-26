@@ -8,13 +8,13 @@ adc = ADS1115(i2c, addr[0])
 adc.gain = 0
 spi = SPI(1, baudrate=400000)
 dac = MAX513X(Pin(15, Pin.OUT), spi, device=5137)
-timeout = 10
+timeout = 20
 
-# Both MFCs are limited to 100 sccm to save gas. This is < 1/3 of their total range.
+# Both MFCs are limited to 200/100 sccm to save gas. This is ~ 1/3 of their total range.
 MFC = [massFlowController(DAC = dac,
                           ADC = adc,
                           port = 0,
-                          maxFlow = 100,
+                          maxFlow = 200,
                           timeout = timeout,
                           cal_file = 'cal_sample.txt'),
        massFlowController(DAC = dac,
