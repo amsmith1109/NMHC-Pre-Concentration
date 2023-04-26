@@ -21,68 +21,63 @@ class pre_con:
                  vc_port = '/dev/ttyACM0',
                  mfc_port = '/dev/ttyUSB0',
                  ads_trap_port = '/dev/ttyUSB1',
-                 h2o_trap_port = '/dev/ttyUSB2'):
+                 h2o_trap_port = '/dev/ttyUSB2',
+                 debug=False):
         
-        ##### Connect to Valve Controller #####
-        self.vc = uPy(vc_port)       
-        blockPrint() 
-        checkVC = self.vc.echo('dir()')
-        if checkVC == False:
-            self.vc.close()
-            self.vc.connect()
-            self.vc.reboot()
-        enablePrint()
-                
-        ##### Connect to Mass Flow Controller #####
-        self.mfc = uPy(mfc_port)
-        check = self.mfc.echo('dir()')
-        if check==False:
-            print('Failed to connect to Mass Flow Controllers. Try a hardware reset.')
-        self.mfc.sample = 0
-        self.mfc.backflush = 1
-        self.mfc.ports = self.mfc.echo('len(MFC)')
-        self.mfc.timeout = self.mfc.echo('timeout')
-        
-        ##### Connect to ADS PID #####
-        blockPrint()
-        self.ads = omegatc(ads_trap_port)
-        enablePrint()
-        if self.ads.connected:
-            print('Successfully connected to adsorbent trap!')
-        else:
-            print('Failed to connect to adsorbent trap. :(')
-            
-        ##### Connect to H2O PID #####
-#         self.h2o = omegatc(h2o_trap_port)
-#         if self.h2o.connected:
-#             print('Successfully connected to water trap!')
-#         else:
-#             print('Failed to connect to water trap. :(')
-
-        ##### Initial Machine States #####
         with open('src/precon_states') as f:
             data = f.read()
-        self.states = json.loads(data)    
-#         self.current_state = {'valves':    [0,0,0,0,0,0],
-#                               'h2o':       25,
-#                               'ads':       25,
-#                               'sampleMFC': 0,
-#                               'carrierMFC':0,
-#                               'pump':      0,
-#                               'time':      0}
-        self.current_state = {}
-        self.state('off')
+        self.states = json.loads(data)   
         self.switch = switch(connected_obj=self)
         self._switch_state = self.switch.state
-        self.remote = remote()
-        
-        if not checkVC:
-            self.vc = uPy(vc_port)
+        self.remote = remote() 
+        if not debug:
+            ##### Connect to Valve Controller #####
+            self.vc = uPy(vc_port)       
+            blockPrint() 
             checkVC = self.vc.echo('dir()')
-            if checkVC==False:
-                print('Failed to connect to Valve controller on second attempt.')
-                print('Check that both lights are lit on the board.')
-                print('Perform a hardware reset as necessary.')
+            if checkVC == False:
+                self.vc.close()
+                self.vc.connect()
+                self.vc.reboot()
+            enablePrint()
+                    
+            ##### Connect to Mass Flow Controller #####
+            self.mfc = uPy(mfc_port)
+            check = self.mfc.echo('dir()')
+            if check==False:
+                print('Failed to connect to Mass Flow Controllers. Try a hardware reset.')
+            self.mfc.sample = 0
+            self.mfc.backflush = 1
+            self.mfc.ports = self.mfc.echo('len(MFC)')
+            self.mfc.timeout = self.mfc.echo('timeout')
+            
+            ##### Connect to ADS PID #####
+            blockPrint()
+            self.ads = omegatc(ads_trap_port)
+            enablePrint()
+            if self.ads.connected:
+                print('Successfully connected to adsorbent trap!')
+            else:
+                print('Failed to connect to adsorbent trap. :(')
+                
+#             ##### Connect to H2O PID #####
+#             self.h2o = omegatc(h2o_trap_port)
+#             if self.h2o.connected:
+#                 print('Successfully connected to water trap!')
+#             else:
+#                 print('Failed to connect to water trap. :(')
+
+        ##### Initial Machine States #####
+            self.current_state = {}
+            self.state('off')
+            
+            if not checkVC:
+                self.vc = uPy(vc_port)
+                checkVC = self.vc.echo('dir()')
+                if checkVC==False:
+                    print('Failed to connect to Valve controller on second attempt.')
+                    print('Check that both lights are lit on the board.')
+                    print('Perform a hardware reset as necessary.')
         
     @property
     def switch_state(self):
@@ -200,28 +195,40 @@ class pre_con:
             print('Invalid input, must be 0 or 1, or "off or "on". Use no input to return the current pump state.')
 
 
-    def state(self, name = None):
+    def state(self, name = None, check = False):
         def state_help():
-            string = 'You may use one of the following keys: '
-            for i in states.keys():
-                string += i + ', '
-            string = string[:-2] + '.'
-            return string
-        
-        if name == 'help':
-            print(state_help())
+            print('You may use one of the following keys:')
+            for i in self.states.keys():
+                print(i)
             return
-        elif name == None:
+        
+        def print_state(name, check=False):
             position = ['off', 'on']
-            string = 'The pre-concentration system is currently in the '
-            string += f"{self.current_state['name']} state: \n"
-            for n, i in enumerate(self.current_state['valves']):
-                string += 'Valve ' + str(n) + ': ' + position[i] + '\n'
-            string += f"H2O Trap Temperature = {str(self.current_state['h2o'])}"+'\n'
-            string += f"ADS Trap Temperature = {str(self.current_state['ads'])}"+'\n'
-            string += f"Pump is {position[self.current_state['pump']]}"
+            if check:
+                string = 'The pre-concentration system is currently in the '
+                string += f"{current_state} state: \n"
+            else:
+                string = f"Settings for the {name} state: \n"
+            for n, i in enumerate(self.states[name]['valves']):
+                string += f"Valve {str(n)}: {position[i]} \n"
+            string += f"H2O Trap Temperature = {str(self.states[name]['h2o'])}\n"
+            string += f"ADS Trap Temperature = {str(self.states[name]['ads'])}\n"
+            string += f"Pump is {position[self.states[name]['pump']]}\n"
+            string += f"With an advancement condition of '{self.states[name]['condition']}' "
+            string += f"set to {self.states[name]['value']}."
             print(string)
             return
+        
+        if check:
+            if name == None:
+                print(state_help())
+                return
+            else:
+                print_state(name)
+                return
+                
+        if name == None:
+            print_state(self.current_state['name'])
             
         new_state = self.states[name]
         condition = new_state['condition']
@@ -279,9 +286,9 @@ class pre_con:
         ads = new_state['ads']
         h2o = new_state['h2o']
 #         if h2o != None:
-#             h2o.set_point = h2o
+#             self.h2o.set_point = h2o
         if ads != None:
-            ads.set_point = ads
+            self.ads.set_point = ads
         
         if condition == None:
             return
@@ -311,7 +318,12 @@ class pre_con:
         self.current_state['name'] = name.lower()
         return
 
-    def run_sa(self, stream=None, sample='normal'):
+    def run_sa(self, stream=None, sample=None):
+        
+        if sample != None:
+            sa_name = 'sampling ' + sample
+            self.state(sa_name)
+        
         ########## Standby ##########
         print('Beginning micro-trap sample injection sequence.')
         self.state('standby')
@@ -329,7 +341,11 @@ class pre_con:
         self.state('flush')
         
         print('Beginning sampling')
-        self.state('sampling')
+        if sample == None:
+            self.state('sampling')
+        elif sample == 'fast':
+            sa_name = 'sampling ' + sample
+            self.state(sa_name)
         print('Sampling completed, beginning backflush.')
         self.state('pre-backflush')
         self.state('backflush')
@@ -399,5 +415,5 @@ def progressbar(i,
     sys.stdout.flush()
 
 if __name__ == '__main__':
-    pc = pre_con()
+    pc = pre_con(debug=True)
     
