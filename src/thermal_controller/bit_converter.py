@@ -1,22 +1,23 @@
-# bit_converter is a collection of the generic commands used for bit
-# manipulation in the omega_tc class. This also allows these codes to be
-# used for other hardware that may need similar bit manipulation.
-
 from math import floor
+"""
+bit_converter is a collection of the generic commands used for bit
+manipulation in the omega_tc class. This also allows these codes to be
+used for other hardware that may need similar bit manipulation.
 
-# extract() takes the hex code from the omega system and extracts the
-# individual components to return a list.
-#
-# Example:
-# 0x11 memory address contains three 2-bit sets of data
-# Each pertain to how colors are displayed
-# Normal color starts at bit 0
-# Alarm 1 color starts at bit 2
-# Alarm 2 color starts at bit 4
-# Normal_color = extract(36, 0, 1) -> 0
-# Alarm1 = extract(36, 2, 3) -> 1
-# Alarm2 = extract(36, 4, 5) -> 2
-# decimal 36 = 0b 00 10 01 00
+extract() takes the hex code from the omega system and extracts the
+individual components to return a list.
+
+Example:
+    0x11 memory address contains three 2-bit sets of data
+    Each pertain to how colors are displayed
+    Normal color starts at bit 0
+    Alarm 1 color starts at bit 2
+    Alarm 2 color starts at bit 4
+    Normal_color = extract(36, 0, 1) -> 0
+    Alarm1 = extract(36, 2, 3) -> 1
+    Alarm2 = extract(36, 4, 5) -> 2
+    decimal 36 = 0b 00 10 01 00
+"""
 def extract(code, index):
     val = []
     # Max val is used to ensure that the conversion to the binary value is the correct length.
@@ -34,8 +35,17 @@ def extract(code, index):
         val.append(int(out_bin[::-1], 2))
     return val
 
-# compact is the inverse of extract.
-# Converts values located at a binary index to hex characters.
+"""
+compact is the inverse of extract.
+Converts values located at a binary index to hex characters.
+code provides the values stored in the hex string.
+index species which bits contain the code values.
+length specifies how long the hex code is supposed to be.
+
+In pactice, length will pad zeros to make sure the returned
+value is the proper size. That's why length is called here
+but not in extract.
+"""
 def compact(code, index, length = None):
     c_len = code.__len__()
     i_len = index.__len__()
@@ -62,7 +72,7 @@ def hexstr2dec(msg):
     output = bits[0] / (10**(bits[1]-1)) * ((-1)**bits[2])
     return output
 
-def dec2hexstr(val):
+def dec2hexstr(val, decimal=None):
     if val > 9999 or val < -9999:
         print('Input value outside of acceptable range. Must be between -9,999 and 9,999.')
         return
@@ -79,7 +89,7 @@ def dec2hexstr(val):
     str_val = str(val)[0:5]
     exponent = str_val[::-1].find('.')
     if exponent == -1:
-        exponent = 1
+        exponent = 2
     else:
         exponent += 1
     val = int(val*(10**(exponent-1)))

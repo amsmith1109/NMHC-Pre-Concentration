@@ -11,12 +11,14 @@ import src.thermal_controller.bit_converter as bc
 degree_sign = u'\N{DEGREE SIGN}'
 
 class omegatc:
-    # Initialize with factory default settings.
-    #
-    # From Communication Manual:
-    # To Enable the iSeries Protocol, set Modbus
-    # menu item to “No” in the Bus Format Submenu
-    # of the Communication Menu. Refer to Section 5.7.11.
+    """
+    Initialize with factory default settings.
+    
+    From Communication Manual:
+    To Enable the iSeries Protocol, set Modbus
+    menu item to “No” in the Bus Format Submenu
+    of the Communication Menu. Refer to Section 5.7.11.
+    """
     def __init__(self,
                  com,
                  baud=9600,
