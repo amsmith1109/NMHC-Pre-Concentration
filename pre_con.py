@@ -10,7 +10,7 @@ def blockPrint():
 
 def enablePrint():
     sys.stdout = sys.__stdout__
-    
+
 from src.thermal_controller.omega_tc import omegatc
 from src.uPy import uPy
 from src.switch import switch
@@ -23,24 +23,24 @@ class pre_con:
                  ads_trap_port = '/dev/ttyUSB1',
                  h2o_trap_port = '/dev/ttyUSB2',
                  debug=False):
-        
+
         with open('src/precon_states') as f:
             data = f.read()
-        self.states = json.loads(data)   
+        self.states = json.loads(data)
         self.switch = switch(connected_obj=self)
         self._switch_state = self.switch.state
-        self.remote = remote() 
+        self.remote = remote()
         if not debug:
             ##### Connect to Valve Controller #####
-            self.vc = uPy(vc_port)       
-            blockPrint() 
+            self.vc = uPy(vc_port)
+            blockPrint()
             checkVC = self.vc.echo('dir()')
             if checkVC == False:
                 self.vc.close()
                 self.vc.connect()
                 self.vc.reboot()
             enablePrint()
-                    
+
             ##### Connect to Mass Flow Controller #####
             self.mfc = uPy(mfc_port)
             check = self.mfc.echo('dir()')
@@ -50,7 +50,7 @@ class pre_con:
             self.mfc.backflush = 1
             self.mfc.ports = self.mfc.echo('len(MFC)')
             self.mfc.timeout = self.mfc.echo('timeout')
-            
+
             ##### Connect to ADS PID #####
             blockPrint()
             self.ads = omegatc(ads_trap_port)
@@ -59,7 +59,7 @@ class pre_con:
                 print('Successfully connected to adsorbent trap!')
             else:
                 print('Failed to connect to adsorbent trap. :(')
-                
+
 #             ##### Connect to H2O PID #####
 #             self.h2o = omegatc(h2o_trap_port)
 #             if self.h2o.connected:
@@ -70,7 +70,7 @@ class pre_con:
         ##### Initial Machine States #####
             self.current_state = {}
             self.state('off')
-            
+
             if not checkVC:
                 self.vc = uPy(vc_port)
                 checkVC = self.vc.echo('dir()')
@@ -81,16 +81,16 @@ class pre_con:
                     txt = 'You will not need to restart the softare if you perform a'
                     txt += 'hardware reset and the valve controller lights up.'
                     print(txt)
-        
+
     @property
     def switch_state(self):
         return self._switch_state
-        
+
     @switch_state.setter
     def switch_state(self, newState):
         self._switch_state = newState
         self.manual_override()
-        
+
     def manual_override(self):
         if self.switch.state['enable']:
             positions = [x for x in self.switch.state.values()]
@@ -101,8 +101,8 @@ class pre_con:
             self.current_state['name'] = 'manual override'
             self.current_state['valves'] = pos[1:7]
             self.current_state['pump'] = pos[-1]
-            
-       
+
+
 ############### Code for Mass Flow controller ###############
     def flowrate(self, position = None, flowrate = None):
         if position == None:
@@ -114,13 +114,13 @@ class pre_con:
             msg = 'MFC[{}].flowrate({})'.format(i, flowrate)
             val.append(self.mfc.echo(msg, timeout = self.mfc.timeout))
         return val
-    
+
     def sampleFlow(self, flowrate=None):
         return self.flowrate(position=0, flowrate=flowrate)[0]
-    
+
     def backflush(self, flowrate=None):
         return self.flowrate(position=1, flowrate=flowrate)[0]
-       
+
 ############### Code for valve controller ###############
     def valve(self, V=None, position=None):
         if isinstance(V, int):
@@ -141,8 +141,8 @@ class pre_con:
                 check = []
                 for i in range(6):
                     check.append(self.vc.write(f'v[{i}]({position[i]})'))
-    
-    
+
+
     def pulse(self, valve, sleep):
         if not isinstance(valve, int):
             raise ValueError('Selected valve must be an integer.')
@@ -150,14 +150,14 @@ class pre_con:
             raise ValueError('Selected valve outside acceptable range.')
         if not (isinstance(sleep, int) or isinstance(sleep, float)):
             raise ValueError('Sleep time must be a number.')
-        
+
         return self.vc.write(f'pulse(v[{valve}],sleep={sleep*60})')
-    
-    
+
+
     def home_valves(self):
         self.valve(range(0,8),0)
-    
-    
+
+
     def stream(self, position=None):
         if position==None:
             return int(self.vc.echo('m.readpos()'))
@@ -172,28 +172,28 @@ class pre_con:
                 print('Invalid stream select command. Use "home", "step", or enter the position.')
         else:
             raise(ValueError)
-        
-        
+
+
     def step(self):
         self.vc.write(f'm.step()\r')
-            
-            
+
+
     def pump(self, command = None):
         if command == None:
             print(f"The pump is currently turned {self.current_state['pump']}.")
-            
+
         elif (command =='off') or (command == 0):
             if self.valve(7, 0):
                 self.current_state['pump'] = 'off'
             else:
                 print('Failed to turn pump off.')
-            
+
         elif (command == 'on') or (command == 1):
             if self.valve(7, 1):
                 self.current_state['pump'] = 'on'
             else:
                 print('Failed to turn on pump.')
-            
+
         else:
             print('Invalid input, must be 0 or 1, or "off or "on". Use no input to return the current pump state.')
 
@@ -225,7 +225,7 @@ class pre_con:
             for i in self.states.keys():
                 print(i)
             return
-        
+
         def print_state(state):
             string = ""
             position = ['off','on']
@@ -241,13 +241,13 @@ class pre_con:
                 string += f"set to {state['value']}."
             print(string)
             return
-        
+
         ##### Checks if the function was called for information #####
         if name == None:
             if check:
                 state_help()
                 return
-            else:   
+            else:
                 string = 'The pre-concentration system is currently in the '
                 string += f"{self.current_state['name']} state: \n"
                 print(string)
@@ -258,7 +258,7 @@ class pre_con:
                 print(f"Settings for the {name} state: \n")
                 print_state(self.states[name])
                 return
-            
+
         ##### Engage the new state if a state change is requested. #####
         new_state = self.states[name].copy()
         condition = new_state['condition']
@@ -299,7 +299,7 @@ class pre_con:
             self.current_state = new_state
             self.current_state['name'] = name
             return t, flow_check
-        
+
         ########## GC Ready Condition ##########
         if condition=='gc':
             start = time.time()
@@ -320,7 +320,7 @@ class pre_con:
                 self.current_state = new_state
                 self.current_state['name'] = name
                 return True
-            
+
         valves = new_state['valves']
         self.valve(position=valves)
         pump = new_state['pump']
@@ -339,7 +339,7 @@ class pre_con:
             else:
                 print(f'Setting backflush flow rate to {backflush}. Please wait for flow to stabilize.')
             self.backflush(backflush)
-        
+
         ads = new_state['ads']
         h2o = new_state['h2o']
         h2o = None #comment out when h2o trap implemented
@@ -348,7 +348,7 @@ class pre_con:
 #                 self.h2o.set_point(h2o)
             if ads != None:
                 self.ads.set_point(ads)
-        
+
         ########## Temperature Condition ##########
         if condition == 'temp':
             logic = new_state['value']
@@ -363,7 +363,7 @@ class pre_con:
                     return a >= b
                 elif logic == '<=':
                     return a <= b
-            
+
             if ads != None and h2o != None:
                 def check():
                     measure = [self.ads.measure(), self.h2o.measure()]
@@ -376,7 +376,7 @@ class pre_con:
                 def check():
                     measure = self.h2o.measure()
                     return test(h2o, measure), measure
-            t0 = time.time()  
+            t0 = time.time()
             while check()[0]:
                 txt = f"Waiting for temperature. Currently measuring: {check()[1]}"
                 remaining = round((t0 + 15*60- time.time())/60,2)
@@ -390,7 +390,7 @@ class pre_con:
                     self.state('off')
                     raise SystemError('System was shut down.')
             print(f"Temperature threshold reached! Currently measuring {check()[1]}")
-                      
+
         ########## Timing Condition ##########
         elif condition == 'time':
             dt = new_state['value']*60
@@ -405,17 +405,16 @@ class pre_con:
                                 interval = 'seconds')
                     time.sleep(.2)
                 progressbar(i=dt, total=dt, remaining=0, units='s', interval='seconds')
-        
+
         self.current_state = new_state
         self.current_state['name'] = name
         return
 
     def run_sa(self, stream=None, sample=None):
-        
         if sample != None:
             sa_name = 'sampling ' + sample
             self.state(sa_name, check=True)
-        
+
         ########## Standby ##########
         print('Beginning micro-trap sample injection sequence.')
         self.state('standby')
@@ -425,12 +424,12 @@ class pre_con:
             self.stream(stream)
         else:
             stream = self.stream()
-            
-        print('Flushing system with sample.')  
+
+        print('Flushing system with sample.')
         while pc.stream() != stream:
             time.sleep(.1)
         self.state('flush')
-        
+
         print('Beginning sampling')
         if sample == None:
             self.state('sampling')
@@ -445,7 +444,7 @@ class pre_con:
         self.state('inject')
         self.state('bakeout')
         self.state('standby')
-        
+
     def run_loop(self, stream=None, flow=25, delay=5):
         ##### Flush #####
         print('Beginning loop sample injection sequence.')
@@ -454,7 +453,7 @@ class pre_con:
         if stream != None:
             self.stream(stream)
         time.sleep(5)
-        
+
         ##### Load #####
         print('Initializing sample flow.')
         self.sampleFlow(flow)
@@ -465,8 +464,8 @@ class pre_con:
             print('MFC failed to regulate sample. Aborting run.')
             self.sampleFlow(0)
             self.state('off')
-            return        
-        
+            return
+
         ##### Flush loop #####
         start = time.time()
         while not self.remote.gc_ready or (start + delay > time.time()):
@@ -476,19 +475,19 @@ class pre_con:
                 self.state('off')
                 print('System turned off.')
                 return
-        
-        ##### Inject #####    
+
+        ##### Inject #####
         print('Injecting sample')
         self.pulse(valve=0, sleep=20)
         self.remote.start()
         print('Sample injected. MFC disabled.')
         self.sampleFlow(0)
-        
+
         ##### Shut off #####
         time.sleep(20)
         print('Disabling pre-concentration system.')
         self.state('off')
-        
+
 def progressbar(i,
                 total,
                 remaining,
@@ -507,4 +506,3 @@ def progressbar(i,
 if __name__ == '__main__':
     GPIO.cleanup()
     pc = pre_con()
-    
