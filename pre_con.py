@@ -366,14 +366,17 @@ class pre_con:
                     return a <= b
 
             if ads != None and h2o != None:
+                print('Checking both ads and h2o trap temperatures.')
                 def check():
                     measure = [self.ads.measure(), self.h2o.measure()]
                     return test(ads, measure[0]) and test(h2o, measure[1]), measure
             if ads != None and h2o is None:
+                print('Checking ads trap temperature.')
                 def check():
                     measure = self.ads.measure()
                     return test(ads, measure), measure
             if ads is None and h2o != None:
+                print('Checking h2o trap temperature.')
                 def check():
                     measure = self.h2o.measure()
                     return test(h2o, measure), measure
@@ -394,6 +397,7 @@ class pre_con:
 
         ########## Timing Condition ##########
         elif condition is 'time':
+            print('Waiting to proceed.')
             dt = new_state['value']*60
             t0 = time.time()
             if not skip:
