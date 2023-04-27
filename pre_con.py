@@ -150,7 +150,7 @@ class pre_con:
             raise ValueError('Selected valve must be an integer.')
         if valve > 8 or valve < 0:
             raise ValueError('Selected valve outside acceptable range.')
-        if not (isinstance(sleep, (int, float)):
+        if not (isinstance(sleep, (int, float))):
             raise ValueError('Sleep time must be a number.')
         return self.vc.write(f'pulse(v[{valve}],sleep={sleep*60})')
 
@@ -415,9 +415,11 @@ class pre_con:
         if sample != None:
             sa_name = 'sampling ' + sample
             self.state(sa_name, check=True)
+            print('This feature has not been implemented.')
+            return
 
         ########## Standby ##########
-        print('Beginning micro-trap sample injection sequence.')
+        print('Beginning micro-trap sampling sequence.')
         self.state('standby')
         print('System being evacuated.')
         if stream != None:
@@ -425,25 +427,37 @@ class pre_con:
             self.stream(stream)
         else:
             stream = self.stream()
+        print('Waiting for traps to reach trapping temperature.')
+        self.state('cool down')
 
-        print('Flushing system with sample.')
+        print('Traps ready! Flushing system with sample.')
         while pc.stream() != stream:
             time.sleep(.1)
-        self.state('flush')
+        self.state('test flush')
 
         print('Beginning sampling')
-        if sample is None:
-            self.state('sampling')
-        elif sample is 'fast':
-            sa_name = 'fast sampling '
-            self.state(sa_name)
-        print('Sampling completed, beginning backflush.')
+        self.state('fast sampling')
+
+        print('Preparing to backflush.')
         self.state('pre-backflush')
+
+        print('Beginning backflush')
         self.state('backflush')
+
+        print('Check GC status prior to heating.')
         self.state('pre-heat')
+
+        print('Flash heating trap.')
         self.state('flash-heat')
+
+        print('Injecting Sample')
         self.state('inject')
+
+        print('Beginning bakeout')
         self.state('bakeout')
+        time.sleep(120)
+
+        print('Returning to standby')
         self.state('standby')
 
     def run_loop(self, stream=None, flow=25, delay=5):

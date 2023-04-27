@@ -38,26 +38,6 @@
 	"condition":	"pulse",
 	"value":   		12
 	},
-  "long sampling":{
-	"valves": 		[0,1,0,0,0,0],
-	"h2o":    		null,
-	"ads":    		null,
-	"sample":		50,
-	"backflush":	0,
-	"pump":			1,
-	"condition":	"pulse",
-	"value":   		30
-	},
-  "fast sampling":{
-	"valves": 		[0,1,0,0,0,0],
-	"h2o":    		null,
-	"ads":    		null,
-	"sample":		200,
-	"backflush":	0,
-	"pump":			1,
-	"condition":	"pulse",
-	"value":   		3
-	},
   "pre-backflush":{
 	"valves": 		[0,0,1,1,0,0],
 	"h2o":    		null,
@@ -91,7 +71,7 @@
   "flash heat":{
 	"valves": 		[1,0,1,1,0,0],
 	"h2o":    		null,
-	"ads":    		100,
+	"ads":    		275,
 	"sample":		0,
 	"backflush":	null,
 	"pump":			1,
@@ -99,9 +79,9 @@
 	"value":   		0.167
 	},
   "inject":{
-	"valves": 		[1,1,0,1,0,0],
-	"h2o":    		-45,
-	"ads":    		100,
+	"valves": 		[0,1,0,0,0,0],
+	"h2o":    		null,
+	"ads":    		null,
 	"sample":		null,
 	"backflush":	null,
 	"pump":			1,
@@ -111,7 +91,7 @@
   "bake out":{
 	"valves": 		[0,1,1,1,1,1],
 	"h2o":    		80,
-	"ads":    		150,
+	"ads":    		325,
 	"sample":		0,
 	"backflush":	50,
 	"pump":			1,
@@ -148,15 +128,25 @@
 	"condition":	null,
 	"value":   		null
 	},
-  "test sampling":{
+  "test flush":{
 	"valves": 		[0,1,0,0,0,0],
 	"h2o":    		null,
 	"ads":    		null,
 	"sample":		200,
 	"backflush":	0,
 	"pump":			1,
-	"condition":	"pulse",
+	"condition":	"time",
 	"value":   		0.2
+	},
+  "fast sampling":{
+	"valves": 		[0,1,0,0,0,0],
+	"h2o":    		null,
+	"ads":    		null,
+	"sample":		null,
+	"backflush":	null,
+	"pump":			1,
+	"condition":	"pulse",
+	"value":   		2
 	},
   "test backflush":{
 	"valves": 		[0,1,1,1,0,0],
