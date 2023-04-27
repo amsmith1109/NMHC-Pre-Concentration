@@ -1,20 +1,21 @@
 from serial import Serial
 import json
 import time
-import sys, os
+import sys 
+import os
 import RPi.GPIO as GPIO
-
-
-def blockPrint():
-    sys.stdout = open(os.devnull, 'w')
-
-def enablePrint():
-    sys.stdout = sys.__stdout__
-
 from src.thermal_controller.omega_tc import omegatc
 from src.uPy import uPy
 from src.switch import switch
 from src.remote import remote
+
+def block_print():
+    sys.stdout = open(os.devnull, 'w')
+
+def enable_print():
+    sys.stdout = sys.__stdout__
+
+
 
 class pre_con:
     def __init__(self,
@@ -24,8 +25,8 @@ class pre_con:
                  h2o_trap_port = '/dev/ttyUSB2',
                  debug=False):
 
-        with open('src/precon_states') as f:
-            data = f.read()
+        with open('src/precon_states') as file:
+            data = file.read()
         self.states = json.loads(data)
         self.switch = switch(connected_obj=self)
         self._switch_state = self.switch.state
@@ -33,18 +34,18 @@ class pre_con:
         if not debug:
             ##### Connect to Valve Controller #####
             self.vc = uPy(vc_port)
-            blockPrint()
-            checkVC = self.vc.echo('dir()')
-            if checkVC == False:
+            block_print()
+            check_VC = self.vc.echo('dir()')
+            if not check_VC:
                 self.vc.close()
                 self.vc.connect()
                 self.vc.reboot()
-            enablePrint()
+            enable_print()
 
             ##### Connect to Mass Flow Controller #####
             self.mfc = uPy(mfc_port)
             check = self.mfc.echo('dir()')
-            if check==False:
+            if not check:
                 print('Failed to connect to Mass Flow Controllers. Try a hardware reset.')
             self.mfc.sample = 0
             self.mfc.backflush = 1
@@ -52,9 +53,9 @@ class pre_con:
             self.mfc.timeout = self.mfc.echo('timeout')
 
             ##### Connect to ADS PID #####
-            blockPrint()
+            block_print()
             self.ads = omegatc(ads_trap_port)
-            enablePrint()
+            enable_print()
             if self.ads.connected:
                 print('Successfully connected to adsorbent trap!')
             else:
@@ -71,10 +72,10 @@ class pre_con:
             self.current_state = {}
             self.state('off')
 
-            if not checkVC:
+            if not check_VC:
                 self.vc = uPy(vc_port)
-                checkVC = self.vc.echo('dir()')
-                if checkVC==False:
+                check_VC = self.vc.echo('dir()')
+                if not check_VC:
                     print('Failed to connect to Valve controller on second attempt.')
                     print('Check that both lights are lit on the board.')
                     print('Perform a hardware reset as necessary.')
@@ -87,8 +88,8 @@ class pre_con:
         return self._switch_state
 
     @switch_state.setter
-    def switch_state(self, newState):
-        self._switch_state = newState
+    def switch_state(self, new_state):
+        self._switch_state = new_state
         self.manual_override()
 
     def manual_override(self):
@@ -128,7 +129,7 @@ class pre_con:
             if V < 6:
                 self.current_state['valves'][V] = position
             return check
-        elif isinstance(V, list) or isinstance(V, range):
+        if isinstance(V, (list, range)):
             check = []
             for n, i in enumerate(V):
                 if isinstance(position, int):
@@ -136,21 +137,21 @@ class pre_con:
                 else:
                     check.append(self.vc.write(f'v[{i}]({position[n]})'))
             return check
-        elif V == None:
+        if V is None:
             if isinstance(position,list):
                 check = []
                 for i in range(6):
                     check.append(self.vc.write(f'v[{i}]({position[i]})'))
+            return check
 
-
+                    
     def pulse(self, valve, sleep):
         if not isinstance(valve, int):
             raise ValueError('Selected valve must be an integer.')
         if valve > 8 or valve < 0:
             raise ValueError('Selected valve outside acceptable range.')
-        if not (isinstance(sleep, int) or isinstance(sleep, float)):
+        if not (isinstance(sleep, (int, float)):
             raise ValueError('Sleep time must be a number.')
-
         return self.vc.write(f'pulse(v[{valve}],sleep={sleep*60})')
 
 
@@ -179,16 +180,16 @@ class pre_con:
 
 
     def pump(self, command = None):
-        if command == None:
+        if command is None:
             print(f"The pump is currently turned {self.current_state['pump']}.")
 
-        elif (command =='off') or (command == 0):
+        elif (command is 'off') or (command is 0):
             if self.valve(7, 0):
                 self.current_state['pump'] = 'off'
             else:
                 print('Failed to turn pump off.')
 
-        elif (command == 'on') or (command == 1):
+        elif (command is 'on') or (command is 1):
             if self.valve(7, 1):
                 self.current_state['pump'] = 'on'
             else:
@@ -234,7 +235,7 @@ class pre_con:
             string += f"H2O Trap Temperature = {str(state['h2o'])}\n"
             string += f"ADS Trap Temperature = {str(state['ads'])}\n"
             string += f"Pump is {position[state['pump']]}\n"
-            if state['condition'] == None:
+            if state['condition'] is None:
                 string += f"This state has no check following completion."
             else:
                 string += f"With an advancement condition of '{state['condition']}' "
@@ -243,7 +244,7 @@ class pre_con:
             return
 
         ##### Checks if the function was called for information #####
-        if name == None:
+        if name is None:
             if check:
                 state_help()
                 return
@@ -263,7 +264,7 @@ class pre_con:
         new_state = self.states[name].copy()
         condition = new_state['condition']
         ########## Precision Timing Condition ##########
-        if condition == 'pulse':
+        if condition is 'pulse':
             print('pulsing')
             dt = new_state['value']
             v = new_state['valves'].index(1)
@@ -278,7 +279,7 @@ class pre_con:
                 elapsed = t[-1]/60
                 if self.vc.serial.in_waiting > 9:
                     msg = self.vc.read()
-                    if msg[2:4] == 'ok':
+                    if msg[2:4] is 'ok':
                         progressbar(i = dt,
                                     total = dt,
                                     remaining=0,
@@ -328,13 +329,13 @@ class pre_con:
         sample = new_state['sample']
         backflush = new_state['backflush']
         if sample != None:
-            if sample == 0:
+            if sample is 0:
                 print('Sample flow disabled.')
             else:
                 print(f'Setting sample flow rate to {sample}. Please wait for flow to stabilize.')
             self.sampleFlow(sample)
         if backflush != None:
-            if backflush == 0:
+            if backflush is 0:
                 print('Backflush flow disabled.')
             else:
                 print(f'Setting backflush flow rate to {backflush}. Please wait for flow to stabilize.')
@@ -350,29 +351,29 @@ class pre_con:
                 self.ads.set_point(ads)
 
         ########## Temperature Condition ##########
-        if condition == 'temp':
+        if condition is 'temp':
             logic = new_state['value']
             def test(a, b):
                 if logic == '<':
                     return a < b
-                elif logic == '>':
+                elif logic is '>':
                     return a > b
-                elif logic == '==':
-                    return a == b
-                elif logic == '>=':
+                elif logic is '==':
+                    return a is b
+                elif logic is '>=':
                     return a >= b
-                elif logic == '<=':
+                elif logic is '<=':
                     return a <= b
 
             if ads != None and h2o != None:
                 def check():
                     measure = [self.ads.measure(), self.h2o.measure()]
                     return test(ads, measure[0]) and test(h2o, measure[1]), measure
-            if ads != None and h2o == None:
+            if ads != None and h2o is None:
                 def check():
                     measure = self.ads.measure()
                     return test(ads, measure), measure
-            if ads == None and h2o != None:
+            if ads is None and h2o != None:
                 def check():
                     measure = self.h2o.measure()
                     return test(h2o, measure), measure
@@ -392,7 +393,7 @@ class pre_con:
             print(f"Temperature threshold reached! Currently measuring {check()[1]}")
 
         ########## Timing Condition ##########
-        elif condition == 'time':
+        elif condition is 'time':
             dt = new_state['value']*60
             t0 = time.time()
             if not skip:
@@ -431,9 +432,9 @@ class pre_con:
         self.state('flush')
 
         print('Beginning sampling')
-        if sample == None:
+        if sample is None:
             self.state('sampling')
-        elif sample == 'fast':
+        elif sample is 'fast':
             sa_name = 'fast sampling '
             self.state(sa_name)
         print('Sampling completed, beginning backflush.')
@@ -503,6 +504,6 @@ def progressbar(i,
                       interval))
     sys.stdout.flush()
 
-if __name__ == '__main__':
+if __name__ is '__main__':
     GPIO.cleanup()
     pc = pre_con()
