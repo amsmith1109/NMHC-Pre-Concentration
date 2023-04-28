@@ -20,9 +20,9 @@ def enable_print():
 class pre_con:
     def __init__(self,
                  vc_port = '/dev/ttyACM0',
-                 mfc_port = '/dev/ttyUSB0',
-                 ads_trap_port = '/dev/ttyUSB1',
-                 h2o_trap_port = '/dev/ttyUSB2',
+                 mfc_port = '/dev/ttyUSB2',
+                 ads_trap_port = '/dev/ttyUSB0',
+                 h2o_trap_port = '/dev/ttyUSB1',
                  debug=False):
 
         with open('src/precon_states') as file:
@@ -137,7 +137,7 @@ class pre_con:
                 else:
                     check.append(self.vc.write(f'v[{i}]({position[n]})'))
             return check
-        if V is None:
+        if V == None:
             if isinstance(position,list):
                 check = []
                 for i in range(6):
@@ -180,16 +180,16 @@ class pre_con:
 
 
     def pump(self, command = None):
-        if command is None:
+        if command == None:
             print(f"The pump is currently turned {self.current_state['pump']}.")
 
-        elif (command is 'off') or (command is 0):
+        elif (command == 'off') or (command == 0):
             if self.valve(7, 0):
                 self.current_state['pump'] = 'off'
             else:
                 print('Failed to turn pump off.')
 
-        elif (command is 'on') or (command is 1):
+        elif (command == 'on') or (command == 1):
             if self.valve(7, 1):
                 self.current_state['pump'] = 'on'
             else:
@@ -235,7 +235,7 @@ class pre_con:
             string += f"H2O Trap Temperature = {str(state['h2o'])}\n"
             string += f"ADS Trap Temperature = {str(state['ads'])}\n"
             string += f"Pump is {position[state['pump']]}\n"
-            if state['condition'] is None:
+            if state['condition'] == None:
                 string += f"This state has no check following completion."
             else:
                 string += f"With an advancement condition of '{state['condition']}' "
@@ -244,7 +244,7 @@ class pre_con:
             return
 
         ##### Checks if the function was called for information #####
-        if name is None:
+        if name == None:
             if check:
                 state_help()
                 return
@@ -263,12 +263,41 @@ class pre_con:
         ##### Engage the new state if a state change is requested. #####
         new_state = self.states[name].copy()
         condition = new_state['condition']
-        ########## Precision Timing Condition ##########
-        if condition is 'pulse':
-            print('pulsing')
+        if condition != None:
+            condition = condition.lower()
+        valid_conditions = [None, 'gc', 'pulse', 'time', 'temp']
+        valid_conditions.index(condition) # Caused an error if an invalid condition is called.
+
+
+        ########## GC Ready Condition ##########
+        if condition=='gc':
+            start = time.time()
+            print('Waiting for GC to be ready.')
+            while not self.remote.gc_ready:
+                if time.time() > start + 60:
+                    print('GC not ready in time. Aborting run.')
+                    self.state('off')
+                    print('System turned off.')
+                    return False
+            print('GC ready.')
             dt = new_state['value']
-            v = new_state['valves'].index(1)
+            if new_state['value'] == None:
+                return True
+            
+        ########## Precision Timing Condition ##########
+        if condition == 'pulse' or condition == 'gc':
+            dt = new_state['value']
+            v = new_state['valves']
+            if sum(v) > 1:
+                raise ValueError('More than 1 valve specified.')
+            else:
+                v = v.index(1)
             self.pulse(valve=v, sleep=dt)
+            if condition == 'pulse':
+                print(f'Precision timed pulse on valve {v}.')
+            if condition == 'gc':
+                print('Injecting sample.')
+                self.remote.start()
             t0 = time.time()
             flow_check = []
             t = []
@@ -279,7 +308,7 @@ class pre_con:
                 elapsed = t[-1]/60
                 if self.vc.serial.in_waiting > 9:
                     msg = self.vc.read()
-                    if msg[2:4] is 'ok':
+                    if msg[2:4] == 'ok':
                         progressbar(i = dt,
                                     total = dt,
                                     remaining=0,
@@ -297,31 +326,15 @@ class pre_con:
                                 units='min',
                                 interval = 'minutes')
                 time.sleep(0.25)
+            print('')
             self.current_state = new_state
             self.current_state['name'] = name
-            return t, flow_check
-
-        ########## GC Ready Condition ##########
-        if condition=='gc':
-            start = time.time()
-            print('Waiting for GC to be ready.')
-            while not self.remote.gc_ready:
-                if time.time() > start + 60:
-                    print('GC not ready in time. Aborting run.')
-                    self.state('off')
-                    print('System turned off.')
-                    return False
-            print('GC ready.')
-            dt = new_state['value']
-            if dt != None:
-                print('Injecting sample.')
-                v = new_state['valves'].index(1)
-                self.pulse(valve=v, sleep=dt)
-                self.remote.start()
-                self.current_state = new_state
-                self.current_state['name'] = name
+            if condition == 'pulse':
+                return t, flow_check
+            else:
                 return True
-
+        
+        
         valves = new_state['valves']
         self.valve(position=valves)
         pump = new_state['pump']
@@ -329,13 +342,13 @@ class pre_con:
         sample = new_state['sample']
         backflush = new_state['backflush']
         if sample != None:
-            if sample is 0:
+            if sample == 0:
                 print('Sample flow disabled.')
             else:
                 print(f'Setting sample flow rate to {sample}. Please wait for flow to stabilize.')
             self.sampleFlow(sample)
         if backflush != None:
-            if backflush is 0:
+            if backflush == 0:
                 print('Backflush flow disabled.')
             else:
                 print(f'Setting backflush flow rate to {backflush}. Please wait for flow to stabilize.')
@@ -351,18 +364,18 @@ class pre_con:
                 self.ads.set_point(ads)
 
         ########## Temperature Condition ##########
-        if condition is 'temp':
+        if condition == 'temp':
             logic = new_state['value']
             def test(a, b):
                 if logic == '<':
                     return a < b
-                elif logic is '>':
+                elif logic == '>':
                     return a > b
-                elif logic is '==':
-                    return a is b
-                elif logic is '>=':
+                elif logic == '==':
+                    return a == b
+                elif logic == '>=':
                     return a >= b
-                elif logic is '<=':
+                elif logic == '<=':
                     return a <= b
 
             if ads != None and h2o != None:
@@ -370,12 +383,12 @@ class pre_con:
                 def check():
                     measure = [self.ads.measure(), self.h2o.measure()]
                     return test(ads, measure[0]) and test(h2o, measure[1]), measure
-            if ads != None and h2o is None:
+            if ads != None and h2o == None:
                 print('Checking ads trap temperature.')
                 def check():
                     measure = self.ads.measure()
                     return test(ads, measure), measure
-            if ads is None and h2o != None:
+            if ads == None and h2o != None:
                 print('Checking h2o trap temperature.')
                 def check():
                     measure = self.h2o.measure()
@@ -393,10 +406,11 @@ class pre_con:
                     print('System failed to reach temperature in time.')
                     self.state('off')
                     raise SystemError('System was shut down.')
+            print('')
             print(f"Temperature threshold reached! Currently measuring {check()[1]}")
 
         ########## Timing Condition ##########
-        elif condition is 'time':
+        if condition == 'time':
             print('Waiting to proceed.')
             dt = new_state['value']*60
             t0 = time.time()
@@ -413,6 +427,7 @@ class pre_con:
 
         self.current_state = new_state
         self.current_state['name'] = name
+        print('')
         return
 
     def run_sa(self, stream=None, sample=None):
@@ -437,10 +452,10 @@ class pre_con:
         print('Traps ready! Flushing system with sample.')
         while pc.stream() != stream:
             time.sleep(.1)
-        self.state('test flush')
+        self.state('flush')
 
         print('Beginning sampling')
-        self.state('fast sampling')
+        self.state('sampling')
 
         print('Preparing to backflush.')
         self.state('pre-backflush')
@@ -452,15 +467,17 @@ class pre_con:
         self.state('pre-heat')
 
         print('Flash heating trap.')
-        self.state('flash-heat')
+        self.state('flash heat')
 
         print('Injecting Sample')
         self.state('inject')
 
         print('Beginning bakeout')
-        self.state('bakeout')
-        time.sleep(120)
-
+        self.state('bake out')
+        
+        print('Beginning post-back evacuation.')
+        self.state('post bake')
+        
         print('Returning to standby')
         self.state('standby')
 
@@ -522,6 +539,8 @@ def progressbar(i,
                       interval))
     sys.stdout.flush()
 
-if __name__ is '__main__':
+if __name__ == '__main__':
+    GPIO.setwarnings(False)
     GPIO.cleanup()
+    GPIO.setwarnings(True)
     pc = pre_con()
