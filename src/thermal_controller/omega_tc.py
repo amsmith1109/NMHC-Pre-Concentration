@@ -48,13 +48,13 @@ class CNi:
                 return
 
         print('Connection to Omega TC successful!')
-        self.init_offset()
 
         # Get controller settings
         check = self.serial.readall()
         self.__communication_protocol__ = check
         recognition = codecs.decode(check[0:2], 'hex')
         self.recognition = recognition
+        self.init_offset()
         self.port = com
         self.probe_type = self.probe()
 

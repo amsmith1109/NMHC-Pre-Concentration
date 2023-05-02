@@ -4,7 +4,7 @@ import time
 import sys 
 import os
 import RPi.GPIO as GPIO
-from src.thermal_controller.omega_tc import omegatc
+from src.thermal_controller.omega_tc import CNi
 from src.uPy import uPy
 from src.switch import switch
 from src.remote import remote
@@ -20,9 +20,9 @@ def enable_print():
 class pre_con:
     def __init__(self,
                  vc_port = '/dev/ttyACM0',
-                 mfc_port = '/dev/ttyUSB2',
-                 ads_trap_port = '/dev/ttyUSB0',
-                 h2o_trap_port = '/dev/ttyUSB1',
+                 mfc_port = '/dev/ttyUSB0',
+                 ads_trap_port = '/dev/ttyUSB1',
+                 h2o_trap_port = '/dev/ttyUSB2',
                  debug=False):
 
         with open('src/precon_states') as file:
@@ -54,7 +54,7 @@ class pre_con:
 
             ##### Connect to ADS PID #####
             block_print()
-            self.ads = omegatc(ads_trap_port)
+            self.ads = CNi(ads_trap_port)
             enable_print()
             if self.ads.connected:
                 print('Successfully connected to adsorbent trap!')
@@ -62,7 +62,7 @@ class pre_con:
                 print('Failed to connect to adsorbent trap. :(')
 
 #             ##### Connect to H2O PID #####
-#             self.h2o = omegatc(h2o_trap_port)
+#             self.h2o = CNi(h2o_trap_port)
 #             if self.h2o.connected:
 #                 print('Successfully connected to water trap!')
 #             else:
@@ -144,7 +144,7 @@ class pre_con:
                     check.append(self.vc.write(f'v[{i}]({position[i]})'))
             return check
 
-                    
+
     def pulse(self, valve, sleep):
         if not isinstance(valve, int):
             raise ValueError('Selected valve must be an integer.')
