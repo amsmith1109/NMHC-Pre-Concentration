@@ -1,7 +1,7 @@
 from __future__ import absolute_import
-import serial
 import time
 import codecs
+import serial
 import src.thermal_controller.bit_converter as bc
 # degree_sign = u'\N{DEGREE SIGN}'
 
@@ -34,14 +34,14 @@ class CNi:
             timeout=timeout)
         self.serial.write(b'^AE\r')
 
-        t = time.time()
+        start_time = time.time()
         # Gives the controller up to 5 seconds to respond.
         while True:
             time.sleep(0.01)
             if self.serial.in_waiting == 9:
                 self.connected = True
                 break
-            if abs(time.time() - t) > 5:
+            if abs(time.time() - start_time) > 5:
                 if __name__ == '__main__':
                     print('Unable to connect with omega device.')
                 self.connected = False
@@ -64,27 +64,29 @@ class CNi:
         print('Omega controller is ready!')
 
     ########################################################################################
-    # PID Functions
+    # PID Functions - See communication manual pg 14-15 for a
+    #     list of all commands.
     ########################################################################################
-    """
-    Below are commands that correspond to functions that an integrated
-    into the PID controller. See communication manual pg 14-15 for a 
-    list of all commands.
-    """
     # 0x01 & 0x02, called by position
     def set_point(self, temp=None, position=1, eeprom=False):
+        """
+        push or write the set point for output 1 or 2 on the PID.
+        An empty call returns the current set point.
+
+        eeprom = False → RAM storage of new set point
+        eeprom = True → new set point loaded to the EEPROM
+        """
         # Input checks to make sure a valid command is being requested.
         if position > 2 or position < 1:
-            print('Invalid set point target')
-            return
+            raise TypeError('Invalid set point target')
         if temp is None:
             val = []
             if eeprom:
-                cd = 'R'
+                command = 'R'
             else:
-                cd = 'G'
+                command = 'G'
             for i in ['1', '2']:
-                raw_msg = self.echo(f'{cd}0{i}')
+                raw_msg = self.echo(f'{command}0{i}')
                 msg = self.msg2dec(raw_msg)
                 temp = bc.hexstr2dec(msg)
                 val.append(temp)
@@ -94,13 +96,6 @@ class CNi:
         else:
             msg = 'P'
         msg = msg + '0' + str(position)
-
-        '''
-        Process the input value and convert it to the machine readable value.
-        bits 0 - 19 = temperature value, 0 - 9999
-        bits 20 - 22 = decimal place, 0 - 4 (note 4 = F.FFF)
-        bit 23 = sign, 0 = positive, 1 = negative
-        '''
         temp_hex = bc.dec2hexstr(temp)
 
         # Compile the message and send it
@@ -108,8 +103,7 @@ class CNi:
         check = self.echo(msg)
         if check[0:3] == msg[0:3]:
             return f'Set point successfully changed to: {str(temp)}.'
-        else:
-            return check
+        return check
     # 0x03 (not implemented)
     # 0x04 (not implemented)
 
@@ -295,7 +289,6 @@ class CNi:
                         'ramp': ['Disable', 'Enable'],
                         'soak': ['Disable', 'Enable'],
                         'damping': ['Damping ' + str(x) for x in range(0, 8)]}
-                
         settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
         return settings
 
@@ -320,7 +313,6 @@ class CNi:
                         'parity': ['No Parity', 'Odd', 'Even'],
                         'bit': ['7 bit', '8 bit'],
                         'stop': ['1 Stop Bit', '2 Stop Bit']}
-                
         settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
         return settings
 
@@ -341,7 +333,6 @@ class CNi:
         _valid_names = {'normal': colors,
                         'alarm1': colors,
                         'alarm2': colors}
-
         settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
         return settings
 
@@ -373,7 +364,6 @@ class CNi:
                         'rs': ['RS-232', 'RS-485'],
                         'bus_format': ['Continuous', 'Command'],
                         'terminator': ['Space', 'Carriage Return']}
-                
         settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
         return settings
 
@@ -402,12 +392,21 @@ class CNi:
         return self.echo('E02')
 
     def enable_standby(self):
+        """
+        enable standby
+        """
         return self.echo('E03')
 
     def enable_self(self):
+        """
+        enable self
+        """
         return self.echo('E04')
 
     def measure(self):
+        """
+        Returns temperature measurement
+        """
         temp = self.echo('X01')
         start = temp.rfind('X01') + 3
         stop = temp.rfind('\r')
@@ -417,6 +416,9 @@ class CNi:
             return False
 
     def send_alarm_status(self):
+        """
+        send alarm status
+        """
         return self.echo('U01')
 
     def send_sw_version(self):
@@ -577,7 +579,7 @@ class CNi:
             msg = message.encode('utf-8')
         elif isinstance(message, bytes):
             msg = message
-        elif isinstance(message, float) or isinstance(message, int):
+        elif isinstance(message, (float, int)):
             msg = str(message)
             msg = msg.encode('utf-8')
         else:

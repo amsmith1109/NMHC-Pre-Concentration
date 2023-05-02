@@ -1,7 +1,6 @@
-from math import floor
 """
 bit_converter is a collection of the generic commands used for bit
-manipulation in the omega_tc class. This also allows these codes to be
+manipulation in the CNi class. This also allows these codes to be
 used for other hardware that may need similar bit manipulation.
 
 extract() takes the hex code from the omega system and extracts the
@@ -18,7 +17,17 @@ Example:
     Alarm2 = extract(36, 4, 5) -> 2
     decimal 36 = 0b 00 10 01 00
 """
+from math import floor
+
+
 def extract(code, index):
+    """
+    extract gets the raw hex code from the PID, and with the specified index it returns
+    what the individual values of the code mean.
+
+    code = raw hex code from PID
+    index = start and stop positions of stored values.
+    """
     val = []
     # Max val is used to ensure that the conversion to the binary value is the correct length.
     # For an 8-bit number, 0x04 is printed as 0b100, but should be '0b00000100'. A large enough
@@ -35,49 +44,60 @@ def extract(code, index):
         val.append(int(out_bin[::-1], 2))
     return val
 
-"""
-compact is the inverse of extract.
-Converts values located at a binary index to hex characters.
-code provides the values stored in the hex string.
-index species which bits contain the code values.
-length specifies how long the hex code is supposed to be.
 
-In pactice, length will pad zeros to make sure the returned
-value is the proper size. That's why length is called here
-but not in extract.
-"""
-def compact(code, index, length = None):
-    c_len = code.__len__()
-    i_len = index.__len__()
-    if (c_len != i_len) and (c_len != (i_len-1)):
-        print('Input values must match index length.')
-        return
+def compact(code, index, length=None):
+    """
+    compact is the inverse of extract.
+    Converts values located at a binary index to hex characters.
+    code provides the values stored in the hex string.
+    index species which bits contain the code values.
+    length specifies how long the hex code is supposed to be.
+
+    In practice, length will pad zeros to make sure the returned
+    value is the proper size. That's why length is called here
+    but not in extract.
+    """
+    if (len(code) is not len(index)) and (len(code) is not len(index)-1):
+        raise ValueError('Input values must match index length.')
     val = 0
     for n, i in enumerate(code):
         val = val + i*(2**index[n])
     output = hex(val)[2:].upper()
-    if length != None:
-        if output.__len__() < length:
-            while output.__len__() < length:
+    if length is not None:
+        if len(output) < length:
+            while len(output) < length:
                 output = '0' + output
     return output
 
+
 def hexstr2dec(msg):
-    if isinstance(msg,str):
+    """
+    Converts the omega engineering scheme 4-byte number to decimal.
+    Their 4-byte values are similar to floating point numbers.
+    """
+    if isinstance(msg, str):
         msg = int(msg, 16)
-    _index = [0,20,23,24]
-    bits = extract(msg,_index)
-    # bits contains a pseudo-floating point interpretation of the data.
+
+    _index = [0, 20, 23, 24]
+    bits = extract(msg, _index)
     # bits[0] = data, bits[1] = decimal, bits[2] = sign
     output = bits[0] / (10**(bits[1]-1)) * ((-1)**bits[2])
     return output
 
-def dec2hexstr(val, decimal=None):
+
+def dec2hexstr(val):
+    """
+    inverse of hexstr2dec. Takes a decimal number and converts it to a 4-byte
+    hex code ready to send to an omega engineering PID.
+
+    Should be updated to include a specified decimal place for desired code output
+    instead of assigning one based on the input value. Defaults to decimal code 2.
+    """
     if val > 9999 or val < -9999:
         print('Input value outside of acceptable range. Must be between -9,999 and 9,999.')
         return
-    _index = [0,20,23,24]
-    
+    _index = [0, 20, 23, 24]
+
     # First grab the sign of the value
     if val < 0:
         sign = 1
