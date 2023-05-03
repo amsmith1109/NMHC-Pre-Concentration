@@ -4,7 +4,7 @@ import csv
 import matplotlib.pyplot as plt
 
 folder = 'C:/Users/Alex/Documents/GitHub/NMHC-Pre-Concentration/'
-fname = 'tempdata23.csv'
+fname = 'tempdata26.csv'
 file = folder + fname
 data = []
 with open(file, 'r') as f:
@@ -43,7 +43,7 @@ try:
     g = guess(t, temp)
 except:
     g = (140, 0, .7, 1)
-g = (195, 25, 1, 0)
+
 t = np.array(t)
 avg = np.average(temp)
 avg = 0
