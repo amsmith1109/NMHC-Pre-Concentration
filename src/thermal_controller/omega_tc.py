@@ -337,19 +337,19 @@ class CNi:
         return settings
 
     # 0x18 - 0x1A
-    class pid(self):
-        def get1(self): #reset = integral, rate = derivative, dead band = proportional?
-            p = bc.msg2dec(obj.echo('R17'))
-            i = bc.msg2dec(obj.echo('R18'))
-            d = bc.msg2dec(obj.echo('R19'))
-            return p, i, d
-        def get2(self):
-
-        def set1(self, p, i, d):
-            return p, i, d
-
-        def set2(self, p, i, d):
-            return p, i, d
+#     class pid(self):
+#         def get1(self): #reset = integral, rate = derivative, dead band = proportional?
+#             p = bc.msg2dec(obj.echo('R17'))
+#             i = bc.msg2dec(obj.echo('R18'))
+#             d = bc.msg2dec(obj.echo('R19'))
+#             return p, i, d
+#         def get2(self):
+# 
+#         def set1(self, p, i, d):
+#             return p, i, d
+# 
+#         def set2(self, p, i, d):
+#             return p, i, d
 
     # 0x1F
     def bus_format(self,
