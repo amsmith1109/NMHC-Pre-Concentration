@@ -116,3 +116,9 @@ def dec2hexstr(val):
     msg = [val, exponent, sign]
     output = compact(msg, _index, 6)
     return output
+
+def msg2dec(msg):
+    """
+    Converts message with address and hexadecimal data to decimal.
+    """
+    return int(msg[3:-1], 16)

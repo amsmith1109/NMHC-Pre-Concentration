@@ -87,7 +87,7 @@ class CNi:
                 command = 'G'
             for i in ['1', '2']:
                 raw_msg = self.echo(f'{command}0{i}')
-                msg = self.msg2dec(raw_msg)
+                msg = bc.msg2dec(raw_msg)
                 temp = bc.hexstr2dec(msg)
                 val.append(temp)
             return val
@@ -227,7 +227,7 @@ class CNi:
         settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
         return settings
 
-    # 0x0B
+    # 0x0B, not implemented
     # def loop_break_time(self, break_time=None):
 
     # 0x0C
@@ -335,6 +335,21 @@ class CNi:
                         'alarm2': colors}
         settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
         return settings
+
+    # 0x18 - 0x1A
+    class pid(self):
+        def get1(self): #reset = integral, rate = derivative, dead band = proportional?
+            p = bc.msg2dec(obj.echo('R17'))
+            i = bc.msg2dec(obj.echo('R18'))
+            d = bc.msg2dec(obj.echo('R19'))
+            return p, i, d
+        def get2(self):
+
+        def set1(self, p, i, d):
+            return p, i, d
+
+        def set2(self, p, i, d):
+            return p, i, d
 
     # 0x1F
     def bus_format(self,
@@ -472,7 +487,7 @@ class CNi:
             else:
                 cmd = 'G'
             msg = cmd + _addr
-            code = self.msg2dec(self.echo(msg))
+            code = bc.msg2dec(self.echo(msg))
             val = bc.hexstr2dec(code)
             return val
         else:
@@ -524,7 +539,7 @@ class CNi:
                 else:
                     raise TypeError('Input must be a string or int.')
 
-        msg = self.msg2dec(self.echo('R'+_addr))
+        msg = bc.msg2dec(self.echo('R'+_addr))
 
         """
         Check for a request from the user to change parameters
@@ -729,16 +744,6 @@ class CNi:
         else:
             for i in default_values:
                 print(self.echo(f'R{i}'))
-
-    def msg2dec(self, msg):
-        return int(msg[3:-1], 16)
-
-    def c2f(self, val):
-        return val * 1.8 + 32
-
-    def f2c(self, val):
-        return (val - 32) / 1.8
-
 
 if __name__ == "__main__":
     o = CNi('com3')
