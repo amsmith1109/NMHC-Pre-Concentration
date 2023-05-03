@@ -72,8 +72,8 @@ def compact(code, index, length=None):
 
 def hexstr2dec(msg):
     """
-    Converts the omega engineering scheme 4-byte number to decimal.
-    Their 4-byte values are similar to floating point numbers.
+    Converts the omega engineering scheme 6-byte number to decimal.
+    Their 6-byte values are similar to floating point numbers.
     """
     if isinstance(msg, str):
         msg = int(msg, 16)
@@ -87,7 +87,7 @@ def hexstr2dec(msg):
 
 def dec2hexstr(val):
     """
-    inverse of hexstr2dec. Takes a decimal number and converts it to a 4-byte
+    inverse of hexstr2dec. Takes a decimal number and converts it to a 6-byte
     hex code ready to send to an omega engineering PID.
 
     Should be updated to include a specified decimal place for desired code output
