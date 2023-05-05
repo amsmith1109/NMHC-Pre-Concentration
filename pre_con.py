@@ -449,7 +449,7 @@ class pre_con:
         print('Waiting for traps to reach trapping temperature.')
         self.state('cool down')
 
-        print('Traps ready! Flushing system with sample.')
+        print('Traps are ready! Flushing system with sample.')
         while pc.stream() != stream:
             time.sleep(.1)
         self.state('flush')
@@ -462,6 +462,9 @@ class pre_con:
 
         print('Beginning backflush')
         self.state('backflush')
+        
+        print('Reversing backflush')
+        self.state('reverse backflush')
 
         print('Check GC status prior to heating.')
         self.state('pre-heat')
@@ -472,13 +475,16 @@ class pre_con:
         print('Injecting Sample')
         self.state('inject')
 
+        print('Configuring valves for bakeout.')
+        self.state('pre-bake')
+
         print('Beginning bakeout')
         self.state('bake out')
         
-        print('Beginning post-back evacuation.')
+        print('Beginning post-bake evacuation.')
         self.state('post bake')
         
-        print('Returning to standby')
+        print('Returning to standby.')
         self.state('standby')
 
     def run_loop(self, stream=None, flow=25, delay=5):
