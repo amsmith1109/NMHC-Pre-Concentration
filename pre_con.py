@@ -80,7 +80,7 @@ class pre_con:
                     print('Check that both lights are lit on the board.')
                     print('Perform a hardware reset as necessary.')
                     txt = 'You will not need to restart the softare if you perform a'
-                    txt += 'hardware reset and the valve controller lights up.'
+                    txt += ' hardware reset and the valve controller lights up.'
                     print(txt)
 
     @property
@@ -228,6 +228,7 @@ class pre_con:
             return
 
         def print_state(state):
+            # Missing return of flowrate setting
             string = ""
             position = ['off','on']
             for n, i in enumerate(state['valves']):
@@ -255,18 +256,22 @@ class pre_con:
                 print_state(self.current_state)
                 return
         else:
+            if isinstance(name, dict):
+                new_state = name.copy()
+                name = new_state['name']
+            else:
+                new_state = self.states[name].copy()
             if check:
                 print(f"Settings for the {name} state: \n")
-                print_state(self.states[name])
+                print_state(new_state)
                 return
 
         ##### Engage the new state if a state change is requested. #####
-        new_state = self.states[name].copy()
         condition = new_state['condition']
         if condition != None:
             condition = condition.lower()
         valid_conditions = [None, 'gc', 'pulse', 'time', 'temp']
-        valid_conditions.index(condition) # Caused an error if an invalid condition is called.
+        valid_conditions.index(condition) # Causes an error if an invalid condition is called.
 
 
         ########## GC Ready Condition ##########
@@ -431,11 +436,11 @@ class pre_con:
         return
 
     def run_sa(self, stream=None, sample=None):
-        if sample != None:
-            sa_name = 'sampling ' + sample
-            self.state(sa_name, check=True)
-            print('This feature has not been implemented.')
-            return
+#         if sample != None:
+#             sa_name = 'sampling ' + sample
+#             self.state(sa_name, check=True)
+#             print('This feature has not been implemented.')
+#             return
 
         ########## Standby ##########
         print('Beginning micro-trap sampling sequence.')
@@ -449,20 +454,25 @@ class pre_con:
         print('Waiting for traps to reach trapping temperature.')
         self.state('cool down')
 
-        print('Traps are ready! Flushing system with sample.')
-        while pc.stream() != stream:
-            time.sleep(.1)
-        self.state('flush')
+        if sample is None:
+            print('Traps are ready! Flushing system with sample.')
+            while pc.stream() != stream:
+                time.sleep(.1)
+            self.state('flush')
 
-        print('Beginning sampling')
-        self.state('sampling')
+            print('Beginning sampling')
+            self.state('sampling')
 
         print('Preparing to backflush.')
         self.state('pre-backflush')
-
-        print('Beginning backflush')
-        self.state('backflush')
         
+        if sample == 'blank':
+            print('Running blank.')
+            self.state('blank flush')
+        else:
+            print('Beginning backflush')
+            self.state('backflush')
+
         print('Reversing backflush')
         self.state('reverse backflush')
 
@@ -486,6 +496,23 @@ class pre_con:
         
         print('Returning to standby.')
         self.state('standby')
+
+    def run_sequence(self, name='standard', stream=None, check=False):
+        """
+        """
+        with open(f'src/Sample Sequencing/{name}') as file:
+            data = file.read()
+        sequence = json.loads(data)
+        
+        if stream != None:
+            print(f'Selecting sample #{stream}.')
+            self.stream(stream)
+        else:
+            stream = self.stream()
+            
+        for state_name, state  in sequence.items():
+            state['name'] = state_name
+            self.state(state, check=check)
 
     def run_loop(self, stream=None, flow=25, delay=5):
         ##### Flush #####
@@ -529,6 +556,7 @@ class pre_con:
         time.sleep(20)
         print('Disabling pre-concentration system.')
         self.state('off')
+        
 
 def progressbar(i,
                 total,

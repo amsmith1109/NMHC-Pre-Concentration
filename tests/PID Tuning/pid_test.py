@@ -66,7 +66,8 @@ def run(set_point=200, delay=60):
     plt.show()
     return t, temp, popt
 
-
+# pc.remote.start()
+# run(set_point=400, delay=60*5)
 
 ############################################################
 # Code for saving Data

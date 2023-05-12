@@ -137,35 +137,5 @@
 	"pump":			1,
 	"condition":	"time",
 	"value":   		1
-	},
-  "loop inject":{
-	"valves": 		[1,0,0,0,0,0],
-	"h2o":    		null,
-	"ads":    		null,
-	"sample":		0,
-	"backflush":	null,
-	"pump":			0,
-	"condition":	"gc",
-	"value":   		0.2
-	},
-  "loop sample":{
-	"valves": 		[0,0,0,0,0,1],
-	"h2o":    		null,
-	"ads":    		null,
-	"sample":		50,
-	"backflush":	null,
-	"pump":			0,
-	"condition":	"time",
-	"value":   		0.25
-	},
-  "off":{
-	"valves": 		[0,0,0,0,0,0],
-	"h2o":    		-99,
-	"ads":    		-99,
-	"sample":		0,
-	"backflush":	0,
-	"pump":			0,
-	"condition":	null,
-	"value":   		null
 	}
 }
