@@ -353,9 +353,11 @@ class pre_con:
         
         
         valves = new_state['valves']
-        self.valve(position=valves)
+        if valves != None:
+            self.valve(position=valves)
         pump = new_state['pump']
-        self.pump(pump)
+        if pump != None:
+            self.pump(pump)
         sample = new_state['sample']
         backflush = new_state['backflush']
         if sample != None:

@@ -98,7 +98,7 @@
 	"message":		null
 	},
   "sample run":{
-	"valves": 		null,
+	"valves": 		[1,0,1,1,0,0],
 	"h2o":    		null,
 	"ads":    		null,
 	"sample":		null,
