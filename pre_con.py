@@ -3,6 +3,7 @@ import json
 import time
 import sys 
 import os
+from datetime import datetime
 import RPi.GPIO as GPIO
 from src.thermal_controller.omega_tc import CNi
 from src.uPy import uPy
@@ -235,13 +236,15 @@ class pre_con:
                 string += f"Valve {str(n)}: {position[i]} \n"
             string += f"H2O Trap Temperature = {str(state['h2o'])}\n"
             string += f"ADS Trap Temperature = {str(state['ads'])}\n"
+            string += f"Sample flowrate = {str(state['sample'])}\n"
+            string += f"Backflush flowrate = {str(state['backflush'])}\n"
             string += f"Pump is {position[state['pump']]}\n"
             if state['condition'] == None:
                 string += f"This state has no check following completion."
             else:
                 string += f"With an advancement condition of '{state['condition']}' "
                 string += f"set to {state['value']}."
-            print(string)
+            print(f'{string}\n')
             return
 
         ##### Checks if the function was called for information #####
@@ -436,13 +439,6 @@ class pre_con:
         return
 
     def run_sa(self, stream=None, sample=None):
-#         if sample != None:
-#             sa_name = 'sampling ' + sample
-#             self.state(sa_name, check=True)
-#             print('This feature has not been implemented.')
-#             return
-
-        ########## Standby ##########
         print('Beginning micro-trap sampling sequence.')
         self.state('standby')
         print('System being evacuated.')
@@ -513,6 +509,10 @@ class pre_con:
         for state_name, state  in sequence.items():
             state['name'] = state_name
             self.state(state, check=check)
+            
+        with open('src/Sample Sequencing/log.csv', 'a') as file:
+            now = datetime.now().strftime('%Y/%m/%d - %H:%M:%S')
+            file.write(f'\n{now}, {name}')
 
     def run_loop(self, stream=None, flow=25, delay=5):
         ##### Flush #####

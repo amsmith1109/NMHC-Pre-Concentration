@@ -6,9 +6,7 @@
 	"backflush":	0,
 	"pump":			1,
 	"condition":	null,
-	"value":   		null,
-	"id":			0,
-	"message":		"System being evacuated."
+	"value":   		null
 	},
   "cool down":{
 	"valves": 		[0,0,0,0,0,0],
@@ -18,9 +16,7 @@
 	"backflush":	null,
 	"pump":			1,
 	"condition":	"temp",
-	"value":   		"<",
-	"id":			1,
-	"message":		""
+	"value":   		"<"
 	},
   "flush":{
 	"valves": 		[0,0,0,0,0,0],
@@ -30,9 +26,7 @@
 	"backflush":	null,
 	"pump":			1,
 	"condition":	"time",
-	"value":   		0.25,
-	"id":			2,
-	"message":		""
+	"value":   		0.25
 	},
   "sampling":{
 	"valves": 		[0,1,0,0,0,0],
@@ -42,46 +36,38 @@
 	"backflush":	null,
 	"pump":			1,
 	"condition":	"pulse",
-	"value":   		6,
-	"id":		3,
-	"message":		""
+	"value":   		6
 	},
   "pre-backflush":{
-	"valves": 		[1,0,0,1,0,0],
+	"valves": 		[0,0,0,1,0,0],
 	"h2o":    		null,
 	"ads":    		null,
 	"sample":		0,
-	"backflush":	25,	
+	"backflush":	50,	
 	"pump":			1,
 	"condition":	"time",
-	"value":   		0.25,
-	"id":			4,
-	"message":		""
+	"value":   		0.25
 	},
   "backflush":{
-	"valves": 		[1,1,0,1,0,0],
+	"valves": 		[0,1,0,1,0,0],
 	"h2o":    		null,
 	"ads":    		null,
 	"sample":		null,
 	"backflush":	null,	
 	"pump":			1,
 	"condition":	"time",
-	"value":   		1.5,
-	"id":			5,
-	"message":		""
+	"value":   		1
 	},
   "reverse backflush":{
-	"valves": 		[1,1,1,1,0,0],
+	"valves": 		[0,1,1,1,0,0],
 	"h2o":    		null,
 	"ads":    		null,
 	"sample":		null,
 	"backflush":	null,	
 	"pump":			1,
 	"condition":	"time",
-	"value":   		0.1,
-	"id":			6,
-	"message":		""
-	},
+	"value":   		1
+	},	
   "pre-heat":{
 	"valves": 		[0,0,1,1,0,0],
 	"h2o":    		null,
@@ -90,9 +76,7 @@
 	"backflush":	null,	
 	"pump":			1,
 	"condition":	"gc",
-	"value":   		null,
-	"id":			7,
-	"message":		""
+	"value":   		null
 	},
   "flash heat":{
 	"valves": 		[1,0,1,1,0,0],
@@ -102,33 +86,27 @@
 	"backflush":	null,
 	"pump":			1,
 	"condition":	"time",
-	"value":   		0.1,
-	"id":			8,
-	"message":		""
+	"value":   		0.1
 	},
   "inject":{
-	"valves": 		[1,1,1,1,0,0],
+	"valves": 		[0,1,0,0,0,0],
+	"h2o":    		null,
+	"ads":    		null,
+	"sample":		null,
+	"backflush":	null,
+	"pump":			1,
+	"condition":	"gc",
+	"value":   		0.5
+	},
+  "pre-bake":{
+	"valves": 		[0,0,1,1,0,0],
 	"h2o":    		null,
 	"ads":    		null,
 	"sample":		null,
 	"backflush":	null,
 	"pump":			1,
 	"condition":	"time",
-	"value":   		0.5,
-	"id":			9,
-	"message":		""
-	},
-  "end-inject":{
-	"valves": 		[0,1,1,1,0,0],
-	"h2o":    		null,
-	"ads":    		null,
-	"sample":		null,
-	"backflush":	null,
-	"pump":			1,
-	"condition":	null,
-	"value":   		null,
-	"id":			10,
-	"message":		""
+	"value":   		0.1
 	},
   "bake out":{
 	"valves": 		[0,1,1,1,1,0],
@@ -138,9 +116,7 @@
 	"backflush":	50,
 	"pump":			1,
 	"condition":	"time",
-	"value":   		0.75,
-	"id":			11,
-	"message":		""
+	"value":   		0.75
 	},
   "post bake":{
 	"valves": 		[0,1,0,1,0,0],
@@ -150,8 +126,6 @@
 	"backflush":	0,
 	"pump":			1,
 	"condition":	"time",
-	"value":   		1,
-	"id":			12,
-	"message":		""
+	"value":   		1
 	}
 }

@@ -5,8 +5,9 @@
 	"sample":		0,
 	"backflush":	0,
 	"pump":			1,
-	"condition":	null,
-	"value":   		null
+	"condition":	time,
+	"value":   		0.5,
+	"message":		"System being evacuated."
 	},
   "cool down":{
 	"valves": 		[0,0,0,0,0,0],
@@ -16,7 +17,8 @@
 	"backflush":	null,
 	"pump":			1,
 	"condition":	"temp",
-	"value":   		"<"
+	"value":   		"<",
+	"message":		"Waiting for adsorbent trap to reach -30°C."
 	},
   "flush":{
 	"valves": 		[0,0,0,0,0,0],
@@ -26,7 +28,8 @@
 	"backflush":	null,
 	"pump":			1,
 	"condition":	"time",
-	"value":   		0.25
+	"value":   		0.25,
+	"message":		"Traps are ready! Flushing system with sample."
 	},
   "sampling":{
 	"valves": 		[0,1,0,0,0,0],
@@ -36,48 +39,43 @@
 	"backflush":	null,
 	"pump":			1,
 	"condition":	"pulse",
-	"value":   		6
+	"value":   		6,
+	"id":		3,
+	"message":		null
 	},
   "pre-backflush":{
-	"valves": 		[0,0,0,1,0,0],
+	"valves": 		[1,0,0,1,0,0],
 	"h2o":    		null,
 	"ads":    		null,
 	"sample":		0,
-	"backflush":	50,	
+	"backflush":	25,	
 	"pump":			1,
 	"condition":	"time",
-	"value":   		0.25
+	"value":   		0.25,
+	"message":		null
 	},
   "backflush":{
-	"valves": 		[0,1,0,1,0,0],
+	"valves": 		[1,1,0,1,0,0],
 	"h2o":    		null,
 	"ads":    		null,
 	"sample":		null,
 	"backflush":	null,	
 	"pump":			1,
 	"condition":	"time",
-	"value":   		1
-	},
-  "blank flush":{
-	"valves": 		[0,1,0,1,0,0],
-	"h2o":    		null,
-	"ads":    		null,
-	"sample":		null,
-	"backflush":	null,	
-	"pump":			1,
-	"condition":	"time",
-	"value":   		6
+	"value":   		1.5,
+	"message":		null
 	},
   "reverse backflush":{
-	"valves": 		[0,1,1,1,0,0],
+	"valves": 		[1,1,1,1,0,0],
 	"h2o":    		null,
 	"ads":    		null,
 	"sample":		null,
 	"backflush":	null,	
 	"pump":			1,
 	"condition":	"time",
-	"value":   		1
-	},	
+	"value":   		0.1,
+	"message":		null
+	},
   "pre-heat":{
 	"valves": 		[0,0,1,1,0,0],
 	"h2o":    		null,
@@ -86,7 +84,9 @@
 	"backflush":	null,	
 	"pump":			1,
 	"condition":	"gc",
-	"value":   		null
+	"value":   		null,
+	"id":			7,
+	"message":		"Checking that the GC is ready for a sample prior to heating."
 	},
   "flash heat":{
 	"valves": 		[1,0,1,1,0,0],
@@ -96,27 +96,30 @@
 	"backflush":	null,
 	"pump":			1,
 	"condition":	"time",
-	"value":   		0.1
+	"value":   		0.1,
+	"message":		null
 	},
-  "inject":{
-	"valves": 		[0,1,0,0,0,0],
-	"h2o":    		null,
-	"ads":    		null,
-	"sample":		null,
-	"backflush":	null,
-	"pump":			1,
-	"condition":	"gc",
-	"value":   		0.5
-	},
-  "pre-bake":{
-	"valves": 		[0,0,1,1,0,0],
+  "injection":{
+	"valves": 		[1,1,1,1,0,0],
 	"h2o":    		null,
 	"ads":    		null,
 	"sample":		null,
 	"backflush":	null,
 	"pump":			1,
 	"condition":	"time",
-	"value":   		0.1
+	"value":   		0.5,
+	"message":		null
+	},
+  "end of inject injection":{
+	"valves": 		[0,1,1,1,0,0],
+	"h2o":    		null,
+	"ads":    		null,
+	"sample":		null,
+	"backflush":	null,
+	"pump":			1,
+	"condition":	null,
+	"value":   		null,
+	"message":		null
 	},
   "bake out":{
 	"valves": 		[0,1,1,1,1,0],
@@ -126,7 +129,8 @@
 	"backflush":	50,
 	"pump":			1,
 	"condition":	"time",
-	"value":   		0.75
+	"value":   		0.75,
+	"message":		null
 	},
   "post bake":{
 	"valves": 		[0,1,0,1,0,0],
@@ -136,6 +140,7 @@
 	"backflush":	0,
 	"pump":			1,
 	"condition":	"time",
-	"value":   		1
+	"value":   		1,
+	"message":		null
 	}
 }
