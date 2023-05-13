@@ -5,7 +5,7 @@
 	"sample":		0,
 	"backflush":	0,
 	"pump":			1,
-	"condition":	time,
+	"condition":	"time",
 	"value":   		0.5,
 	"message":		"System being evacuated."
 	},
@@ -40,7 +40,6 @@
 	"pump":			1,
 	"condition":	"pulse",
 	"value":   		6,
-	"id":		3,
 	"message":		null
 	},
   "pre-backflush":{
@@ -70,7 +69,7 @@
 	"h2o":    		null,
 	"ads":    		null,
 	"sample":		null,
-	"backflush":	null,	
+	"backflush":	null,
 	"pump":			1,
 	"condition":	"time",
 	"value":   		0.1,
@@ -85,7 +84,6 @@
 	"pump":			1,
 	"condition":	"gc",
 	"value":   		null,
-	"id":			7,
 	"message":		"Checking that the GC is ready for a sample prior to heating."
 	},
   "flash heat":{
@@ -97,6 +95,17 @@
 	"pump":			1,
 	"condition":	"time",
 	"value":   		0.1,
+	"message":		null
+	},
+  "sample run":{
+	"valves": 		null,
+	"h2o":    		null,
+	"ads":    		null,
+	"sample":		null,
+	"backflush":	null,
+	"pump":			1,
+	"condition":	"time",
+	"value":   		0,
 	"message":		null
 	},
   "injection":{

@@ -6,7 +6,8 @@
 	"backflush":	0,
 	"pump":			1,
 	"condition":	null,
-	"value":   		null
+	"value":   		null,
+	"message":		null
 	},
   "cool down":{
 	"valves": 		[0,0,0,0,0,0],
@@ -16,7 +17,8 @@
 	"backflush":	null,
 	"pump":			1,
 	"condition":	"temp",
-	"value":   		"<"
+	"value":   		"<",
+	"message":		null
 	},
   "flush":{
 	"valves": 		[0,0,0,0,0,0],
@@ -26,7 +28,8 @@
 	"backflush":	null,
 	"pump":			1,
 	"condition":	"time",
-	"value":   		0.25
+	"value":   		0.25,
+	"message":		null
 	},
   "sampling":{
 	"valves": 		[0,1,0,0,0,0],
@@ -36,7 +39,8 @@
 	"backflush":	null,
 	"pump":			1,
 	"condition":	"pulse",
-	"value":   		6
+	"value":   		6,
+	"message":		null
 	},
   "pre-backflush":{
 	"valves": 		[0,0,0,1,0,0],
@@ -46,7 +50,8 @@
 	"backflush":	50,	
 	"pump":			1,
 	"condition":	"time",
-	"value":   		0.25
+	"value":   		0.25,
+	"message":		null
 	},
   "backflush":{
 	"valves": 		[0,1,0,1,0,0],
@@ -56,7 +61,8 @@
 	"backflush":	null,	
 	"pump":			1,
 	"condition":	"time",
-	"value":   		1
+	"value":   		1,
+	"message":		null
 	},
   "reverse backflush":{
 	"valves": 		[0,1,1,1,0,0],
@@ -66,7 +72,8 @@
 	"backflush":	null,	
 	"pump":			1,
 	"condition":	"time",
-	"value":   		1
+	"value":   		1,
+	"message":		null
 	},	
   "pre-heat":{
 	"valves": 		[0,0,1,1,0,0],
@@ -76,7 +83,8 @@
 	"backflush":	null,	
 	"pump":			1,
 	"condition":	"gc",
-	"value":   		null
+	"value":   		null,
+	"message":		null
 	},
   "flash heat":{
 	"valves": 		[1,0,1,1,0,0],
@@ -86,7 +94,8 @@
 	"backflush":	null,
 	"pump":			1,
 	"condition":	"time",
-	"value":   		0.1
+	"value":   		0.1,
+	"message":		null
 	},
   "inject":{
 	"valves": 		[0,1,0,0,0,0],
@@ -96,7 +105,8 @@
 	"backflush":	null,
 	"pump":			1,
 	"condition":	"gc",
-	"value":   		0.5
+	"value":   		0.5,
+	"message":		null
 	},
   "pre-bake":{
 	"valves": 		[0,0,1,1,0,0],
@@ -106,7 +116,8 @@
 	"backflush":	null,
 	"pump":			1,
 	"condition":	"time",
-	"value":   		0.1
+	"value":   		0.1,
+	"message":		null
 	},
   "bake out":{
 	"valves": 		[0,1,1,1,1,0],
@@ -116,7 +127,8 @@
 	"backflush":	50,
 	"pump":			1,
 	"condition":	"time",
-	"value":   		0.75
+	"value":   		0.75,
+	"message":		null
 	},
   "post bake":{
 	"valves": 		[0,1,0,1,0,0],
@@ -126,6 +138,7 @@
 	"backflush":	0,
 	"pump":			1,
 	"condition":	"time",
-	"value":   		1
+	"value":   		1,
+	"message":		null
 	}
 }

@@ -17,7 +17,6 @@ def enable_print():
     sys.stdout = sys.__stdout__
 
 
-
 class pre_con:
     def __init__(self,
                  vc_port = '/dev/ttyACM0',
@@ -261,7 +260,12 @@ class pre_con:
         else:
             if isinstance(name, dict):
                 new_state = name.copy()
-                name = new_state['name']
+                try:
+                    name = new_state['name']
+                except KeyError:
+                    for name, values in new_state.items():
+                        new_state = values.copy()
+                        new_state['name'] = name
             else:
                 new_state = self.states[name].copy()
             if check:
@@ -275,7 +279,10 @@ class pre_con:
             condition = condition.lower()
         valid_conditions = [None, 'gc', 'pulse', 'time', 'temp']
         valid_conditions.index(condition) # Causes an error if an invalid condition is called.
-
+        if new_state['message'] != None:
+            print(f"{new_state['message']}\n")
+        else:
+            print(f"Beginning {name}.\n")
 
         ########## GC Ready Condition ##########
         if condition=='gc':
@@ -306,6 +313,8 @@ class pre_con:
             if condition == 'gc':
                 print('Injecting sample.')
                 self.remote.start()
+                if dt == 0:
+                    return
             t0 = time.time()
             flow_check = []
             t = []
@@ -493,7 +502,7 @@ class pre_con:
         print('Returning to standby.')
         self.state('standby')
 
-    def run_sequence(self, name='standard', stream=None, check=False):
+    def run_sequence(self, name='standard.txt', stream=None, check=False):
         """
         """
         with open(f'src/Sample Sequencing/{name}') as file:
