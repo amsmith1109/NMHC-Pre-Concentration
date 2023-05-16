@@ -8,45 +8,60 @@ def signal_handler(sig, frame):
     sys.exit(0)
 
 class remote():
-    ##### Detection Events #####
+    """
+    remote is the object definition for the GPIO pins on the raspberry pi
+    that connect to an HP5890 GC remote port. Each pin has a binary function 
+    for simple communication between the GC and pre-concentration system:
+    
+    config - The pre-con tells the GC it is attached and to not accept
+             manual triggers from the front panel.
+    ready_in - GC indicates if it is ready to begin a run
+    start_out - pre-concentration system tells the GC to begin a run
+    start_in - the GC indicates that a run has started (usually not needed)
+    ready - pre-con tells the GC it is ready (usually not needed)
+    
+    The GC output helps isolate itself from external electronics by using
+    relay connections for its outputs. The "set" pins that are used
+    are attached to one end of the corresponding relay on the GC, and the 
+    input pins are attached to the other end of the relay.
+    
+    All connections use low-triggering
+    """
+    ############################################# 
+    # Detection Events
+    #############################################
     def ready_detected(self, pin):
         self.gc_ready = self.check_ready()
-#         if self.ready:
-#             print('GC ready.')
 
     def start_detected(self, pin):
         print('GC Run Started.')
 
     # Declared pin = RPi GPIO, Pin comments are "RPi Pin #, HP5890 Pin #"
     def __init__(self,
-                 ready_in=27,      # Pin , 9
-                 start_in=24,     # Pin , 8
+                 ready_in=27,   # Pin , 9
+                 start_in=24,   # Pin , 8
                  set_ready=23,  # Pin , 5
                  set_start=25,  # Pin , 7
                  start=17,      # Pin , 1
                  ready=18,      # Pin , 12
-                 config=22,    # Pin , 3
+                 config=22,     # Pin , 3
                  connected_obj=None):
 
         inPins = {'ready':ready_in, 'start': start_in}
         outPins = {'set ready': set_ready, 'set start': set_start,
                    'start': start, 'ready': ready, 'config': config}
         self.stime = time.time()
-        ##### Store pin names & locations #####      
+        ##### Store pin names & locations #####
         self.inPins = inPins
         self.outPins = outPins
-        
+
         ##### Setup GPIO Input/Outputs #####
         GPIO.setmode(GPIO.BCM)
         for i in inPins.values():
             GPIO.setup(i, GPIO.IN)
         for i in outPins.values():
             GPIO.setup(i, GPIO.OUT, initial=1)
-        """
-        The "set" pins are attached to a relay on the GC.
-        The two input pins will detect a normal high, so the set
-        pins are set to ground to signal when a contact closue occurs.
-        """
+
         GPIO.output(outPins['set start'], 0)
         GPIO.output(outPins['set ready'], 0)
 
@@ -81,4 +96,3 @@ class remote():
 
 if __name__ == '__main__':
     rm = remote()
-        
