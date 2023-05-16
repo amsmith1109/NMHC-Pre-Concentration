@@ -303,11 +303,11 @@ class pre_con:
         if condition == 'pulse' or condition == 'gc':
             dt = new_state['value']
             v = new_state['valves']
-            if sum(v) > 1:
-                raise ValueError('More than 1 valve specified.')
-            else:
-                v = v.index(1)
-            self.pulse(valve=v, sleep=dt)
+            if condition == 'pulse' or dt != 0:
+                if sum(v) > 1:
+                    raise ValueError('More than 1 valve specified.')
+                else:
+                    v = v.index(1)
             if condition == 'pulse':
                 print(f'Precision timed pulse on valve {v}.')
             if condition == 'gc':
@@ -315,6 +315,7 @@ class pre_con:
                 self.remote.start()
                 if dt == 0:
                     return
+            self.pulse(valve=v, sleep=dt)
             t0 = time.time()
             flow_check = []
             t = []
@@ -422,9 +423,8 @@ class pre_con:
                 sys.stdout.flush()
                 time.sleep(1)
                 if time.time() > t0 + 15*60:
-                    print('System failed to reach temperature in time.')
                     self.state('off')
-                    raise SystemError('System was shut down.')
+                    raise SystemError('System failed to reach temperature in time.')
             print('')
             print(f"Temperature threshold reached! Currently measuring {check()[1]}")
 
@@ -449,64 +449,23 @@ class pre_con:
         print('')
         return
 
-    def run_sa(self, stream=None, sample=None):
-        print('Beginning micro-trap sampling sequence.')
-        self.state('standby')
-        print('System being evacuated.')
-        if stream != None:
-            print(f'Selecting sample #{stream}.')
-            self.stream(stream)
-        else:
-            stream = self.stream()
-        print('Waiting for traps to reach trapping temperature.')
-        self.state('cool down')
-
-        if sample is None:
-            print('Traps are ready! Flushing system with sample.')
-            while pc.stream() != stream:
-                time.sleep(.1)
-            self.state('flush')
-
-            print('Beginning sampling')
-            self.state('sampling')
-
-        print('Preparing to backflush.')
-        self.state('pre-backflush')
+    def check_sequence(self, name='standard.txt'):
+        with open(f'src/Sample Sequencing/{name}') as file:
+            data = file.read()
+        sequence = json.loads(data)
+        try:
+            for state_name, state  in sequence.items():
+                state['name'] = state_name
+                self.state(state, check=True)
+        except Exception as x:
+            print(f'Sequence fails on state:{state}: {x}.')
         
-        if sample == 'blank':
-            print('Running blank.')
-            self.state('blank flush')
-        else:
-            print('Beginning backflush')
-            self.state('backflush')
-
-        print('Reversing backflush')
-        self.state('reverse backflush')
-
-        print('Check GC status prior to heating.')
-        self.state('pre-heat')
-
-        print('Flash heating trap.')
-        self.state('flash heat')
-
-        print('Injecting Sample')
-        self.state('inject')
-
-        print('Configuring valves for bakeout.')
-        self.state('pre-bake')
-
-        print('Beginning bakeout')
-        self.state('bake out')
         
-        print('Beginning post-bake evacuation.')
-        self.state('post bake')
-        
-        print('Returning to standby.')
-        self.state('standby')
-
-    def run_sequence(self, name='standard.txt', stream=None, check=False):
+    def run_sequence(self, name='standard.txt', stream=None):
         """
         """
+        notes = ''
+        start_time = datetime.now().strftime('%Y, %m, %d, %H:%M:%S')
         with open(f'src/Sample Sequencing/{name}') as file:
             data = file.read()
         sequence = json.loads(data)
@@ -517,57 +476,21 @@ class pre_con:
         else:
             stream = self.stream()
             
-        for state_name, state  in sequence.items():
-            state['name'] = state_name
-            self.state(state, check=check)
-            
+        try:
+            for state_name, state  in sequence.items():
+                state['name'] = state_name
+                self.state(state)
+        except Exception as x:
+            notes = f'Failed on {state["name"]}: {x}'
+            print(notes)
+
         with open('src/Sample Sequencing/log.csv', 'a') as file:
-            now = datetime.now().strftime('%Y/%m/%d - %H:%M:%S')
-            file.write(f'\n{now}, {name}')
+            end_time = datetime.now().strftime('%H:%M:%S')
+            file.write(f'\n{start_time}, {end_time}, {name}, {str(stream)}, {notes}')
 
-    def run_loop(self, stream=None, flow=25, delay=5):
-        ##### Flush #####
-        print('Beginning loop sample injection sequence.')
-        self.state('standby')
-        print('System being evacuated.')
-        if stream != None:
-            self.stream(stream)
-        time.sleep(5)
+        if notes != '':
+            raise Exception(notes)
 
-        ##### Load #####
-        print('Initializing sample flow.')
-        self.sampleFlow(flow)
-        self.state('loop sample')
-        if self.sampleFlow(flow):
-            print('Sample flushing the system.')
-        else:
-            print('MFC failed to regulate sample. Aborting run.')
-            self.sampleFlow(0)
-            self.state('off')
-            return
-
-        ##### Flush loop #####
-        start = time.time()
-        while not self.remote.gc_ready or (start + delay > time.time()):
-            if time.time() > start + 360:
-                print('GC not ready. Aborting run.')
-                self.sampleFlow(0)
-                self.state('off')
-                print('System turned off.')
-                return
-
-        ##### Inject #####
-        print('Injecting sample')
-        self.pulse(valve=0, sleep=20)
-        self.remote.start()
-        print('Sample injected. MFC disabled.')
-        self.sampleFlow(0)
-
-        ##### Shut off #####
-        time.sleep(20)
-        print('Disabling pre-concentration system.')
-        self.state('off')
-        
 
 def progressbar(i,
                 total,

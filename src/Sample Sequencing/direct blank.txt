@@ -1,0 +1,89 @@
+{"Initiate direct inject":{
+	"valves": 		[0,0,0,0,0,0],
+	"h2o":    		-99,
+	"ads":    		-99,
+	"sample":		0,
+	"backflush":	0,
+	"pump":			1,
+	"condition":	"time",
+	"value":   		0.25,
+	"message":		"Pumping down the system now."
+	},
+  "cool down":{
+	"valves": 		[1,0,1,0,0,0],
+	"h2o":    		-40,
+	"ads":    		-30,
+	"sample":		null,
+	"backflush":	null,
+	"pump":			1,
+	"condition":	"temp",
+	"value":   		"<",
+	"message":		null
+	},
+  "flush":{
+	"valves": 		[1,0,1,0,0,0],
+	"h2o":    		null,
+	"ads":    		null,
+	"sample":		null,
+	"backflush":	null,
+	"pump":			1,
+	"condition":	"time",
+	"value":   		1,
+	"message":		null
+	},
+  "check GC":{
+	"valves": 		[1,1,1,0,0,0],
+	"h2o":    		null,
+	"ads":    		null,
+	"sample":		null,
+	"backflush":	null,	
+	"pump":			1,
+	"condition":	"gc",
+	"value":   		null,
+	"message":		null
+	},
+  "GC":{
+	"valves": 		[1,1,1,0,0,0],
+	"h2o":    		null,
+	"ads":    		null,
+	"sample":		null,
+	"backflush":	null,
+	"pump":			1,
+	"condition":	"gc",
+	"value":   		0,
+	"message":		null
+	},
+  "flash heat":{
+	"valves": 		[1,1,1,0,0,0],
+	"h2o":    		null,
+	"ads":    		390,
+	"sample":		null,
+	"backflush":	null,
+	"pump":			1,
+	"condition":	"time",
+	"value":   		0.2,
+	"message":		null
+	},
+  "disable heat":{
+	"valves": 		[1,1,1,0,0,0],
+	"h2o":    		-99,
+	"ads":    		-99,
+	"sample":		null,
+	"backflush":	null,
+	"pump":			1,
+	"condition":	"time",
+	"value":   		4.8,
+	"message":		null
+	},
+  "system standby":{
+	"valves": 		[0,0,0,0,0,0],
+	"h2o":    		null,
+	"ads":    		null,
+	"sample":		null,
+	"backflush":	null,
+	"pump":			0,
+	"condition":	null,
+	"value":   		null,
+	"message":		"Run complete."
+	}
+}
