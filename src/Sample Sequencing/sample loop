@@ -1,0 +1,55 @@
+{"standby":{
+	"valves": 		[0,0,0,0,0,0],
+	"h2o":    		-99,
+	"ads":    		-99,
+	"sample":		0,
+	"backflush":	0,
+	"pump":			1,
+	"condition":	null,
+	"value":   		null,
+	"message":		null
+	},
+  "check GC":{
+	"valves": 		[0,0,0,0,0,0],
+	"h2o":    		null,
+	"ads":    		null,
+	"sample":		null,
+	"backflush":	null,
+	"pump":			1,
+	"condition":	"gc",
+	"value":   		null,
+	"message":		null
+	},
+  "loop sample":{
+	"valves": 		[0,0,0,0,0,0],
+	"h2o":    		null,
+	"ads":    		null,
+	"sample":		50,
+	"backflush":	null,
+	"pump":			0,
+	"condition":	"time",
+	"value":   		0.375,
+	"message":		"Loading sample onto the sample loop."
+	},
+  "loop inject":{
+	"valves": 		[1,0,0,0,0,0],
+	"h2o":    		null,
+	"ads":    		null,
+	"sample":		0,
+	"backflush":	null,
+	"pump":			0,
+	"condition":	"gc",
+	"value":   		0.25,
+	"message":		null
+	},
+  "off":{
+	"valves": 		[0,0,0,0,0,0],
+	"h2o":    		-99,
+	"ads":    		-99,
+	"sample":		0,
+	"backflush":	0,
+	"pump":			0,
+	"condition":	null,
+	"value":   		null,
+	"message":		null
+}

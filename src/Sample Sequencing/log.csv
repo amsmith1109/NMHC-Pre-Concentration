@@ -11,3 +11,6 @@ year, month, day, start time, end time, sequence, sample port, failure notes
 2023, 05, 15, 16:51:39, 16:58:03, direct blank.txt, 2, 
 2023, 05, 15, 17:02:29, 17:11:27, direct blank.txt, 2, 
 2023, 05, 15, 17:12:20, 17:25:26, direct blank.txt, 2, 
+2023, 05, 15, 17:28:16, 17:39:26, direct blank.txt, 2, 
+2023, 05, 16, 11:18:07, 11:24:43, blank, 2, 
+2023, 05, 16, 11:42:34, 11:45:00, blank, 2, Failed on blank flush: signal_handler() takes 2 positional arguments but 3 were given

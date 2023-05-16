@@ -311,7 +311,6 @@ class pre_con:
             if condition == 'pulse':
                 print(f'Precision timed pulse on valve {v}.')
             if condition == 'gc':
-                print('Injecting sample.')
                 self.remote.start()
                 if dt == 0:
                     return
@@ -466,9 +465,13 @@ class pre_con:
         """
         notes = ''
         start_time = datetime.now().strftime('%Y, %m, %d, %H:%M:%S')
-        with open(f'src/Sample Sequencing/{name}') as file:
-            data = file.read()
-        sequence = json.loads(data)
+        try:
+            sequence = read_state_file(f'src/Sample Sequencing/{name}')
+        except FileNotFoundError as error_message:
+            if name[-4:] != '.txt':
+                sequence = read_state_file(f'src/Sample Sequencing/{name}.txt')
+            else:
+                raise FileNotFoundError(error_message)
         
         if stream != None:
             print(f'Selecting sample #{stream}.')
@@ -492,6 +495,12 @@ class pre_con:
             raise Exception(notes)
 
 
+def read_state_file(name):
+    with open(name) as file:
+            data = file.read()
+    return json.loads(data) 
+
+
 def progressbar(i,
                 total,
                 remaining,
@@ -499,12 +508,9 @@ def progressbar(i,
                 interval='minutes',
                 size = 20):
     sys.stdout.write('\r')
-    sys.stdout.write("[%-20s] %s %s [%s %s remaining]" %
+    sys.stdout.write("[%-20s] %s %s [%s %s remaining]     " %
                      ('='*int(i/total*size),
-                      f'{i:.2f}',
-                      units,
-                      f'{remaining:.2f}',
-                      interval))
+                      f'{i:.2f}', units, f'{remaining:.2f}', interval))
     sys.stdout.flush()
 
 if __name__ == '__main__':
