@@ -104,7 +104,9 @@ class pre_con:
             self.current_state['pump'] = pos[-1]
 
 
-############### Code for Mass Flow controller ###############
+###########################################################################
+# Code for Mass Flow Controller
+###########################################################################
     def flowrate(self, position = None, flowrate = None):
         if position == None:
             position = range(self.mfc.ports)
@@ -122,28 +124,29 @@ class pre_con:
     def backflush(self, flowrate=None):
         return self.flowrate(position=1, flowrate=flowrate)[0]
 
-############### Code for valve controller ###############
-    def valve(self, V=None, position=None):
-        if isinstance(V, int):
-            check = self.vc.write(f'v[{V}]({position})')
-            if V < 6:
-                self.current_state['valves'][V] = position
+###########################################################################
+# Code for valve controller
+###########################################################################
+    def valve(self, valve=None, position=None):
+        if isinstance(valve, int):
+            check = self.vc.write(f'v[{valve}]({position})')
+            if valve < 6:
+                self.current_state['valves'][valve] = position
             return check
-        if isinstance(V, (list, range)):
+        if isinstance(valve, (list, range)):
             check = []
-            for n, i in enumerate(V):
+            for n, i in enumerate(valve):
                 if isinstance(position, int):
                     check.append(self.vc.write(f'v[{i}]({position})'))
                 else:
                     check.append(self.vc.write(f'v[{i}]({position[n]})'))
             return check
         if V == None:
-            if isinstance(position,list):
+            if isinstance(position, list):
                 check = []
                 for i in range(6):
                     check.append(self.vc.write(f'v[{i}]({position[i]})'))
             return check
-
 
     def pulse(self, valve, sleep):
         if not isinstance(valve, int):
@@ -154,10 +157,8 @@ class pre_con:
             raise ValueError('Sleep time must be a number.')
         return self.vc.write(f'pulse(v[{valve}],sleep={sleep*60})')
 
-
     def home_valves(self):
         self.valve(range(0,8),0)
-
 
     def stream(self, position=None):
         if position==None:
@@ -174,10 +175,8 @@ class pre_con:
         else:
             raise(ValueError)
 
-
     def step(self):
         self.vc.write(f'm.step()\r')
-
 
     def pump(self, command = None):
         if command == None:
@@ -194,7 +193,6 @@ class pre_con:
                 self.current_state['pump'] = 'on'
             else:
                 print('Failed to turn on pump.')
-
         else:
             print('Invalid input, must be 0 or 1, or "off or "on". Use no input to return the current pump state.')
 
