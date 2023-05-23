@@ -76,7 +76,7 @@
 	"message":		null
 	},
   "pre-heat":{
-	"valves": 		[0,0,0,1,0,0],
+	"valves": 		[0,0,1,1,0,0],
 	"h2o":    		null,
 	"ads":    		null,
 	"sample":		0,
@@ -87,7 +87,7 @@
 	"message":		null
 	},
   "flash heat":{
-	"valves": 		[1,0,0,1,0,0],
+	"valves": 		[1,0,1,1,0,0],
 	"h2o":    		null,
 	"ads":    		390,
 	"sample":		0,
@@ -98,7 +98,7 @@
 	"message":		null
 	},
   "start GC":{
-	"valves": 		[1,0,0,1,0,0],
+	"valves": 		[1,0,1,1,0,0],
 	"h2o":    		null,
 	"ads":    		null,
 	"sample":		null,
@@ -109,7 +109,7 @@
 	"message":		null
 	},
   "inject":{
-	"valves": 		[1,1,0,1,0,0],
+	"valves": 		[1,1,1,1,0,0],
 	"h2o":    		null,
 	"ads":    		null,
 	"sample":		null,

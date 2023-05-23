@@ -1,0 +1,67 @@
+{"standby":{
+	"valves": 		[0,0,0,0,0,1],
+	"h2o":    		-99,
+	"ads":    		-99,
+	"sample":		0,
+	"backflush":	0,
+	"pump":			0,
+	"condition":	null,
+	"value":   		null,
+	"message":		null
+	},
+  "check GC":{
+	"valves": 		[0,0,0,0,0,1],
+	"h2o":    		null,
+	"ads":    		null,
+	"sample":		null,
+	"backflush":	null,
+	"pump":			0,
+	"condition":	"gc",
+	"value":   		null,
+	"message":		null
+	},
+  "flush loop":{
+	"valves": 		[0,0,0,0,0,1],
+	"h2o":    		null,
+	"ads":    		null,
+	"sample":		50,
+	"backflush":	null,
+	"pump":			0,
+	"condition":	"time",
+	"value":   		1,
+	"message":		null
+	},
+  "depressurize loop":{
+	"valves": 		[0,0,0,0,0,1],
+	"h2o":    		null,
+	"ads":    		null,
+	"sample":		0,
+	"backflush":	null,
+	"pump":			0,
+	"condition":	"time",
+	"value":   		0.5,
+	"message":		null
+	},
+  "inject":{
+	"valves": 		[1,0,0,0,0,0],
+	"h2o":    		null,
+	"ads":    		null,
+	"sample":		0,
+	"backflush":	null,
+	"pump":			0,
+	"condition":	"gc",
+	"value":   		0.5,
+	"message":		null
+	},
+  "off":{
+	"valves": 		[0,0,0,0,0,0],
+	"h2o":    		-99,
+	"ads":    		-99,
+	"sample":		0,
+	"backflush":	0,
+	"pump":			0,
+	"condition":	null,
+	"value":   		null,
+	"message":		null
+	}
+}

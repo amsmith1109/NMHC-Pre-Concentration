@@ -30,3 +30,30 @@ year, month, day, start time, end time, sequence, sample port, failure notes
 2023, 05, 22, 16:17:12, 16:22:56, sample loop, 2, , 2023-05-22, 16:09:22
 2023, 05, 22, 16:44:43, 16:50:14, sample loop, 2, Failed on off: device reports readiness to read but returned no data (device disconnected or multiple access on port?), 2023-05-22, 16:09:22
 2023, 05, 22, 17:10:02, 17:21:44, standard.txt, 4, , 2023-05-22, 17:09:42
+2023, 05, 22, 17:28:57, 17:35:47, blank.txt, 4, , 2023-05-16, 11:45:22
+2023, 05, 22, 17:54:21, 17:59:53, sample loop, 2, , 2023-05-22, 16:09:22
+2023, 05, 22, 18:00:18, 18:05:51, sample loop, 2, , 2023-05-22, 16:09:22
+2023, 05, 22, 18:07:23, 18:12:53, sample loop, 2, , 2023-05-22, 16:09:22
+2023, 05, 22, 18:13:15, 18:18:51, sample loop, 2, , 2023-05-22, 16:09:22
+2023, 05, 22, 18:20:16, 18:32:01, standard.txt, 4, , 2023-05-22, 18:20:05
+2023, 05, 22, 18:41:15, 18:46:36, burn out.txt, 4, , 2023-05-22, 18:39:26
+2023, 05, 22, 18:46:44, 18:52:20, burn out.txt, 4, , 2023-05-22, 18:39:26
+2023, 05, 23, 12:11:53, 12:17:14, burn out.txt, 5, , 2023-05-22, 18:39:26
+2023, 05, 23, 12:17:35, 12:22:56, burn out.txt, 5, , 2023-05-22, 18:39:26
+2023, 05, 23, 12:53:46, 12:55:09, Direct Inject Experiment.txt, 2, Failed on inject: More than 1 valve specified., 2023-05-23, 12:53:11
+2023, 05, 23, 12:56:17, 12:58:12, Direct Inject Experiment.txt, 2, , 2023-05-23, 12:56:10
+2023, 05, 23, 13:03:34, 13:06:21, Direct Inject Experiment.txt, 2, , 2023-05-23, 12:58:36
+2023, 05, 23, 13:17:44, 13:24:10, Direct Inject Experiment.txt, 4, , 2023-05-23, 13:15:28
+2023, 05, 23, 13:35:18, 13:37:01, Direct Inject Experiment.txt, 4, Failed on depressurize loop: signal_handler() takes 2 positional arguments but 3 were given, 2023-05-23, 13:35:14
+2023, 05, 23, 13:37:04, 13:39:23, Direct Inject Experiment.txt, 6, , 2023-05-23, 13:35:14
+2023, 05, 23, 13:52:16, 13:54:41, Direct Inject Experiment.txt, 2, , 2023-05-23, 13:35:14
+2023, 05, 23, 14:19:43, 14:22:40, purge transfer line loop inject.txt, 2, , 2023-05-23, 14:15:11
+2023, 05, 23, 14:27:58, 14:32:05, purge transfer line loop inject.txt, 2, , 2023-05-23, 14:24:06
+2023, 05, 23, 14:36:52, 14:40:53, purge transfer line loop inject.txt, 2, , 2023-05-23, 14:36:41
+2023, 05, 23, 15:05:58, 15:08:24, Direct Inject Experiment.txt, 2, , 2023-05-23, 13:35:14
+2023, 05, 23, 16:06:12, 16:06:21, blank, 2, Failed on Initiate blank: signal_handler() takes 2 positional arguments but 3 were given, 2023-05-16, 11:45:22
+2023, 05, 23, 16:06:42, 16:06:42, blank, 2, Failed on Initiate blank: device reports readiness to read but returned no data (device disconnected or multiple access on port?), 2023-05-16, 11:45:22
+2023, 05, 23, 16:07:40, 16:07:45, blank.txt, 2, Failed on Initiate blank: signal_handler() takes 2 positional arguments but 3 were given, 2023-05-16, 11:45:22
+2023, 05, 23, 16:08:12, 16:23:07, blank.txt, 2, , 2023-05-16, 11:45:22
+2023, 05, 23, 16:25:20, 16:30:40, burn out.txt, 2, , 2023-05-22, 18:39:26
+2023, 05, 23, 16:31:03, 16:36:38, burn out.txt, 2, , 2023-05-22, 18:39:26

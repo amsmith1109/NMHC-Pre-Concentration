@@ -453,7 +453,7 @@ class pre_con:
         contain all the necessary fields and doesn't have any typos.
         """
         fname = f'src/Sample Sequencing/{name}'
-        sequence, modified_date = read_state_file()
+        sequence, modified_date = read_state_file(fname)
         try:
             print(f'Checking sequence {name}, last modified: {modified_date}')
             for state_name, state in sequence.items():
@@ -473,7 +473,7 @@ class pre_con:
             sequence, modified_date = read_state_file(fname)
         except FileNotFoundError as error_message:
             if name[-4:] != '.txt':
-                sequence, modified_date = read_state_file(fname)
+                sequence, modified_date = read_state_file(f'{fname}.txt')
             else:
                 raise FileNotFoundError(error_message)
         
