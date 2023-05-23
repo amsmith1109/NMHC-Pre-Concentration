@@ -141,7 +141,7 @@ class pre_con:
                 else:
                     check.append(self.vc.write(f'v[{i}]({position[n]})'))
             return check
-        if V == None:
+        if valve == None:
             if isinstance(position, list):
                 check = []
                 for i in range(6):
@@ -447,11 +447,16 @@ class pre_con:
         return
 
     def check_sequence(self, name='standard.txt'):
-        with open(f'src/Sample Sequencing/{name}') as file:
-            data = file.read()
-        sequence = json.loads(data)
+        """
+        check_sequence prints each state in a sequence file. This
+        also provides a rudamentary check that the sequence file
+        contain all the necessary fields and doesn't have any typos.
+        """
+        fname = f'src/Sample Sequencing/{name}'
+        sequence, modified_date = read_state_file()
         try:
-            for state_name, state  in sequence.items():
+            print(f'Checking sequence {name}, last modified: {modified_date}')
+            for state_name, state in sequence.items():
                 state['name'] = state_name
                 self.state(state, check=True)
         except Exception as x:
@@ -464,10 +469,11 @@ class pre_con:
         notes = ''
         start_time = datetime.now().strftime('%Y, %m, %d, %H:%M:%S')
         try:
-            sequence = read_state_file(f'src/Sample Sequencing/{name}')
+            fname = f'src/Sample Sequencing/{name}'
+            sequence, modified_date = read_state_file(fname)
         except FileNotFoundError as error_message:
             if name[-4:] != '.txt':
-                sequence = read_state_file(f'src/Sample Sequencing/{name}.txt')
+                sequence, modified_date = read_state_file(fname)
             else:
                 raise FileNotFoundError(error_message)
         
@@ -484,19 +490,24 @@ class pre_con:
         except Exception as x:
             notes = f'Failed on {state["name"]}: {x}'
             print(notes)
-
+        
+        end_time = datetime.now().strftime('%H:%M:%S')
+        log_entry = f'\n{start_time}, {end_time}, {name}'
+        log_entry += f', {str(stream)}, {notes}, {modified_date}'
         with open('src/Sample Sequencing/log.csv', 'a') as file:
-            end_time = datetime.now().strftime('%H:%M:%S')
-            file.write(f'\n{start_time}, {end_time}, {name}, {str(stream)}, {notes}')
+            file.write(log_entry)
 
         if notes != '':
+            self.state('off')
             raise Exception(notes)
 
 
 def read_state_file(name):
     with open(name) as file:
             data = file.read()
-    return json.loads(data) 
+    mod_time = os.path.getmtime(name)
+    mod_date = datetime.fromtimestamp(mod_time).strftime('%Y-%m-%d, %H:%M:%S')
+    return json.loads(data), mod_date
 
 
 def progressbar(i,

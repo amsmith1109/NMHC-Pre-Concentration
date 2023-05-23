@@ -104,7 +104,7 @@
 	"sample":		null,
 	"backflush":	null,
 	"pump":			1,
-	"condition":	"time",
+	"condition":	"gc",
 	"value":   		0,
 	"message":		null
 	},

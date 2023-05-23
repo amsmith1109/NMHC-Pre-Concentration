@@ -14,3 +14,19 @@ year, month, day, start time, end time, sequence, sample port, failure notes
 2023, 05, 15, 17:28:16, 17:39:26, direct blank.txt, 2, 
 2023, 05, 16, 11:18:07, 11:24:43, blank, 2, 
 2023, 05, 16, 11:42:34, 11:45:00, blank, 2, Failed on blank flush: signal_handler() takes 2 positional arguments but 3 were given
+2023, 05, 16, 11:45:27, 11:52:04, blank, 2, 
+2023, 05, 16, 16:09:03, 16:17:53, blank, 2, 
+2023, 05, 16, 17:13:04, 17:36:45, Alternate 600 mL, 2, Failed on sample run: division by zero
+2023, 05, 16, 18:48:38, 18:55:11, blank, 2, 
+2023, 05, 17, 14:19:08, 14:31:08, blank, 2, 
+2023, 05, 17, 14:40:21, 14:47:05, blank, 2, 
+2023, 05, 17, 15:21:43, 15:34:14, standard.txt, 4, , 2023-05-17, 15:21:36
+2023, 05, 17, 16:02:15, 16:14:10, standard.txt, 4, , 2023-05-17, 16:02:11
+2023, 05, 17, 16:26:39, 16:28:26, sample loop, 4, , 2023-05-17, 16:26:35
+2023, 05, 17, 16:32:32, 16:37:56, sample loop, 4, , 2023-05-17, 16:32:27
+2023, 05, 17, 16:46:09, 16:51:28, sample loop, 2, , 2023-05-17, 16:38:33
+2023, 05, 22, 15:57:39, 16:03:13, sample loop, 2, , 2023-05-17, 16:38:33
+2023, 05, 22, 16:09:28, 16:15:06, sample loop, 2, , 2023-05-22, 16:09:22
+2023, 05, 22, 16:17:12, 16:22:56, sample loop, 2, , 2023-05-22, 16:09:22
+2023, 05, 22, 16:44:43, 16:50:14, sample loop, 2, Failed on off: device reports readiness to read but returned no data (device disconnected or multiple access on port?), 2023-05-22, 16:09:22
+2023, 05, 22, 17:10:02, 17:21:44, standard.txt, 4, , 2023-05-22, 17:09:42
