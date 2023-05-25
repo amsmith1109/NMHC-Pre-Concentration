@@ -5,7 +5,6 @@ year, month, day, start time, end time, sequence, sample port, failure notes
 2023, 05, 15, 15:31:54, 15:38:18, direct blank.txt, 2, 
 2023, 05, 15, 15:39:18, 15:50:32, direct blank.txt, 2, 
 2023, 05, 15, 15:51:50, 16:04:37, direct blank.txt, 2, 
-
 2023, 05, 15, 16:04:43, 16:21:25, direct blank.txt, 2, 
 2023, 05, 15, 16:28:02, 16:43:23, direct blank.txt, 2, Failed on cool down: System was shut down.
 2023, 05, 15, 16:51:39, 16:58:03, direct blank.txt, 2, 
@@ -57,3 +56,6 @@ year, month, day, start time, end time, sequence, sample port, failure notes
 2023, 05, 23, 16:08:12, 16:23:07, blank.txt, 2, , 2023-05-16, 11:45:22
 2023, 05, 23, 16:25:20, 16:30:40, burn out.txt, 2, , 2023-05-22, 18:39:26
 2023, 05, 23, 16:31:03, 16:36:38, burn out.txt, 2, , 2023-05-22, 18:39:26
+2023, 05, 25, 13:35:45, 13:42:41, Direct Inject Experiment.txt, 2, Failed on move sample to trap: signal_handler() takes 2 positional arguments but 3 were given, 2023-05-25, 13:25:27
+2023, 05, 25, 13:43:02, 13:48:23, burn out.txt, 2, , 2023-05-22, 18:39:26
+2023, 05, 25, 13:50:50, 13:56:10, burn out.txt, 2, , 2023-05-22, 18:39:26
