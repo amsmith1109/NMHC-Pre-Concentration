@@ -348,8 +348,7 @@ class pre_con:
                 return t, flow_check
             else:
                 return True
-        
-        
+
         valves = new_state['valves']
         if valves != None:
             self.valve(position=valves)
@@ -383,18 +382,7 @@ class pre_con:
         ########## Temperature Condition ##########
         if condition == 'temp':
             logic = new_state['value']
-            def test(a, b):
-                if logic == '<':
-                    return a < b
-                elif logic == '>':
-                    return a > b
-                elif logic == '==':
-                    return a == b
-                elif logic == '>=':
-                    return a >= b
-                elif logic == '<=':
-                    return a <= b
-
+            test = get_test(new_state['value'])
             if ads != None and h2o != None:
                 print('Checking both ads and h2o trap temperatures.')
                 def check():
@@ -454,14 +442,73 @@ class pre_con:
         """
         fname = f'src/Sample Sequencing/{name}'
         sequence, modified_date = read_state_file(fname)
-        try:
-            print(f'Checking sequence {name}, last modified: {modified_date}')
-            for state_name, state in sequence.items():
+        notes = f'Checking sequence {name}'
+        notes += f'last modified: {modified_date}\n'
+        notes += f'{name} has {len(sequence)} states.\n'
+        notes += '\nList of states:\n'
+        
+        states = []
+        name_warnings = '\n'
+        for state_name in sequence:
+            if state_name in states:
+                name_warnings += f'Warnings: {state_name} is repeated.\n'
+            states.append(state_name)
+            notes += f'{state_name}\n'
+        notes += name_warnings
+        start_notes = notes
+        run_time = 0
+        gc_flag = True
+        
+        for state_name, state in sequence.items():
+            try:
+                block_print()
                 state['name'] = state_name
                 self.state(state, check=True)
-        except Exception as x:
-            print(f'Sequence fails on state:{state}: {x}.')
-        
+                enable_print()
+                condition = state['condition']
+                value = state['value']
+
+                if condition == 'temp':
+                    get_test(state['value'])
+                elif condition == 'pulse':
+                    if sum(state['valves']) > 1:
+                        notes += f'Error: {state_name} has more than 1 valve specified.\n'
+                    if not isinstance(value, (int, float)):
+                        notes += f'Error: {state_name} value is not numerical.\n'
+                    if value < 0:
+                        notes += f'Error: {state_name} value is negative.\n'
+                    run_time += value
+                elif condition == 'time':
+                    if not isinstance(value, (int, float)):
+                        notes += f'Error: {state_name} value is not numerical.\n'
+                    if value < 0:
+                        notes += f'Warning: {state_name} value is negative.\n'
+                    run_time += value
+                elif condition == 'gc':
+                    if value != None:
+                        if not isinstance(value, (int, float)):
+                            notes += f'Error: {state_name} value is not numerical.\n'
+                        else:
+                            if value < 0:
+                                notes += f'Error: {state_name} value is negative.\n'
+                            else:
+                                run_time += value
+                                gc_flag = False
+                elif condition == None:
+                    if value != None:
+                        notes += f'Warning: {state_name} condition is None, but a value is given.\n'
+                else:
+                    notes += f'Error: {state_name} - {condition} is not a valid condition.\n'
+            except Exception as x:
+                notes += f'Error: Sequence fails on {state_name}: {x}.\n'
+                enable_print()
+        if gc_flag:
+            notes += 'Warning: this sequences does not trigger the GC.'
+            
+        if notes == start_notes:
+            notes += '\nNo errors or warnings were detected.\n'
+        notes += f'Run time is a minimum of {round(run_time,2)} minutes.'
+        print(notes)
         
     def run_sequence(self, name='standard.txt', stream=None):
         """
@@ -500,6 +547,20 @@ class pre_con:
         if notes != '':
             self.state('off')
             raise Exception(notes)
+
+def get_test(logic):
+    if logic == '<':
+        return lambda a,b: a < b
+    elif logic == '>':
+        return lambda a,b: a > b
+    elif logic == '==' or logic == '=':
+        return lambda a,b: a == b
+    elif logic == '>=' or logic == '=>':
+        return lambda a,b: a >= b
+    elif logic == '<=' or logic == '=<':
+        return lambda a,b: a <= b
+    else:
+        raise ValueError('Unrecognized logic operator.')
 
 
 def read_state_file(name):

@@ -59,3 +59,24 @@ year, month, day, start time, end time, sequence, sample port, failure notes
 2023, 05, 25, 13:35:45, 13:42:41, Direct Inject Experiment.txt, 2, Failed on move sample to trap: signal_handler() takes 2 positional arguments but 3 were given, 2023-05-25, 13:25:27
 2023, 05, 25, 13:43:02, 13:48:23, burn out.txt, 2, , 2023-05-22, 18:39:26
 2023, 05, 25, 13:50:50, 13:56:10, burn out.txt, 2, , 2023-05-22, 18:39:26
+
+2023, 05, 25, 13:56:16, 14:12:23, blank.txt, 2, , 2023-05-16, 11:45:22
+2023, 05, 25, 14:21:23, 14:28:06, blank.txt, 2, , 2023-05-16, 11:45:22
+2023, 05, 25, 14:33:47, 14:33:49, Direct Inject Experiment.txt, 2, Failed on check temperature: 'bool' object is not callable, 2023-05-25, 14:33:43
+2023, 05, 25, 14:34:42, 14:44:18, Direct Inject Experiment.txt, 2, , 2023-05-25, 14:34:34
+2023, 05, 25, 14:49:20, 15:00:08, Direct Inject Experiment.txt, 2, , 2023-05-25, 14:34:34
+2023, 05, 25, 15:08:00, 15:14:44, blank.txt, 2, , 2023-05-16, 11:45:22
+2023, 05, 25, 16:29:34, 16:29:44, Direct Inject Experiment.txt, 2, Failed on check GC: signal_handler() takes 2 positional arguments but 3 were given, 2023-05-25, 16:27:36
+2023, 05, 25, 16:30:46, 16:38:02, Direct Inject Experiment.txt, 2, Failed on flush with sample: signal_handler() takes 2 positional arguments but 3 were given, 2023-05-25, 16:30:30
+2023, 05, 25, 17:11:42, 17:23:53, Direct Inject Experiment.txt, 2, , 2023-05-25, 17:11:28
+2023, 05, 25, 17:53:08, 18:08:19, Direct Inject Experiment.txt, 2, , 2023-05-25, 17:53:02
+2023, 05, 25, 18:58:04, 19:12:15, Direct Inject Experiment.txt, 2, , 2023-05-25, 18:57:42
+2023, 05, 27, 14:13:33, 14:18:54, burn out.txt, 2, , 2023-05-22, 18:39:26
+2023, 05, 27, 14:21:52, 14:29:15, burn out.txt, 2, , 2023-05-22, 18:39:26
+2023, 05, 27, 14:29:58, 14:35:19, burn out.txt, 2, , 2023-05-22, 18:39:26
+2023, 05, 27, 15:12:12, 15:33:15, burn out cycling.txt, 2, , 2023-05-27, 15:11:29
+2023, 05, 27, 15:41:43, 16:02:46, burn out cycling.txt, 2, , 2023-05-27, 15:11:29
+2023, 05, 27, 16:30:40, 16:51:43, burn out cycling.txt, 2, , 2023-05-27, 16:30:16
+2023, 05, 27, 16:54:27, 17:00:17, fake out.txt, 2, , 2023-05-27, 16:54:10
+2023, 05, 27, 17:09:55, 17:26:06, cold valve switching.txt, 2, , 2023-05-27, 17:09:31
+2023, 05, 28, 11:09:34, 11:25:44, cold valve switching.txt, 3, , 2023-05-27, 17:09:31
