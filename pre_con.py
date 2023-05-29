@@ -443,26 +443,26 @@ class pre_con:
         fname = f'src/Sample Sequencing/{name}'
         sequence, modified_date = read_state_file(fname)
         notes = f'Checking sequence {name}'
-        notes += f'last modified: {modified_date}\n'
-        notes += f'{name} has {len(sequence)} states.\n'
+        notes += f', last modified: {modified_date}\n'
         notes += '\nList of states:\n'
-        
-        states = []
-        name_warnings = '\n'
-        for state_name in sequence:
-            if state_name in states:
-                name_warnings += f'Warnings: {state_name} is repeated.\n'
-            states.append(state_name)
-            notes += f'{state_name}\n'
-        notes += name_warnings
+
+        state_names = []
+        name_warnings = ''
+        for state in sequence:
+            next_name = state['name']
+            notes += f'{next_name}\n'
+            if next_name in state_names:
+                name_warnings += f'Warnings: {next_name} is repeated.\n'
+            state_names.append(next_name)
+        notes += '\n'
         start_notes = notes
+        notes += name_warnings
         run_time = 0
         gc_flag = True
-        
-        for state_name, state in sequence.items():
+
+        for state in sequence:
             try:
                 block_print()
-                state['name'] = state_name
                 self.state(state, check=True)
                 enable_print()
                 condition = state['condition']
@@ -507,7 +507,8 @@ class pre_con:
             
         if notes == start_notes:
             notes += '\nNo errors or warnings were detected.\n'
-        notes += f'Run time is a minimum of {round(run_time,2)} minutes.'
+        notes += f'Run time is a minimum of {round(run_time,2)} minutes.\n'
+        notes += f'{name} has {len(sequence)} states.\n'
         print(notes)
         
     def run_sequence(self, name='standard.txt', stream=None):
@@ -515,24 +516,17 @@ class pre_con:
         """
         notes = ''
         start_time = datetime.now().strftime('%Y, %m, %d, %H:%M:%S')
-        try:
-            fname = f'src/Sample Sequencing/{name}'
-            sequence, modified_date = read_state_file(fname)
-        except FileNotFoundError as error_message:
-            if name[-4:] != '.txt':
-                sequence, modified_date = read_state_file(f'{fname}.txt')
-            else:
-                raise FileNotFoundError(error_message)
+        fname = f'src/Sample Sequencing/{name}'
+        sequence, modified_date = read_state_file(fname)
         
         if stream != None:
             print(f'Selecting sample #{stream}.')
             self.stream(stream)
         else:
             stream = self.stream()
-            
+
         try:
-            for state_name, state  in sequence.items():
-                state['name'] = state_name
+            for state in sequence:
                 self.state(state)
         except Exception as x:
             notes = f'Failed on {state["name"]}: {x}'
@@ -564,8 +558,13 @@ def get_test(logic):
 
 
 def read_state_file(name):
-    with open(name) as file:
-            data = file.read()
+    try:
+        with open(name) as file:
+                data = file.read()
+    except FileNotFoundError:
+        name = f'{name}.txt'
+        with open(name) as file:
+                data = file.read()
     mod_time = os.path.getmtime(name)
     mod_date = datetime.fromtimestamp(mod_time).strftime('%Y-%m-%d, %H:%M:%S')
     return json.loads(data), mod_date
