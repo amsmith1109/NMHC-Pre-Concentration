@@ -288,10 +288,7 @@ class pre_con:
             print('Waiting for GC to be ready.')
             while not self.remote.gc_ready:
                 if time.time() > start + 60:
-                    print('GC not ready in time. Aborting run.')
-                    self.state('off')
-                    print('System turned off.')
-                    return False
+                    raise RuntimeError('GC not ready in time. Aborting run.')
             print('GC ready.')
             dt = new_state['value']
             if new_state['value'] == None:
@@ -472,35 +469,35 @@ class pre_con:
                     get_test(state['value'])
                 elif condition == 'pulse':
                     if sum(state['valves']) > 1:
-                        notes += f'Error: {state_name} has more than 1 valve specified.\n'
+                        notes += f"Error: {state['name']} has more than 1 valve specified.\n"
                     if not isinstance(value, (int, float)):
-                        notes += f'Error: {state_name} value is not numerical.\n'
+                        notes += f"Error: {state['name']} value is not numerical.\n"
                     if value < 0:
-                        notes += f'Error: {state_name} value is negative.\n'
+                        notes += f"Error: {state['name']} value is negative.\n"
                     run_time += value
                 elif condition == 'time':
                     if not isinstance(value, (int, float)):
-                        notes += f'Error: {state_name} value is not numerical.\n'
+                        notes += f"Error: {state['name']} value is not numerical.\n"
                     if value < 0:
-                        notes += f'Warning: {state_name} value is negative.\n'
+                        notes += f"Warning: {state['name']} value is negative.\n"
                     run_time += value
                 elif condition == 'gc':
                     if value != None:
                         if not isinstance(value, (int, float)):
-                            notes += f'Error: {state_name} value is not numerical.\n'
+                            notes += f"Error: {state['name']} value is not numerical.\n"
                         else:
                             if value < 0:
-                                notes += f'Error: {state_name} value is negative.\n'
+                                notes += f"Error: {state['name']} value is negative.\n"
                             else:
                                 run_time += value
                                 gc_flag = False
                 elif condition == None:
                     if value != None:
-                        notes += f'Warning: {state_name} condition is None, but a value is given.\n'
+                        notes += f"Warning: {state['name']} condition is None, but a value is given.\n"
                 else:
-                    notes += f'Error: {state_name} - {condition} is not a valid condition.\n'
+                    notes += f"Error: {state['name']} - {condition} is not a valid condition.\n"
             except Exception as x:
-                notes += f'Error: Sequence fails on {state_name}: {x}.\n'
+                notes += f"Error: Sequence fails on {state['name']}: {x}.\n"
                 enable_print()
         if gc_flag:
             notes += 'Warning: this sequences does not trigger the GC.'
