@@ -90,7 +90,7 @@
 {"name":		"flash heat",
 "valves": 		[1,0,1,1,0,0],
 "h2o":    		null,
-"ads":    		390,
+"ads":    		450,
 "sample":		0,
 "backflush":	null,
 "pump":			1,
