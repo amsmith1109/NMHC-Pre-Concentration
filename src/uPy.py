@@ -18,11 +18,13 @@ class uPy:
     def connect(self):
         if(self.serial.isOpen() == False):
             self.serial.open()
-        self.echo('\x02')
-        if not(self.reboot()):
-            print('Failed to connect to micropython device.')
-        else:
-            print(self.readline(timeout=2))
+        self.interrupt()
+        self.normal_mode()
+        msg = self.echo('dir()')
+#         if not(self.reboot()):
+#             print('Failed to connect to micropython device.')
+#         else:
+#             print(self.readline(timeout=2))
         
     def write(self, message):
         # convert input to byte string
@@ -95,7 +97,14 @@ class uPy:
                     break
             else:
                 if (time.time()) > (t + timeout):
+                    print('Device timed out.')
                     return False
+        error_check = [x for x in error_types if (x in msg)]
+        if len(error_check) > 0:
+            index = msg.find(error_check[0]) + len(error_check[0])
+            result = msg[index:]
+            result = result.strip('\r\n')
+            raise eval(error_check[0])(f'{result} (from uPy device)')
         result = result[1:]
         result = result.strip('\r\n')
         result = result.strip('>>> ')
@@ -106,14 +115,23 @@ class uPy:
         except:
             return result
             
+    def close(self):
+        self.write('\x01')
+        self.serial.close()
     
+    def normal_mode(self):
+        self.write('\x02')
+
+    def interrupt(self):
+        self.write('\x03')
+
     # Software reboot. Note that this only works IF the device is accepting
     # commands over serial.
     def reboot(self):
         self.read()
         self.write('\x04')
         t = time.time()
-        timeout = 2
+        timeout = 5
         while self.serial.in_waiting==0:
             if time.time() > t + timeout:
                 return False
@@ -128,19 +146,23 @@ class uPy:
             else:
                 if (time.time()) > (t + timeout):
                     return False
-        return True
-                
+        return True               
+
     def escape(self):
-        self.write('\x1b')
-        
-    def close(self):
-        self.write('\x01')
-        self.serial.close()
+        self.write('\x1b')    
     
     def signal_handler(sig, frame):
         self.close()
         sys.exit(0)
-        
+    
+error_types = ('TypeError', 'Syntax error', 'NameError', 'ValueError',
+               'AttributeError', 'IndexError', 'ZeroDivisionError',
+               'KeyError', 'RuntimeError', 'AssertionError', 'EOFError',
+               'IndentationError', 'MemoryError', 'SystemError', 'OSError',
+               'ArithmeticError', 'OverflowError', 'FloatingPointError',
+               'NotImplementedError', 'UnicodeDecodeError', 'ReferenceError',
+               'IOError')
+
 if __name__=='__main__':
     port = '/dev/ttyACM0'
     dev = uPy(port)

@@ -539,6 +539,26 @@ class pre_con:
             self.state('off')
             raise Exception(notes)
 
+    def standard_run(self, volume=600, temp=300, inject=30, stream=None):
+        ''' standard_run is a simple way to make small adjustments
+        to the "standard.txt" run without needing to create a new file.
+        This is to be used for repeated experiments that only need minor
+        modifications to the standard procedure.
+        '''
+        fname = f'src/Sample Sequencing/standard.txt'
+        def setpoint(temp):
+            '''ad hoc calibration for getting the correct set point
+            for the desired temperature input.
+            '''
+            return round(1.3814*temp - 20.07, 0)
+        sequence, modified_date = read_state_file(fname)
+        sequence[3]['value'] = volume/100 # volume/flowrate = time
+        sequence[8]['ads'] = setpoint(temp)
+        sequence[10]['value'] = inject/60
+        with open('src/Sample Sequencing/custom.txt', 'w') as file:
+            file.write(json.dumps(sequence))
+        self.run_sequence(name='custom.txt', stream=stream)
+
 def get_test(logic):
     if logic == '<':
         return lambda a,b: a < b
