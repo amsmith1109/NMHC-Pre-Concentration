@@ -559,6 +559,21 @@ class pre_con:
         with open('src/Sample Sequencing/custom.txt', 'w') as file:
             file.write(json.dumps(sequence))
         self.run_sequence(name='custom.txt', stream=stream)
+        
+    def evacuate(self, stream=None):
+        self.state('standby')
+        if stream != None:
+            if isinstance(stream, int):
+                stream = [stream]
+        else:
+            stream = [self.stream()]
+
+        for index in stream:
+            self.stream(index)
+            self.state('evacuate')
+            self.state('standby')
+
+        self.state('off')
 
 def get_test(logic):
     if logic == '<':
