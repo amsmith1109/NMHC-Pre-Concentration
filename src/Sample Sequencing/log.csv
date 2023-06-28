@@ -238,3 +238,15 @@ year, month, day, start time, end time, sequence, sample port, failure notes
 2023, 06, 26, 16:48:23, 17:00:04, custom.txt, 8, , 2023-06-26, 16:48:23
 2023, 06, 26, 17:07:09, 17:16:34, custom.txt, 8, , 2023-06-26, 17:07:09
 2023, 06, 26, 17:16:46, 17:42:49, custom.txt, 8, , 2023-06-26, 17:16:46
+2023, 06, 27, 11:46:28, 11:59:17, custom.txt, 8, flow=100 volume=600 temp=320 inject=20 blank=True, 2023-06-27, 11:46:28
+2023, 06, 27, 12:03:13, 12:17:02, custom.txt, 8, flow=100 volume=600 temp=320 inject=20 blank=True, 2023-06-27, 12:03:13
+2023, 06, 27, 12:17:02, 12:35:54, custom.txt, 8, flow=100 volume=600 temp=320 inject=20 blank=True, 2023-06-27, 12:17:02
+2023, 06, 27, 13:42:18, 13:55:01, custom.txt, 8, flow=100 volume=600 temp=320 inject=20 blank=True, 2023-06-27, 13:42:18
+2023, 06, 27, 14:28:42, 14:47:10, custom.txt, 8, flow=50 volume=600 temp=320 inject=20 blank=True, 2023-06-27, 14:28:42
+
+2023, 06, 27, 15:03:34, 15:34:10, custom.txt, 8, flow=25 volume=600 temp=320 inject=20 blank=True, 2023-06-27, 15:03:34
+2023, 06, 27, 15:42:54, 15:57:35, custom.txt, 8, flow=75 volume=600 temp=320 inject=20 blank=True, 2023-06-27, 15:42:54
+2023, 06, 27, 16:04:16, 16:37:25, custom.txt, 8, flow=25 volume=600 temp=320 inject=20 blank=False, 2023-06-27, 16:04:16
+2023, 06, 27, 16:37:25, 17:05:12, custom.txt, 8, flow=50 volume=600 temp=320 inject=20 blank=False, 2023-06-27, 16:37:25
+2023, 06, 27, 17:05:12, 17:29:03, custom.txt, 8, flow=75 volume=600 temp=320 inject=20 blank=False, 2023-06-27, 17:05:12
+2023, 06, 27, 17:29:03, 17:49:36, custom.txt, 8, flow=125 volume=600 temp=320 inject=20 blank=False, 2023-06-27, 17:29:03

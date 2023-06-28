@@ -508,14 +508,14 @@ class pre_con:
         notes += f'{name} has {len(sequence)} states.\n'
         print(notes)
         
-    def run_sequence(self, name='standard.txt', stream=None):
+    def run_sequence(self, name='standard.txt', stream=None, notes=''):
         """
         """
-        notes = ''
         start_time = datetime.now().strftime('%Y, %m, %d, %H:%M:%S')
         fname = f'src/Sample Sequencing/{name}'
         sequence, modified_date = read_state_file(fname)
-        
+        error_flag = False
+
         if stream != None:
             print(f'Selecting sample #{stream}.')
             self.stream(stream)
@@ -527,6 +527,7 @@ class pre_con:
                 self.state(state)
         except Exception as x:
             notes = f'Failed on {state["name"]}: {x}'
+            error_flag = True
             print(notes)
         
         end_time = datetime.now().strftime('%H:%M:%S')
@@ -535,11 +536,12 @@ class pre_con:
         with open('src/Sample Sequencing/log.csv', 'a') as file:
             file.write(log_entry)
 
-        if notes != '':
+        if error_flag:
             self.state('off')
             raise Exception(notes)
 
-    def standard_run(self, flow=100, volume=600, temp=300, inject=30, stream=None):
+    def standard_run(self, flow=100, volume=600, temp=300,
+                     inject=30, blank=False, stream=None):
         ''' standard_run is a simple way to make small adjustments
         to the "standard.txt" run without needing to create a new file.
         This is to be used for repeated experiments that only need minor
@@ -552,13 +554,20 @@ class pre_con:
             '''
             return round(1.3814*temp - 20.07, 0)
         sequence, modified_date = read_state_file(fname)
-        sequence[2]['sample'] = flow #sccm
         sequence[3]['value'] = volume/flow # volume/flowrate = time
         sequence[8]['ads'] = setpoint(temp)
         sequence[10]['value'] = inject/60
+        if blank:
+            sequence[2]['sample'] = None
+            sequence[2]['backflush'] = flow
+            sequence[2]['valves'] = [0,0,0,1,0,0]
+        else:
+            sequence[2]['sample'] = flow
         with open('src/Sample Sequencing/custom.txt', 'w') as file:
             file.write(json.dumps(sequence))
-        self.run_sequence(name='custom.txt', stream=stream)
+
+        notes = f'flow={flow} volume={volume} temp={temp} inject={inject} blank={blank}'
+        self.run_sequence(name='custom.txt', stream=stream, notes=notes)
         
     def evacuate(self, stream=None):
         self.state('standby')

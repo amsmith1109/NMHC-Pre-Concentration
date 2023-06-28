@@ -171,7 +171,7 @@
 	"backflush":	null,
 	"pump":			1,
 	"condition":	"time",
-	"value":   		1,
+	"value":   		0.5,
 	"message":		"Sample line is being evacuated. Make sure the attached can was not accidentally opened!"
 	},
   "off":{
