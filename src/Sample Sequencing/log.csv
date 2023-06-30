@@ -250,3 +250,12 @@ year, month, day, start time, end time, sequence, sample port, failure notes
 2023, 06, 27, 16:37:25, 17:05:12, custom.txt, 8, flow=50 volume=600 temp=320 inject=20 blank=False, 2023-06-27, 16:37:25
 2023, 06, 27, 17:05:12, 17:29:03, custom.txt, 8, flow=75 volume=600 temp=320 inject=20 blank=False, 2023-06-27, 17:05:12
 2023, 06, 27, 17:29:03, 17:49:36, custom.txt, 8, flow=125 volume=600 temp=320 inject=20 blank=False, 2023-06-27, 17:29:03
+2023, 06, 28, 09:06:36, 09:19:23, custom.txt, 8, flow=100 volume=600 temp=320 inject=20 blank=False, 2023-06-28, 09:06:36
+2023, 06, 28, 09:19:23, 09:35:46, custom.txt, 8, flow=150 volume=600 temp=320 inject=20 blank=False, 2023-06-28, 09:19:23
+2023, 06, 28, 09:35:46, 09:52:27, custom.txt, 8, flow=175 volume=600 temp=320 inject=20 blank=False, 2023-06-28, 09:35:46
+2023, 06, 28, 09:52:27, 10:09:04, custom.txt, 8, flow=200 volume=600 temp=320 inject=20 blank=False, 2023-06-28, 09:52:27
+2023, 06, 28, 11:01:31, 11:14:12, custom.txt, 8, flow=100 volume=600 temp=320 inject=20 blank=False, 2023-06-28, 11:01:31
+2023, 06, 28, 15:10:26, 15:11:21, custom.txt, 8, Failed on sampling: More than 1 valve specified., 2023-06-28, 15:10:26
+2023, 06, 28, 15:12:12, 15:30:37, custom.txt, 8, flow=50 volume=600 temp=320 inject=20 blank=True, 2023-06-28, 15:12:12
+2023, 06, 28, 15:30:37, 15:51:55, custom.txt, 8, flow=75 volume=600 temp=320 inject=20 blank=True, 2023-06-28, 15:30:37
+2023, 06, 28, 15:51:55, 16:11:22, custom.txt, 8, flow=100 volume=600 temp=320 inject=20 blank=True, 2023-06-28, 15:51:55
