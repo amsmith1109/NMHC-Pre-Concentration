@@ -3,8 +3,8 @@ import numpy as np
 import csv
 import matplotlib.pyplot as plt
 
-folder = 'C:/Users/Alex/Documents/GitHub/NMHC-Pre-Concentration/'
-fname = 'tempdata26.csv'
+folder = ''
+fname = 'tempdata19.csv'
 file = folder + fname
 data = []
 with open(file, 'r') as f:

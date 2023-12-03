@@ -1,115 +1,60 @@
 {"standby":{
-	"valves": 		[0,0,0,0,0,0],
+	"valves": 		[0,0,0,0],
 	"h2o":    		-99,
 	"ads":    		-99,
 	"sample":		0,
 	"backflush":	0,
-	"pump":			1,
-	"condition":	null,
-	"value":   		null,
-	"message":		null
+	"pump":			1
 	},
   "cool down":{
-	"valves": 		[0,0,0,0,0,0],
+	"valves": 		[0,0,0,0],
 	"h2o":    		-40,
 	"ads":    		-29,
-	"sample":		null,
-	"backflush":	null,
 	"pump":			1,
 	"condition":	"temp",
-	"value":   		"<",
-	"message":		null
+	"value":   		"<"
 	},
   "flush":{
-	"valves": 		[0,0,0,0,0,0],
-	"h2o":    		null,
-	"ads":    		null,
+	"valves": 		[0,0,0,0],
 	"sample":		100,
-	"backflush":	null,
 	"pump":			1,
 	"condition":	"time",
-	"value":   		0.25,
-	"message":		null
+	"value":   		0.25
 	},
   "sampling":{
-	"valves": 		[0,1,0,0,0,0],
-	"h2o":    		null,
-	"ads":    		null,
-	"sample":		null,
-	"backflush":	null,
+	"valves": 		[0,1,0,0],
 	"pump":			1,
 	"condition":	"pulse",
-	"value":   		5,
-	"message":		"Sampling 500 mL."
+	"value":   		5
 	},
   "pre-backflush":{
-	"valves": 		[0,0,0,1,0,0],
-	"h2o":    		null,
-	"ads":    		null,
+	"valves": 		[0,0,1,0],
 	"sample":		0,
 	"backflush":	50,	
 	"pump":			1,
 	"condition":	"time",
-	"value":   		0.25,
-	"message":		null
+	"value":   		0.25
 	},
   "backflush":{
-	"valves": 		[0,1,0,1,0,0],
-	"h2o":    		null,
-	"ads":    		null,
-	"sample":		null,
-	"backflush":	null,	
-	"pump":			1,
-	"condition":	null,
-	"value":   		null,
-	"message":		null
+	"valves": 		[0,1,1,0],
+	"pump":			1
 	},
-  "reverse backflush":{
-	"valves": 		[0,1,1,1,0,0],
-	"h2o":    		null,
-	"ads":    		null,
-	"sample":		null,
-	"backflush":	null,	
-	"pump":			1,
-	"condition":	null,
-	"value":   		null,
-	"message":		null
-	},	
   "check gc":{
-	"valves": 		null,
-	"h2o":    		null,
-	"ads":    		null,
-	"sample":		null,
-	"backflush":	null,	
-	"pump":			null,
-	"condition":	"gc",
-	"value":   		null,
-	"message":		null
+	"condition":	"gc"
 	},
   "start gc":{
-	"valves": 		null,
-	"h2o":    		null,
-	"ads":    		null,
-	"sample":		null,
-	"backflush":	null,	
-	"pump":			null,
 	"condition":	"gc",
-	"value":   		0,
-	"message":		null
+	"value":   		0
 	},
   "flash heat":{
-	"valves": 		[1,0,1,1,0,0],
-	"h2o":    		null,
+	"valves": 		[0,0,1,0],
 	"ads":    		390,
 	"sample":		0,
-	"backflush":	null,
 	"pump":			1,
-	"condition":	"time",
-	"value":   		null,
-	"message":		null
+	"condition":	"time"
 	},
   "inject":{
-	"valves": 		[0,1,0,0,0,0],
+	"valves": 		[1,0,0,0],
 	"h2o":    		null,
 	"ads":    		null,
 	"sample":		null,
@@ -120,7 +65,7 @@
 	"message":		null
 	},
   "bake out":{
-	"valves": 		[0,1,1,1,1,0],
+	"valves": 		[0,1,1,0],
 	"h2o":    		80,
 	"ads":    		405,
 	"sample":		null,
@@ -131,7 +76,7 @@
 	"message":		null
 	},
   "post bake":{
-	"valves": 		[0,1,0,1,0,0],
+	"valves": 		[0,1,1,0],
 	"h2o":    		-99,
 	"ads":    		-99,
 	"sample":		0,
@@ -141,30 +86,8 @@
 	"value":   		null,
 	"message":		null
 	},
-  "loop inject":{
-	"valves": 		[1,0,0,0,0,0],
-	"h2o":    		null,
-	"ads":    		null,
-	"sample":		0,
-	"backflush":	null,
-	"pump":			0,
-	"condition":	"gc",
-	"value":   		0.2,
-	"message":		null
-	},
-  "loop sample":{
-	"valves": 		[0,0,0,0,0,1],
-	"h2o":    		null,
-	"ads":    		null,
-	"sample":		50,
-	"backflush":	null,
-	"pump":			0,
-	"condition":	"time",
-	"value":   		0.25,
-	"message":		null
-	},
   "evacuate":{
-	"valves": 		[0,0,0,0,1,0],
+	"valves": 		[0,0,0,0],
 	"h2o":    		null,
 	"ads":    		null,
 	"sample":		1000,
@@ -175,7 +98,7 @@
 	"message":		"Sample line is being evacuated. Make sure the attached can was not accidentally opened!"
 	},
   "off":{
-	"valves": 		[0,0,0,0,0,0],
+	"valves": 		[0,0,0,0],
 	"h2o":    		-99,
 	"ads":    		-99,
 	"sample":		0,

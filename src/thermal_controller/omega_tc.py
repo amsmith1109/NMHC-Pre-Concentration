@@ -7,8 +7,7 @@ import src.thermal_controller.bit_converter as bc
 
 
 class CNi:
-    """
-    Initialize with factory default settings.
+    """ Initialize with factory default settings.
     
     From Communication Manual:
     To Enable the iSeries Protocol, set Modbus
@@ -45,7 +44,7 @@ class CNi:
                 if __name__ == '__main__':
                     print('Unable to connect with omega device.')
                 self.connected = False
-                return
+                raise SystemError('Unable to connect to Omega TC.')
 
         print('Connection to Omega TC successful!')
 
@@ -56,7 +55,7 @@ class CNi:
         self.recognition = recognition
         self.init_offset()
         self.port = com
-        self.probe_type = self.probe()
+        self.probe_type = self.input_type()
 
         reading_config = self.reading_configuration()
         self.decimal = reading_config['decimal']
@@ -64,8 +63,7 @@ class CNi:
         print('Omega controller is ready!')
 
     ########################################################################################
-    # PID Functions - See communication manual pg 14-15 for a
-    #     list of all commands.
+    # PID Functions - See communication manual pg 14-15 for a list of all commands.
     ########################################################################################
     # 0x01 & 0x02, called by position
     def set_point(self, temp=None, position=1, eeprom=False):
@@ -102,7 +100,8 @@ class CNi:
         msg = msg + temp_hex
         check = self.echo(msg)
         if check[0:3] == msg[0:3]:
-            return f'Set point successfully changed to: {str(temp)}.'
+            print(f'Set point changed to: {str(temp)}.')
+            return
         return check
     # 0x03 (not implemented)
     # 0x04 (not implemented)
@@ -116,8 +115,8 @@ class CNi:
             check = self.echo('R05')
             return check[3:-1]
 
-    # 0x07 (0x06 does not exist)
-    def probe(self,
+    # 0x07 (Note: 0x06 does not exist)
+    def input_type(self,
               probe_type=None,
               tc=None,
               rtd=None):
@@ -145,17 +144,17 @@ class CNi:
                               decimal=None,
                               units=None,
                               filter_constant=None):
-        _indices = [0, 3, 5, 7]
+        _indices = [0, 3, 5, 8]
         _addr = '08'
         _dict = {}
         _dict = {'decimal': decimal,
                  'units': units,
                  'filter_constant': filter_constant}
-        _valid = {'decimal': [0, 2],
-                  'units': [0, 2],
+        _valid = {'decimal': [0, 4],
+                  'units': [0, 1],
                   'filter_constant': [0, 2]}
-        _valid_names = {'decimal': [1, 2, 3, 4],
-                        'units': ['F', 'C'],
+        _valid_names = {'decimal': ['Not Allowed', 'FFFF', 'FFF.F', 'FF.FF', 'F.FFF'],
+                        'units': ['C', 'F'],
                         'filter_constant': [2**x for x in range(8)]}
 
         settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
@@ -166,64 +165,64 @@ class CNi:
                               retransmission=None,
                               alarm_type=None,
                               latch=None,
-                              normal=None,
+                              relay=None,
                               active=None,
                               loop=None,
                               power=None):
         _indices = [0, 1, 2, 3, 4, 6, 7, 8]
         _addr = '09'
         _dict = {'retransmission': retransmission,
-                 'alarm_type': alarm_type,
+                 'alarm type': alarm_type,
                  'latch': latch,
-                 'normal': normal,
+                 'relay': relay,
                  'active': active,
-                 'loop': loop,
-                 'power': power}
+                 'loop break time': loop,
+                 'alarm 1 at power on': power}
         _valid = {'retransmission': [0, 1],
-                  'alarm_type': [0, 1],
+                  'alarm type': [0, 1],
                   'latch': [0, 1],
-                  'normal': [0, 1],
+                  'relay': [0, 1],
                   'active': [0, 3],
-                  'loop': [0, 1],
-                  'power': [0, 1]}
-        _valid_names = {'retransmission': ['Enable', 'Disable'],
-                        'alarm_type': ['Absolute', 'Deviation'],
+                  'loop break time': [0, 1],
+                  'alarm 1 at power on': [0, 1]}
+        _valid_names = {'retransmission': ['Disable', 'Enable'],
+                        'alarm type': ['Absolute', 'Deviation'],
                         'latch': ['Unlatch', 'Latch'],
-                        'normal': ['Normally Open', 'Normally Closed'],
-                        'active': ['Above', 'Below', 'Hi/Lo', 'Active Band'],
-                        'loop': ['Disable', 'Enable'],
-                        'power': ['Disable at Power On', 'Enable at Power On']}
+                        'relay': ['Normally Open', 'Normally Closed'],
+                        'active': ['Above', 'Below', 'Hi/Lo', 'Band'],
+                        'loop break time': ['Disable', 'Enable'],
+                        'alarm 1 at power on': ['Disable', 'Enable']}
         settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
         return settings
 
     # 0x0A
     def alarm_2_configuration(self,
-                              enable=None,
+                              alarm=None,
                               alarm_type=None,
                               latch=None,
-                              normal=None,
+                              relay=None,
                               active=None,
                               retransmission=None):
         _indices = [0, 1, 2, 3, 4, 7, 8]
         _addr = '0A'
-        _dict = {'enable': enable,
-                 'alarm_type': alarm_type,
+        _dict = {'alarm 2': alarm,
+                 'alarm type': alarm_type,
                  'latch': latch,
-                 'normal': normal,
+                 'relay': relay,
                  'active': active,
                  'retransmission': retransmission}
-        _valid = {'enable': [0, 1],
-                  'alarm_type': [0, 1],
+        _valid = {'alarm 2': [0, 1],
+                  'alarm type': [0, 1],
                   'latch': [0, 1],
-                  'normal': [0, 1],
+                  'relay': [0, 1],
                   'active': [0, 3],
                   'retransmission': [0, 1]}
-        _valid_names = {'enable': ['Enable', 'Disable'],
-                        'alarm_type': ['Absolute', 'Deviation'],
+        _valid_names = {'alarm 2': ['Disable', 'Enable'],
+                        'alarm type': ['Absolute', 'Deviation'],
                         'latch': ['Unlatch', 'Latch'],
-                        'normal': ['Normally Open', 'Normally Closed'],
+                        'relay': ['Normally Open', 'Normally Closed'],
                         'active': ['Above', 'Below', 'Hi/Lo', 'Active Band'],
-                        'retransmission': ['Disable', 'Enable']}
+                        'retransmission': ['Voltage', 'Current']}
         settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
         return settings
 
@@ -269,7 +268,7 @@ class CNi:
                                ramp=None,
                                soak=None,
                                damping=None):
-        _indices = [0, 1, 2, 3, 4, 5, 7]
+        _indices = [0, 1, 2, 3, 4, 5, 8]
         _addr = '0D'
         _dict = {'pid': pid,
                  'direction': direction,
@@ -336,12 +335,12 @@ class CNi:
         settings = self.memory_process(_addr, _indices, _dict, _valid, _valid_names)
         return settings
 
-    # 0x18 - 0x1A
+    # 0x17 - 0x1A
 #     class pid(self):
 #         def get1(self): #reset = integral, rate = derivative, dead band = proportional?
-#             p = bc.msg2dec(obj.echo('R17'))
-#             i = bc.msg2dec(obj.echo('R18'))
-#             d = bc.msg2dec(obj.echo('R19'))
+#             p = bc.msg2dec(obj.echo('R17')) # dead band
+#             i = bc.msg2dec(obj.echo('R18')) # Reset
+#             d = bc.msg2dec(obj.echo('R19')) # Rate
 #             return p, i, d
 #         def get2(self):
 # 
@@ -407,20 +406,17 @@ class CNi:
         return self.echo('E02')
 
     def enable_standby(self):
-        """
-        enable standby
+        """ enable standby
         """
         return self.echo('E03')
 
     def enable_self(self):
-        """
-        enable self
+        """ enable self
         """
         return self.echo('E04')
 
     def measure(self):
-        """
-        Returns temperature measurement
+        """ Returns temperature measurement
         """
         temp = self.echo('X01')
         start = temp.rfind('X01') + 3
@@ -431,8 +427,7 @@ class CNi:
             return False
 
     def send_alarm_status(self):
-        """
-        send alarm status
+        """ send alarm status
         """
         return self.echo('U01')
 
@@ -541,8 +536,7 @@ class CNi:
 
         msg = bc.msg2dec(self.echo('R'+_addr))
 
-        """
-        Check for a request from the user to change parameters
+        """ Check for a request from the user to change parameters
         A flag is set as _dict may be changed depending on what is read
         from the controller.
         """
@@ -552,8 +546,7 @@ class CNi:
             flag = True
         mem = bc.extract(msg, _indices)
 
-        """
-        The next step compares the current values with any values requested.
+        """ The next step compares the current values with any values requested.
         If the user doesn't call to change a value, _dict is overwritten by
         what is stored on the controller.
         """
@@ -583,8 +576,7 @@ class CNi:
             return settings
 
     def write(self, message):
-        """
-        Performs a serial write on the RS232 line.
+        """ Performs a serial write on the RS232 line.
         Some functionality is added to mainstream sending messages.
         Strings are automatically converted to byte arrays.
         Recognition character and return lines are automatically added.
@@ -666,8 +658,7 @@ class CNi:
                offset=None,
                eeprom=False,
                target=None):
-        """
-        offset() is used for calibrating the reading on the PID. It will take either
+        """ offset() is used for calibrating the reading on the PID. It will take either
         a target, or an offset value.
 
         offset = a define offset that is added to the raw reading

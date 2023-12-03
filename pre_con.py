@@ -1,14 +1,17 @@
 from serial import Serial
+import argparse
 import json
 import time
 import sys 
 import os
 from datetime import datetime
 import RPi.GPIO as GPIO
+from numpy import trapz
 from src.thermal_controller.omega_tc import CNi
 from src.uPy import uPy
 from src.switch import switch
 from src.remote import remote
+from src.serial_port import serial_ports
 
 def block_print():
     sys.stdout = open(os.devnull, 'w')
@@ -18,70 +21,52 @@ def enable_print():
 
 
 class pre_con:
-    def __init__(self,
-                 vc_port = '/dev/ttyACM0',
-                 mfc_port = '/dev/ttyUSB0',
-                 ads_trap_port = '/dev/ttyUSB1',
-                 h2o_trap_port = '/dev/ttyUSB2',
-                 debug=False):
-
-        with open('src/precon_states') as file:
-            data = file.read()
-        self.states = json.loads(data)
+    def __init__(self, debug=False):
         self.switch = switch(connected_obj=self)
         self._switch_state = self.switch.state
         self.remote = remote()
         if not debug:
-            ##### Connect to Valve Controller #####
-            self.vc = uPy(vc_port)
-            block_print()
-            check_VC = self.vc.echo('dir()')
-            if not check_VC:
-                self.vc.close()
-                self.vc.connect()
-                self.vc.reboot()
-            enable_print()
-
-            ##### Connect to Mass Flow Controller #####
-            self.mfc = uPy(mfc_port)
-            check = self.mfc.echo('dir()')
-            if not check:
-                print('Failed to connect to Mass Flow Controllers. Try a hardware reset.')
-            self.mfc.sample = 0
-            self.mfc.backflush = 1
-            self.mfc.ports = self.mfc.echo('len(MFC)')
-            self.mfc.timeout = self.mfc.echo('timeout')
-
-            ##### Connect to ADS PID #####
-            block_print()
-            self.ads = CNi(ads_trap_port)
-            enable_print()
-            if self.ads.connected:
-                print('Successfully connected to adsorbent trap!')
-            else:
-                print('Failed to connect to adsorbent trap. :(')
-
-#             ##### Connect to H2O PID #####
-#             self.h2o = CNi(h2o_trap_port)
-#             if self.h2o.connected:
-#                 print('Successfully connected to water trap!')
-#             else:
-#                 print('Failed to connect to water trap. :(')
-
-        ##### Initial Machine States #####
+            for i in serial_ports():
+                try:
+                    device = uPy(i)
+                    txt = device.echo('name')
+                    if txt == 'Valve Controller':
+                        self.vc = device
+                        print('Successfully connected to Valve Controller!')
+                    elif txt == 'Mass Flow Controller':
+                        self.mfc = device
+                        self.mfc.sample = 0
+                        self.mfc.backflush = 1
+                        self.mfc.ports = self.mfc.echo('len(MFC)')
+                        self.mfc.timeout = self.mfc.echo('timeout') + 1
+                        print('Successfully connected to MFC Controller!')
+                except:
+                    # Will need to add ways to determine if ADS or H2O Trap later.
+                    try:
+                        block_print()
+                        self.ads = CNi(i)
+                        enable_print()
+                        print('Successfully connected to adsorbent trap!')
+                    except:
+                        print(f'Unknown device on port: {i}')
+                        
+            with open('src/thermal_controller/PID calibration.txt') as file:
+                data = file.read()
+            cal = json.loads(data)
+            self.ads.convert = lambda x: x*cal['ads'][0] + cal['ads'][1]
+            
             self.current_state = {}
+            self.current_state = {'name':      'off',
+                                  'valves':    [0,0,0,0],
+                                  "h2o":       None,
+                                  "ads":       None,
+                                  "sample":    None,
+                                  "backflush": None,
+                                  "pump":      1,
+                                  "condition": None,
+                                  "value":     None,
+                                  "message":   None}
             self.state('off')
-
-            if not check_VC:
-                self.vc = uPy(vc_port)
-                check_VC = self.vc.echo('dir()')
-                if not check_VC:
-                    print('Failed to connect to Valve controller on second attempt.')
-                    print('Check that both lights are lit on the board.')
-                    print('Perform a hardware reset as necessary.')
-                    txt = 'You will not need to restart the softare if you perform a'
-                    txt += ' hardware reset and the valve controller lights up.'
-                    print(txt)
 
     @property
     def switch_state(self):
@@ -98,16 +83,47 @@ class pre_con:
             pos = positions[1:-1]
             pos.append(0)
             pos.append(positions[-1])
-            self.valve(range(0,8), pos)
+            self.valve(range(0,5), pos)
             self.current_state['name'] = 'manual override'
-            self.current_state['valves'] = pos[1:7]
-            self.current_state['pump'] = pos[-1]
+            self.current_state['valves'] = pos[1:4]
+            self.current_state['pump'] = pos[5]
+
+###########################################################################
+# Code for PID Controllers
+###########################################################################
+    def ads_temp(self, temp=None):
+        if temp is None:
+            print(self.ads.set_point())
+        else:
+            if temp > 100:
+                temp = self.ads.convert(temp)
+            self.ads.set_point(round(temp,1))
+
+    def ads_calibrate(self, temp=None):
+        from src.thermal_controller import pid_tuning
+        new_cal = pid_tuning.calibrate(pre_con=self, temp=temp)
+        filename = 'src/thermal_controller/PID calibration.txt'
+        with open(filename) as file:
+                data = file.read()
+        cal = json.loads(data)
+        cal['ads'] = list(new_cal)
+        with open(filename, 'w') as file:
+            file.write(json.dumps(cal))
+        self.__init__(debug=True)
+
+    def h2o_temp(self, temp=None):
+        if temp is None:
+            print(self.h2o.set_point())
+        else:
+            if temp > 0:
+                temp = self.h2o.convert(temp)
+            self.ads.set_point(sp)
 
 
 ###########################################################################
 # Code for Mass Flow Controller
 ###########################################################################
-    def flowrate(self, position = None, flowrate = None):
+    def flowrate(self, position=None, flowrate=None):
         if position == None:
             position = range(self.mfc.ports)
         else:
@@ -118,35 +134,46 @@ class pre_con:
             val.append(self.mfc.echo(msg, timeout = self.mfc.timeout))
         return val
 
-    def sampleFlow(self, flowrate=None):
-        return self.flowrate(position=0, flowrate=flowrate)[0]
+    def sample(self, flowrate=None, display=True):
+        sample_flowrate = self.flowrate(position=0, flowrate=flowrate)[0]
+        self.current_state['sample'] = flowrate
+        if flowrate is None:
+            if display:
+                print(sample_flowrate)
+            else:
+                return(sample_flowrate)
 
-    def backflush(self, flowrate=None):
-        return self.flowrate(position=1, flowrate=flowrate)[0]
+    def backflush(self, flowrate=None, display=True):
+        backflush_flowrate = self.flowrate(position=1, flowrate=flowrate)[0]
+        self.current_state['backflush'] = flowrate
+        if flowrate is None:
+            if display:
+                print(backflush_flowrate)
+            else:
+                return(backflush_flowrate)
 
 ###########################################################################
 # Code for valve controller
 ###########################################################################
     def valve(self, valve=None, position=None):
         if isinstance(valve, int):
-            check = self.vc.write(f'v[{valve}]({position})')
-            if valve < 6:
+            self.vc.write(f'v[{valve}]({position})')
+            if valve < 4:
                 self.current_state['valves'][valve] = position
-            return check
         if isinstance(valve, (list, range)):
             check = []
             for n, i in enumerate(valve):
                 if isinstance(position, int):
-                    check.append(self.vc.write(f'v[{i}]({position})'))
+                    self.valve(i, position)
                 else:
-                    check.append(self.vc.write(f'v[{i}]({position[n]})'))
-            return check
+                    self.valve(i, position[n])
         if valve == None:
             if isinstance(position, list):
-                check = []
-                for i in range(6):
-                    check.append(self.vc.write(f'v[{i}]({position[i]})'))
-            return check
+                length = position.__len__()
+                if length > 8:
+                    raise ValueError('Position list cannot be more than 8 items.')
+                for i in range(length):
+                    self.valve(i, position[i])
 
     def pulse(self, valve, sleep):
         if not isinstance(valve, int):
@@ -181,23 +208,16 @@ class pre_con:
     def pump(self, command = None):
         if command == None:
             print(f"The pump is currently turned {self.current_state['pump']}.")
-
         elif (command == 'off') or (command == 0):
-            if self.valve(7, 0):
-                self.current_state['pump'] = 'off'
-            else:
-                print('Failed to turn pump off.')
-
+            self.valve(4, 0)
+            self.current_state['pump'] = 'off'
         elif (command == 'on') or (command == 1):
-            if self.valve(7, 1):
-                self.current_state['pump'] = 'on'
-            else:
-                print('Failed to turn on pump.')
+            self.valve(4, 1)
+            self.current_state['pump'] = 'on'
         else:
             print('Invalid input, must be 0 or 1, or "off or "on". Use no input to return the current pump state.')
 
-
-    def state(self, name = None, check = False, skip = False):
+    def state(self, name=None, check=False):
         """
         This function has 4 different routes that depend on name and check:
         Route 1: nothing called (name = None, check = False)
@@ -226,16 +246,26 @@ class pre_con:
             return
 
         def print_state(state):
-            # Missing return of flowrate setting
             string = ""
             position = ['off','on']
-            for n, i in enumerate(state['valves']):
-                string += f"Valve {str(n)}: {position[i]} \n"
+            if state['valves'] == None:
+                string += "Valves are not altered by this state call.\n"
+            else:
+                for n, i in enumerate(state['valves']):
+                    string += f"Valve {str(n)}: {position[i]} \n"
             string += f"H2O Trap Temperature = {str(state['h2o'])}\n"
             string += f"ADS Trap Temperature = {str(state['ads'])}\n"
             string += f"Sample flowrate = {str(state['sample'])}\n"
             string += f"Backflush flowrate = {str(state['backflush'])}\n"
-            string += f"Pump is {position[state['pump']]}\n"
+            if isinstance(state['pump'], int):
+                string += f"Pump is {position[state['pump']]}\n"
+            else:
+                string += f"Pump is {state['pump']}\n"
+            try:
+                string += f"Stream selected: {self.stream()}\n"
+            except AttributeError:
+                pass
+
             if state['condition'] == None:
                 string += f"This state has no check following completion."
             else:
@@ -244,7 +274,9 @@ class pre_con:
             print(f'{string}\n')
             return
 
-        ##### Checks if the function was called for information #####
+        #######################################################
+        # Checks if the function was called for information
+        #######################################################
         if name == None:
             if check:
                 state_help()
@@ -256,45 +288,71 @@ class pre_con:
                 print_state(self.current_state)
                 return
         else:
-            if isinstance(name, dict):
-                new_state = name.copy()
-                try:
-                    name = new_state['name']
-                except KeyError:
-                    for name, values in new_state.items():
-                        new_state = values.copy()
-                        new_state['name'] = name
+            if isinstance(name, str):
+                with open('src/precon_states') as file:
+                    data = file.read()
+                states = json.loads(data)
+                new_state = {'name':name}
+                name = states[name].copy()
             else:
-                new_state = self.states[name].copy()
+                new_state = {}
+
+            keys = ["valves", "h2o", "ads", "sample",
+                    "backflush", "pump", "condition",
+                    "value", "message", "monitor"]
+            for key in keys:
+                new_state[key] = None
+            for key in name:
+                new_state[key] = name[key]
+            try:
+                name = new_state['name']
+            except KeyError:
+                for name, values in new_state.items():
+                    new_state = values.copy()
+                    new_state['name'] = name
+
             if check:
                 print(f"Settings for the {name} state: \n")
                 print_state(new_state)
                 return
 
-        ##### Engage the new state if a state change is requested. #####
+        #######################################################
+        # Engage the new state if a state change is requested.
+        #######################################################
         condition = new_state['condition']
+        monitor = new_state['monitor']
         if condition != None:
             condition = condition.lower()
-        valid_conditions = [None, 'gc', 'pulse', 'time', 'temp']
+        valid_conditions = (None, 'gc', 'pulse', 'time', 'temp')
         valid_conditions.index(condition) # Causes an error if an invalid condition is called.
+        valid_monitor = (None, 'ads', 'h2o', 'sample', 'backflush')
+        valid_monitor.index(monitor)
         if new_state['message'] != None:
-            print(f"{new_state['message']}\n")
+            print(f"\n{new_state['message']}\n")
         else:
-            print(f"Beginning {name}.\n")
+            print(f"\nBeginning state: {name}.\n")
 
-        ########## GC Ready Condition ##########
+        #######################################################
+        # GC Ready Condition
+        #######################################################
         if condition=='gc':
             start = time.time()
             print('Waiting for GC to be ready.')
+            try:
+                timeout = new_state['timeout']*60
+            except:
+                timeout = 360
             while not self.remote.gc_ready:
-                if time.time() > start + 60:
+                if time.time() > start + timeout:
                     raise RuntimeError('GC not ready in time. Aborting run.')
             print('GC ready.')
             dt = new_state['value']
             if new_state['value'] == None:
                 return True
             
-        ########## Precision Timing Condition ##########
+        #######################################################
+        # Precision Timing Condition
+        #######################################################
         if condition == 'pulse' or condition == 'gc':
             dt = new_state['value']
             v = new_state['valves']
@@ -314,9 +372,11 @@ class pre_con:
             flow_check = []
             t = []
             while True:
-                flow_check.append(self.sampleFlow())
                 t.append(time.time()-t0)
-                # Consider adding check if flowrate drops out.
+                if monitor == 'sample':
+                    flow_check.append(self.sample(display=False))
+                elif monitor == 'backflush':
+                    flow_check.append(self.backflush(display=False))
                 elapsed = t[-1]/60
                 if self.vc.serial.in_waiting > 9:
                     msg = self.vc.read()
@@ -328,9 +388,7 @@ class pre_con:
                                     interval = 'minutes')
                     break
                 if elapsed >= dt + 0.25:
-                    print('System failure.')
-                    self.state('off')
-                    return
+                    raise SystemError('Valve controller failed to complete pulse cycle.')
                 else:
                     progressbar(i = elapsed,
                                 total = dt,
@@ -341,10 +399,11 @@ class pre_con:
             print('')
             self.current_state = new_state
             self.current_state['name'] = name
-            if condition == 'pulse':
-                return t, flow_check
-            else:
-                return True
+            if flow_check != []:
+                flow_volume = trapz(flow_check, t)/60
+                print(f'{monitor} volume: {flow_volume} mL')
+                return flow_volume
+            return
 
         valves = new_state['valves']
         if valves != None:
@@ -359,7 +418,7 @@ class pre_con:
                 print('Sample flow disabled.')
             else:
                 print(f'Setting sample flow rate to {sample}. Please wait for flow to stabilize.')
-            self.sampleFlow(sample)
+            self.sample(sample)
         if backflush != None:
             if backflush == 0:
                 print('Backflush flow disabled.')
@@ -369,64 +428,70 @@ class pre_con:
 
         ads = new_state['ads']
         h2o = new_state['h2o']
-        h2o = None #comment out when h2o trap implemented
+        h2o = None #remove when h2o trap implemented
         if condition != 'temp':
-#             if h2o != None:
-#                 self.h2o.set_point(h2o)
+            if h2o != None:
+                self.h2o_temp(h2o)
+                self.current_state['h2o'] = h2o
             if ads != None:
-                self.ads.set_point(ads)
+                self.ads_temp(ads)
+                self.current_state['ads'] = ads
 
         ########## Temperature Condition ##########
         if condition == 'temp':
             logic = new_state['value']
             test = get_test(new_state['value'])
+            try:
+                timeout = new_state['timeout']
+            except:
+                timeout = 1
             if ads != None and h2o != None:
-                print('Checking both ads and h2o trap temperatures.')
+                print('Checking ADS and H2O trap temperatures.')
+                print(f'ADS must be {new_state["value"]}{ads}.')
+                print(f'H2O trap must be {new_state["value"]}{h2o}.')
                 def check():
                     measure = [self.ads.measure(), self.h2o.measure()]
                     return test(ads, measure[0]) and test(h2o, measure[1]), measure
             if ads != None and h2o == None:
-                print('Checking ads trap temperature.')
+                print(f'Checking that ads trap temperature is {new_state["value"]}{ads}.')
                 def check():
                     measure = self.ads.measure()
                     return test(ads, measure), measure
             if ads == None and h2o != None:
-                print('Checking h2o trap temperature.')
+                print('Checking that H2O trap temperature is {new_state["value"]}{h2o}.')
                 def check():
                     measure = self.h2o.measure()
                     return test(h2o, measure), measure
             t0 = time.time()
             while check()[0]:
-                txt = f"Waiting for temperature. Currently measuring: {check()[1]}"
-                remaining = round((t0 + 15*60- time.time())/60,2)
-                txt += f" [timing out in {remaining} minutes]"
+                txt = f"Currently measuring: {check()[1]}"
+                remaining = round((t0 + timeout*60- time.time())/60, 2)
+                txt += f" [timing out in {remaining} minutes]   "
                 sys.stdout.write('\r')
                 sys.stdout.write(txt)
                 sys.stdout.flush()
-                time.sleep(1)
-                if time.time() > t0 + 15*60:
+                time.sleep(0.1)
+                if time.time() > t0 + timeout*60:
                     self.state('off')
                     raise SystemError('System failed to reach temperature in time.')
             print('')
             print(f"Temperature threshold reached! Currently measuring {check()[1]}")
 
         ########## Timing Condition ##########
-        if condition == 'time':
+        if condition == 'time' and new_state['value'] > 0:
             print('Waiting to proceed.')
             dt = new_state['value']*60
             t0 = time.time()
-            if not skip:
-                while time.time() < t0 + dt:
-                    t = time.time() - t0
-                    progressbar(i = t,
-                                total = dt,
-                                remaining = dt - t,
-                                units='s',
-                                interval = 'seconds')
-                    time.sleep(.2)
-                progressbar(i=dt, total=dt, remaining=0, units='s', interval='seconds')
+            while time.time() < t0 + dt:
+                t = time.time() - t0
+                progressbar(i = t,
+                            total = dt,
+                            remaining = dt - t,
+                            units='s',
+                            interval = 'seconds')
+                time.sleep(.2)
+            progressbar(i=dt, total=dt, remaining=0, units='s', interval='seconds')
 
-        self.current_state = new_state
         self.current_state['name'] = name
         print('')
         return
@@ -437,14 +502,25 @@ class pre_con:
         also provides a rudamentary check that the sequence file
         contain all the necessary fields and doesn't have any typos.
         """
-        fname = f'src/Sample Sequencing/{name}'
-        sequence, modified_date = read_state_file(fname)
+        if type(name) is str:
+            fname = f'src/Sample Sequencing/{name}'
+            try:
+                sequence, modified_date = read_sequence(fname)
+            except json.decoder.JSONDecodeError as x:
+                print(f'Unable to read file: {x}')
+                return
+        elif type(name) is list:
+            sequence = name.copy()
+            name = 'User Input Sequence'
+            modified_date = datetime.now().strftime('%Y-%m-%d, %H:%M:%S')
+
         notes = f'Checking sequence {name}'
         notes += f', last modified: {modified_date}\n'
         notes += '\nList of states:\n'
 
         state_names = []
         name_warnings = ''
+        timeout = 0
         for state in sequence:
             next_name = state['name']
             notes += f'{next_name}\n'
@@ -462,11 +538,35 @@ class pre_con:
                 block_print()
                 self.state(state, check=True)
                 enable_print()
-                condition = state['condition']
-                value = state['value']
+                try:
+                    condition = state['condition']
+                except KeyError:
+                    condition = None
+                try:
+                    value = state['value']
+                except KeyError:
+                    value = None
+                try:
+                    timeout += state['timeout']
+                except:
+                    pass
+                try:
+                    monitor = state['monitor']
+                except KeyError:
+                    monitor = None
+                
+                valid_monitors = (None, 'ads', 'h2o', 'sample', 'backflush')
+                try:
+                    valid_monitors.index(monitor)
+                except:
+                    notes += f'Invalid monitor condition on {state["name"]}: {state["monitor"]}\n'
 
                 if condition == 'temp':
                     get_test(state['value'])
+                    try:
+                        state['timeout']
+                    except KeyError:
+                        notes += f"Warning: {state['name']} does not have a timeout.\n"
                 elif condition == 'pulse':
                     if sum(state['valves']) > 1:
                         notes += f"Error: {state['name']} has more than 1 valve specified.\n"
@@ -500,20 +600,37 @@ class pre_con:
                 notes += f"Error: Sequence fails on {state['name']}: {x}.\n"
                 enable_print()
         if gc_flag:
-            notes += 'Warning: this sequences does not trigger the GC.'
-            
+            notes += 'Warning: this sequences does not trigger the GC.\n'
+
         if notes == start_notes:
-            notes += '\nNo errors or warnings were detected.\n'
-        notes += f'Run time is a minimum of {round(run_time,2)} minutes.\n'
+            notes += 'No errors or warnings were detected.\n'
+        if timeout == 0:
+            notes += f'Run time of {round(run_time,2)} minutes.\n'
+        else:
+            notes += f'Run time of {round(run_time,2)} to {round(run_time+timeout,2)} minutes.\n'
         notes += f'{name} has {len(sequence)} states.\n'
         print(notes)
         
-    def run_sequence(self, name='standard.txt', stream=None, notes=''):
+    def run_sequence(self, name=None, stream=None, notes=''):
         """
         """
         start_time = datetime.now().strftime('%Y, %m, %d, %H:%M:%S')
-        fname = f'src/Sample Sequencing/{name}'
-        sequence, modified_date = read_state_file(fname)
+        folder = 'src/Sample Sequencing/'
+        if name is None:
+            files = os.listdir(folder)
+            files.remove('log.csv')
+            print('Sequences available to run.\n')
+            for file in files:
+                print(file)
+            return
+        
+        fname = folder + str(name)
+        if type(name) == str:
+            sequence, modified_date = read_sequence(fname)
+        else:
+            sequence = name.copy()
+            name = 'User Input Sequence'
+            modified_date = datetime.now().strftime('%Y-%m-%d, %H:%M:%S')
         error_flag = False
 
         if stream != None:
@@ -522,15 +639,19 @@ class pre_con:
         else:
             stream = self.stream()
 
+        notes = ""
         try:
             for state in sequence:
-                self.state(state)
+                result = self.state(state)
+                if result != None:
+                    notes += f'{state["name"]} returned: {result}. '
         except Exception as x:
             notes = f'Failed on {state["name"]}: {x}'
             error_flag = True
             print(notes)
         
         end_time = datetime.now().strftime('%H:%M:%S')
+        notes = notes.replace('\n', '')
         log_entry = f'\n{start_time}, {end_time}, {name}'
         log_entry += f', {str(stream)}, {notes}, {modified_date}'
         with open('src/Sample Sequencing/log.csv', 'a') as file:
@@ -540,34 +661,66 @@ class pre_con:
             self.state('off')
             raise Exception(notes)
 
-    def standard_run(self, flow=100, volume=600, temp=300,
-                     inject=30, blank=False, stream=None):
+    def standard_run(self, flow=None, volume=None, temp=None, delay=None,
+                     inject=None, blank=False, stream=None):
         ''' standard_run is a simple way to make small adjustments
         to the "standard.txt" run without needing to create a new file.
         This is to be used for repeated experiments that only need minor
         modifications to the standard procedure.
         '''
+        if flow is None:
+            flow = 100
+        if volume is None:
+            volume = 500
+        if temp is None:
+            temp = 300
+        if inject is None:
+            inject = 20
+        if delay is None:
+            delay = 0
+
         fname = f'src/Sample Sequencing/standard.txt'
-        def setpoint(temp):
-            '''ad hoc calibration for getting the correct set point
-            for the desired temperature input.
-            '''
-            return round(1.3814*temp - 20.07, 0)
-        sequence, modified_date = read_state_file(fname)
-        sequence[3]['value'] = volume/flow # volume/flowrate = time
-        sequence[8]['ads'] = setpoint(temp)
-        sequence[10]['value'] = inject/60
+        sequence, modified_date = read_sequence(fname)
+        
+        for n, state in enumerate(sequence):
+            if state['name'] == 'flush':
+                sequence[n]['value'] = 50/flow # set flush to purge 50 mL
+                sequence[n]['sample'] = flow
+            elif state['name'] == 'sampling':
+                sequence[n]['value'] = volume/flow # volume/flowrate = time
+            elif state['name'] == 'pre-backflush':
+                if blank:
+                    sequence[n]['backflush'] = flow
+            elif state['name'] == 'backflush':
+                if blank:
+                    sequence[n]['value'] = volume/flow
+            elif state['name'] == 'flash heat':
+                sequence[n]['ads'] = temp
+            elif state['name'] == 'inject':
+                sequence[n]['value'] = inject/60
+            elif state['name'] == 'bake out':
+                bakeout_time = (120 - inject)/60
+                if bakeout_time > 0:
+                    sequence[n]['value'] = bakeout_time
+                else:
+                    sequence.remove(state)
+                    
+        if delay > 0:
+            sequence[-1]['condition'] = 'time'
+            sequence[-1]['value'] = delay
+        
         if blank:
-            sequence[2]['sample'] = None
-            sequence[2]['backflush'] = flow
-            sequence[2]['valves'] = [0,0,0,1,0,0]
-        else:
-            sequence[2]['sample'] = flow
+            for state in sequence.copy():
+                if (state['name'] == 'flush') or (state['name'] == 'sampling'):
+                    sequence.remove(state)
+        
         with open('src/Sample Sequencing/custom.txt', 'w') as file:
             file.write(json.dumps(sequence))
-
         notes = f'flow={flow} volume={volume} temp={temp} inject={inject} blank={blank}'
-        self.run_sequence(name='custom.txt', stream=stream, notes=notes)
+        if stream is None:
+            stream = [None]
+        for index in stream:
+            self.run_sequence(name='custom.txt', stream=index, notes=notes)
         
     def evacuate(self, stream=None):
         self.state('standby')
@@ -599,7 +752,7 @@ def get_test(logic):
         raise ValueError('Unrecognized logic operator.')
 
 
-def read_state_file(name):
+def read_sequence(name):
     try:
         with open(name) as file:
                 data = file.read()
@@ -624,8 +777,90 @@ def progressbar(i,
                       f'{i:.2f}', units, f'{remaining:.2f}', interval))
     sys.stdout.flush()
 
+parser = argparse.ArgumentParser(description='Pre-concentration system command line interface.')
+
+parser.add_argument('-r', '--run', action='store_true',
+                    help='Activate the pre-concentration system to do a run.')
+parser.add_argument('-f', '--flow', type=int,
+                    help='Set the flowrate in milliliters per minute [sccm].')
+parser.add_argument('-v', '--volume', type=int,
+                    help='Set the sample size in milliliters [mL].')
+parser.add_argument('-t', '--temp', type=int,
+                    help='Set the trap heated temperature in celsius [°C].')
+parser.add_argument('-i', '--inject', type=int,
+                    help='Set the GC injection time in seconds [s].')
+parser.add_argument('-b', '--blank', action='store_true',
+                    help='Perform a blank run. Sample will not flow.')
+parser.add_argument('-s', '--stream', type=int, nargs='+',
+                    help='Select sample port.')
+parser.add_argument('-p', '--purge', action='store_true',
+                    help='Purge sample line.')
+parser.add_argument('-n', '--repeat', type=int, default=1,
+                    help='Repeat sequence *n* number of times.')
+parser.add_argument('-d', '--delay', type=int, default=0,
+                    help='Timed delay, in minutes, to occur after a sequence is complete.')
+parser.add_argument('--sequence', type=str, default=None,
+                    help='Run a specified sequence.')
+parser.add_argument('-c', '--cli', action='store_true',
+                    help='Enter command line interface for continuous operation.')
+parser.add_argument('-l', '--log', action='store_true',
+                    help='View the last 10 log entries.')
+
+def cli(obj):
+    while True:
+        user_input = input("> ")
+        if user_input == 'exit()':
+            pc.state('off')
+            exit()
+        else:
+            if user_input[0:6] == 'print(' and user_input[-1] == ')':
+                user_input = user_input[0:6] + 'pc.' + user_input[6:]
+            else:
+                user_input = 'pc.' + user_input
+        try:
+            eval(user_input)
+        except Exception as x:
+            print(f': {x}.')
+
 if __name__ == '__main__':
+    args = parser.parse_args()
+    check = [args.purge, args.run, args.sequence!=None, args.log, args.cli]
+    check = [x!=(None or False) for x in check]
+    if sum(check) > 1:
+        error_notes = 'Multiple methods called. Please select to only run (-r, --run), '
+        error_notes += 'specify a sequence (--sequence), purge (-p, --purge), '
+        error_notes += ',call the log (-l, --log), or enter the command line '
+        error_notes += 'interface (-c, --cli).'
+        raise SystemError(error_notes)
+    elif sum(check) == 0:
+        print('No methods called.')
     GPIO.setwarnings(False)
-    GPIO.cleanup()
-    GPIO.setwarnings(True)
     pc = pre_con()
+    GPIO.setwarnings(True)
+
+    if args.cli:
+        cli(pc)
+
+    if args.purge:
+        pc.evacuate(stream=args.stream)
+
+    if args.run:
+        for n in range(args.repeat):
+            pc.standard_run(flow=args.flow,
+                            volume=args.volume,
+                            temp=args.temp,
+                            inject=args.inject,
+                            blank=args.blank,
+                            stream=args.stream,
+                            delay=args.delay)
+
+    if args.sequence is not None:
+        pc.run_sequence(args.sequence)
+
+    if args.log:
+        import csv
+        fname = 'src/Sample Sequencing/log.csv'
+        with open(fname, 'r') as file:
+            log = file.read()
+        print('Not yet implemented.')
+
