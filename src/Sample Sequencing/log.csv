@@ -802,7 +802,6 @@ year, month, day, start time, end time, sequence, sample port, failure notes
 2023, 11, 29, 18:37:49, 18:53:04, custom.txt, 7, flow=30 volume=50 temp=295 inject=20 blank=False, 2023-11-29, 18:37:49
 2023, 11, 29, 18:53:04, 19:00:14, custom.txt, 7, Failed on flush: Setpoint not reached before the timeout of 30 s. (from uPy device), 2023-11-29, 18:53:04
 2023, 11, 29, 19:07:06, 19:15:30, custom.txt, 7, flow=30 volume=50 temp=295 inject=20 blank=False, 2023-11-29, 19:07:06
-
 2023, 11, 30, 14:11:34, 14:23:44, custom.txt, 7, flow=30 volume=50 temp=295 inject=50 blank=False, 2023-11-30, 14:11:34
 2023, 11, 30, 14:23:44, 14:38:25, custom.txt, 7, flow=30 volume=50 temp=295 inject=50 blank=False, 2023-11-30, 14:23:44
 2023, 11, 30, 14:38:25, 14:53:14, custom.txt, 7, flow=30 volume=50 temp=295 inject=50 blank=False, 2023-11-30, 14:38:25
@@ -812,3 +811,205 @@ year, month, day, start time, end time, sequence, sample port, failure notes
 2023, 11, 30, 17:26:07, 17:34:31, custom.txt, 7, flow=30 volume=50 temp=295 inject=30 blank=False, 2023-11-30, 17:26:07
 2023, 11, 30, 17:34:31, 17:50:08, custom.txt, 7, flow=30 volume=50 temp=295 inject=30 blank=False, 2023-11-30, 17:34:31
 2023, 11, 30, 17:50:08, 18:05:39, custom.txt, 7, flow=30 volume=50 temp=295 inject=30 blank=False, 2023-11-30, 17:50:08
+2023, 12, 02, 16:27:50, 16:28:59, backflush test, 7, backflush returned: 30.256951731370485. , 2023-12-02, 16:27:16
+
+2023, 12, 02, 16:31:26, 16:31:59, custom.txt, 7, Failed on flush: Setpoint not reached before the timeout of 30 s.>>>  (from uPy device), 2023-12-02, 16:31:26
+2023, 12, 02, 16:32:41, 16:37:11, custom.txt, 7, Failed on backflush: operands could not be broadcast together with shapes (72,) (0,) , 2023-12-02, 16:32:41
+2023, 12, 02, 16:38:26, 16:40:39, custom.txt, 7, Failed on backflush: operands could not be broadcast together with shapes (72,) (0,) , 2023-12-02, 16:38:26
+2023, 12, 02, 16:43:21, 16:49:20, custom.txt, 7, sampling returned: 1.0622414546231427. check GC returned: True. , 2023-12-02, 16:43:21
+2023, 12, 02, 17:09:34, 17:19:06, custom.txt, 7, sampling returned: 100.2348284739695. check GC returned: True. , 2023-12-02, 17:09:34
+2023, 12, 02, 17:40:26, 17:48:27, custom, 7, sampling returned: 2.4431080502046707. check GC returned: True. , 2023-12-02, 17:09:34
+2023, 12, 02, 17:58:15, 17:58:48, custom, 7, Failed on flush: Setpoint not reached before the timeout of 30 s.>>>  (from uPy device), 2023-12-02, 17:09:34
+2023, 12, 02, 17:59:52, 18:07:41, custom, 7, sampling returned: 100.33404128627618. check GC returned: True. , 2023-12-02, 17:09:34
+2023, 12, 02, 18:55:07, 18:55:08, custom, 7, Failed on cool down: list assignment index out of range, 2023-12-02, 17:09:34
+2023, 12, 02, 18:55:36, 19:03:37, custom, 7, sampling returned: 100.24609913720369. check GC returned: True. , 2023-12-02, 17:09:34
+2023, 12, 02, 19:33:29, 19:41:45, custom, 7, sampling returned: 100.24813422193805. check GC returned: True. , 2023-12-02, 17:09:34
+2023, 12, 02, 19:59:07, 20:08:53, custom, 7, sampling returned: 100.22496662148455. check GC returned: True. , 2023-12-02, 17:09:34
+2023, 12, 02, 20:24:02, 20:32:03, custom, 7, sampling returned: 100.22886191120664. check GC returned: True. , 2023-12-02, 17:09:34
+2023, 12, 02, 20:44:30, 21:01:10, custom, 11, sampling returned: 100.28987451621374. check GC returned: True. , 2023-12-02, 17:09:34
+2023, 12, 03, 13:55:34, 13:56:07, custom.txt, 11, Failed on flush: Setpoint not reached before the timeout of 30 s.>>>  (from uPy device), 2023-12-03, 13:55:34
+2023, 12, 03, 14:00:29, 14:08:28, custom, 11, sampling returned: 100.26132906954805. check GC returned: True. , 2023-12-03, 13:55:34
+2023, 12, 03, 14:16:07, 14:26:02, custom.txt, 11, sampling returned: 100.18431925845702. check GC returned: True. , 2023-12-03, 14:16:07
+2023, 12, 03, 14:35:44, 14:48:40, custom.txt, 11, sampling returned: 99.98986073033234. check GC returned: True. , 2023-12-03, 14:35:44
+2023, 12, 03, 14:58:55, 15:12:17, custom.txt, 11, sampling returned: 100.17565435996333. check GC returned: True. , 2023-12-03, 14:58:55
+2023, 12, 03, 15:22:31, 15:32:01, custom, 11, sampling returned: 99.9865658891054. check GC returned: True. , 2023-12-03, 14:58:55
+2023, 12, 03, 15:42:23, 15:50:22, custom.txt, 11, sampling returned: 100.14543485508858. check GC returned: True. , 2023-12-03, 15:42:22
+2023, 12, 03, 16:01:34, 16:17:16, custom.txt, 9, sampling returned: 501.1089131873294. check GC returned: True. , 2023-12-03, 16:01:34
+2023, 12, 03, 16:22:34, 16:56:08, custom.txt, 9, sampling returned: 1002.2767346335069. Failed on check GC: GC not ready in time. Aborting run., 2023-12-03, 16:22:34
+2023, 12, 03, 17:01:03, 17:02:30, process sample, 9, Failed on backflush: signal_handler() takes 2 positional arguments but 3 were given, 2023-10-02, 10:23:18
+2023, 12, 03, 17:04:41, 17:09:56, process sample, 9, check GC returned: True. , 2023-12-03, 17:04:07
+2023, 12, 03, 17:18:51, 17:31:54, custom.txt, 9, sampling returned: 500.46633096344215. check GC returned: True. , 2023-12-03, 17:18:51
+2023, 12, 03, 17:40:17, 17:55:46, custom.txt, 9, sampling returned: 500.53493217158837. Failed on check GC: GC not ready in time. Aborting run., 2023-12-03, 17:40:17
+2023, 12, 03, 17:56:49, 18:02:04, process sample, 9, check GC returned: True. , 2023-12-03, 17:04:07
+2023, 12, 03, 18:05:54, 18:07:27, custom.txt, 9, Failed on cool down: signal_handler() takes 2 positional arguments but 3 were given, 2023-12-03, 18:05:54
+2023, 12, 03, 18:07:44, 18:24:35, custom.txt, 9, sampling returned: 500.4082614202881. check GC returned: True. , 2023-12-03, 18:07:44
+2023, 12, 03, 18:31:07, 18:46:33, custom.txt, 9, sampling returned: 499.60809095392744. check GC returned: True. , 2023-12-03, 18:31:07
+2023, 12, 03, 18:52:37, 19:09:09, custom.txt, 9, sampling returned: 497.78873333642997. check GC returned: True. , 2023-12-03, 18:52:37
+2023, 12, 04, 10:16:34, 10:27:14, custom.txt, 9, check GC returned: True. , 2023-12-04, 10:16:34
+2023, 12, 04, 11:36:59, 11:37:32, custom.txt, 9, Failed on flush: Setpoint not reached before the timeout of 30 s.>>>  (from uPy device), 2023-12-04, 11:36:59
+2023, 12, 04, 11:37:42, 11:55:57, custom.txt, 9, sampling returned: 500.91890812786676. check GC returned: True. , 2023-12-04, 11:37:42
+2023, 12, 04, 13:46:17, 13:46:55, true backflush, 9, Failed on cool down: signal_handler() takes 2 positional arguments but 3 were given, 2023-12-04, 13:46:01
+2023, 12, 04, 13:47:35, 14:02:16, true backflush, 9, sampling returned: 437.79640255389967. check GC returned: True. , 2023-12-04, 13:46:01
+2023, 12, 04, 14:08:35, 14:35:27, true backflush, 9, sampling returned: 500.54173579327323. check GC returned: True. , 2023-12-04, 14:08:15
+2023, 12, 04, 14:43:18, 14:58:35, custom.txt, 9, sampling returned: 500.4458144101735. check GC returned: True. , 2023-12-04, 14:43:18
+2023, 12, 04, 15:11:36, 15:22:57, custom.txt, 9, sampling returned: 500.7228159510219. check GC returned: True. , 2023-12-04, 15:11:36
+2023, 12, 04, 15:22:57, 15:46:22, custom.txt, 9, sampling returned: 500.2556372495854. check GC returned: True. , 2023-12-04, 15:22:57
+2023, 12, 04, 15:46:22, 16:12:14, custom.txt, 9, sampling returned: 500.2812417816427. Failed on check GC: GC not ready in time. Aborting run., 2023-12-04, 15:46:22
+2023, 12, 04, 16:12:54, 16:17:33, process sample, 9, check GC returned: True. , 2023-12-03, 17:58:07
+2023, 12, 04, 16:45:50, 16:57:12, custom.txt, 9, sampling returned: 500.18798525713885. check GC returned: True. , 2023-12-04, 16:45:50
+2023, 12, 04, 17:14:47, 17:26:09, custom.txt, 9, sampling returned: 500.58910359519786. check GC returned: True. , 2023-12-04, 17:14:47
+2023, 12, 04, 17:26:09, 17:51:08, custom.txt, 9, sampling returned: 500.4282033406609. check GC returned: True. , 2023-12-04, 17:26:09
+2023, 12, 04, 19:32:20, 19:43:08, custom.txt, 9, Failed on cool down: signal_handler() takes 2 positional arguments but 3 were given, 2023-12-04, 19:32:20
+2023, 12, 04, 19:45:46, 19:55:55, custom, 9, Failed on cool down: signal_handler() takes 2 positional arguments but 3 were given, 2023-12-04, 19:32:20
+2023, 12, 04, 19:59:36, 20:22:50, custom, 9, sampling returned: 500.2979376392655. check GC returned: True. , 2023-12-04, 19:32:20
+2023, 12, 04, 20:32:42, 20:50:23, custom, 9, sampling returned: 500.25993517522767. check GC returned: True. , 2023-12-04, 19:32:20
+2023, 12, 04, 20:59:42, 21:39:24, custom.txt, 9, sampling returned: 499.9890097125026. check GC returned: True. , 2023-12-04, 20:59:42
+2023, 12, 04, 21:39:24, 22:07:09, custom.txt, 9, sampling returned: 500.15158877784694. check GC returned: True. , 2023-12-04, 21:39:24
+2023, 12, 04, 22:07:09, 22:35:02, custom.txt, 9, sampling returned: 499.72078601528267. check GC returned: True. , 2023-12-04, 22:07:09
+2023, 12, 04, 22:35:02, 23:02:55, custom.txt, 9, sampling returned: 499.840847300747. check GC returned: True. , 2023-12-04, 22:35:02
+2023, 12, 04, 23:02:55, 23:30:54, custom.txt, 9, sampling returned: 499.79958982359557. check GC returned: True. , 2023-12-04, 23:02:55
+2023, 12, 04, 23:30:54, 23:58:52, custom.txt, 9, sampling returned: 499.26983867924173. check GC returned: True. , 2023-12-04, 23:30:54
+2023, 12, 04, 23:58:52, 00:13:53, custom.txt, 9, Failed on cool down: System failed to reach temperature in time., 2023-12-04, 23:58:51
+2023, 12, 05, 13:17:44, 13:52:29, custom.txt, 9, sampling returned: 499.49797679674106. check GC returned: True. , 2023-12-05, 13:17:44
+2023, 12, 05, 13:52:29, 14:19:20, custom.txt, 9, sampling returned: 499.05538369024555. check GC returned: True. , 2023-12-05, 13:52:29
+2023, 12, 05, 14:19:20, 14:46:32, custom.txt, 9, sampling returned: 498.01412957422093. check GC returned: True. , 2023-12-05, 14:19:20
+2023, 12, 05, 15:21:23, 15:32:50, custom.txt, 9, sampling returned: 496.60546782204403. check GC returned: True. , 2023-12-05, 15:21:23
+2023, 12, 07, 18:04:18, 18:37:48, custom.txt, 9, check GC returned: True. , 2023-12-07, 18:04:18
+2023, 12, 07, 18:37:48, 19:05:05, custom.txt, 9, check GC returned: True. , 2023-12-07, 18:37:48
+2023, 12, 07, 19:05:05, 19:32:39, custom.txt, 9, check GC returned: True. , 2023-12-07, 19:05:05
+2023, 12, 07, 19:32:39, 20:00:23, custom.txt, 9, check GC returned: True. , 2023-12-07, 19:32:39
+2023, 12, 07, 20:00:23, 20:28:05, custom.txt, 9, check GC returned: True. , 2023-12-07, 20:00:23
+2023, 12, 08, 15:51:09, 15:51:31, custom.txt, 9, flow=50 volume=50 temp=310 inject=21 blank=False.Failed on flush: signal_handler() takes 2 positional arguments but 3 were given, 2023-12-08, 15:51:09
+2023, 12, 08, 15:56:44, 16:19:24, custom.txt, 7, flow=50 volume=50 temp=310 inject=21 blank=False. sampling returned: 50.292834639522226. , 2023-12-08, 15:56:44
+2023, 12, 08, 16:19:24, 16:45:35, custom.txt, 7, flow=50 volume=100 temp=310 inject=21 blank=False. sampling returned: 100.18323498807946. , 2023-12-08, 16:19:24
+2023, 12, 08, 16:45:35, 17:12:03, custom.txt, 7, flow=50 volume=150 temp=310 inject=21 blank=False. sampling returned: 150.26023580580016. , 2023-12-08, 16:45:35
+2023, 12, 08, 17:12:03, 17:38:30, custom.txt, 7, flow=50 volume=200 temp=310 inject=21 blank=False. sampling returned: 200.37989894546865. , 2023-12-08, 17:12:03
+2023, 12, 08, 17:38:30, 18:05:04, custom.txt, 7, flow=50 volume=250 temp=310 inject=21 blank=False. sampling returned: 250.3519359860776. , 2023-12-08, 17:38:30
+2023, 12, 10, 09:42:08, 09:42:15, custom.txt, 7, flow=25 volume=10 temp=310 inject=21 blank=False. Failed on cool down: signal_handler() takes 2 positional arguments but 3 were given, 2023-12-10, 09:42:08
+2023, 12, 10, 09:43:26, 10:10:20, custom.txt, 7, flow=25 volume=10 temp=310 inject=21 blank=False. sampling returned: 10.090219691467285. , 2023-12-10, 09:43:26
+2023, 12, 10, 10:10:20, 10:37:18, custom.txt, 7, flow=25 volume=20 temp=310 inject=21 blank=False. sampling returned: 20.165150489525. , 2023-12-10, 10:10:20
+2023, 12, 10, 10:37:18, 11:04:27, custom.txt, 7, flow=25 volume=30 temp=310 inject=21 blank=False. sampling returned: 30.214273180099926. , 2023-12-10, 10:37:18
+2023, 12, 10, 11:04:27, 11:05:00, custom.txt, 7, flow=25 volume=40 temp=310 inject=21 blank=False. Failed on flush: Device timed out., 2023-12-10, 11:04:27
+2023, 12, 10, 11:07:18, 11:07:52, custom.txt, 7, flow=25 volume=40 temp=310 inject=21 blank=False. Failed on flush: Device timed out., 2023-12-10, 11:07:18
+2023, 12, 10, 11:10:51, 11:33:32, custom.txt, 7, flow=30 volume=40 temp=310 inject=21 blank=False. sampling returned: 40.25143273529748. , 2023-12-10, 11:10:51
+2023, 12, 10, 11:33:32, 12:00:46, custom.txt, 7, flow=30 volume=50 temp=310 inject=21 blank=False. sampling returned: 50.44630279275199. , 2023-12-10, 11:33:32
+2023, 12, 10, 12:00:46, 12:28:05, custom.txt, 7, flow=30 volume=60 temp=310 inject=21 blank=False. sampling returned: 60.381512457923286. , 2023-12-10, 12:00:46
+2023, 12, 10, 12:28:05, 12:55:23, custom.txt, 7, flow=30 volume=70 temp=310 inject=21 blank=False. sampling returned: 70.45578240467549. , 2023-12-10, 12:28:05
+2023, 12, 10, 12:55:23, 13:22:41, custom.txt, 7, flow=30 volume=80 temp=310 inject=21 blank=False. sampling returned: 80.59311776805083. , 2023-12-10, 12:55:23
+2023, 12, 10, 13:22:41, 13:50:00, custom.txt, 7, flow=30 volume=90 temp=310 inject=21 blank=False. sampling returned: 90.50755336034734. , 2023-12-10, 13:22:41
+2023, 12, 10, 13:50:00, 14:17:18, custom.txt, 7, flow=30 volume=100 temp=310 inject=21 blank=False. sampling returned: 100.56921373397587. , 2023-12-10, 13:50:00
+2023, 12, 10, 14:37:47, 14:39:16, heater check, 7, Failed on check heater: System failed to reach temperature in time., 2023-10-16, 18:01:00
+2023, 12, 10, 15:55:51, 16:19:35, custom.txt, 11, flow=50 volume=100 temp=310 inject=21 blank=False. sampling returned: 100.56335526776076. , 2023-12-10, 15:55:51
+2023, 12, 10, 16:19:35, 16:46:41, custom.txt, 11, flow=50 volume=100 temp=310 inject=21 blank=False. sampling returned: 100.19681537293812. , 2023-12-10, 16:19:35
+2023, 12, 10, 16:46:41, 17:14:03, custom.txt, 11, flow=50 volume=100 temp=310 inject=21 blank=False. sampling returned: 100.22620463253399. , 2023-12-10, 16:46:41
+2023, 12, 10, 17:14:03, 17:41:31, custom.txt, 11, flow=50 volume=100 temp=310 inject=21 blank=False. sampling returned: 100.21440921102048. , 2023-12-10, 17:14:03
+2023, 12, 10, 17:41:31, 18:08:58, custom.txt, 11, flow=50 volume=100 temp=310 inject=21 blank=False. sampling returned: 100.22895628575922. , 2023-12-10, 17:41:31
+2023, 12, 11, 11:56:44, 12:28:07, custom.txt, 7, flow=30 volume=1 temp=310 inject=21 blank=False. sampling returned: 0.9662487798011303. , 2023-12-11, 11:56:44
+2023, 12, 11, 12:28:07, 12:55:24, custom.txt, 7, flow=30 volume=2 temp=310 inject=21 blank=False. sampling returned: 2.089127018904487. , 2023-12-11, 12:28:07
+2023, 12, 11, 12:55:24, 13:22:56, custom.txt, 7, flow=30 volume=3 temp=310 inject=21 blank=False. sampling returned: 3.0796733009821176. , 2023-12-11, 12:55:24
+2023, 12, 11, 13:22:56, 13:50:29, custom.txt, 7, flow=30 volume=4 temp=310 inject=21 blank=False. sampling returned: 4.056303560395638. , 2023-12-11, 13:22:56
+2023, 12, 11, 13:50:29, 14:18:02, custom.txt, 7, flow=30 volume=5 temp=310 inject=21 blank=False. sampling returned: 5.016793251202106. , 2023-12-11, 13:50:29
+2023, 12, 11, 14:18:02, 14:45:34, custom.txt, 7, flow=30 volume=6 temp=310 inject=21 blank=False. sampling returned: 5.995407671963573. , 2023-12-11, 14:18:02
+2023, 12, 11, 14:45:34, 15:13:05, custom.txt, 7, flow=30 volume=7 temp=310 inject=21 blank=False. sampling returned: 6.715433395143947. , 2023-12-11, 14:45:34
+2023, 12, 11, 15:13:05, 15:13:38, custom.txt, 7, flow=30 volume=8 temp=310 inject=21 blank=False. Failed on flush: Setpoint not reached before the timeout of 30 s.>>>  (from uPy device), 2023-12-11, 15:13:05
+2023, 12, 11, 15:15:02, 15:40:38, custom.txt, 7, flow=30 volume=8 temp=310 inject=21 blank=False. sampling returned: 7.981420508568288. , 2023-12-11, 15:15:02
+2023, 12, 11, 15:40:38, 16:08:16, custom.txt, 7, flow=30 volume=9 temp=310 inject=21 blank=False. sampling returned: 9.123251935781836. , 2023-12-11, 15:40:38
+2023, 12, 11, 16:08:16, 16:36:00, custom.txt, 7, flow=30 volume=10 temp=310 inject=21 blank=False. sampling returned: 10.115991507655185. , 2023-12-11, 16:08:16
+2023, 12, 11, 18:00:33, 18:00:36, heater check, 7, Failed on flush: signal_handler() takes 2 positional arguments but 3 were given, 2023-10-16, 18:01:00
+2023, 12, 11, 18:01:15, 18:01:47, heater check, 7, Failed on flush: Device timed out., 2023-12-11, 18:01:12
+2024, 01, 08, 14:57:08, 15:22:21, custom.txt, 15, flow=100 volume=500 temp=310 inject=30 blank=False. sampling returned: 501.02559430834947. , 2024-01-08, 14:57:08
+2024, 01, 08, 15:29:22, 15:44:31, custom.txt, 15, flow=100 volume=500 temp=310 inject=30 blank=False. sampling returned: 500.91718523534496. , 2024-01-08, 15:29:22
+2024, 01, 09, 15:07:29, 15:28:57, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.9579431614773. , 2024-01-09, 15:07:29
+2024, 01, 09, 15:28:57, 15:56:41, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.89296262189424. , 2024-01-09, 15:28:57
+2024, 01, 09, 15:56:41, 16:24:29, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.8139339824277. , 2024-01-09, 15:56:41
+2024, 01, 09, 16:24:29, 16:52:11, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.9744620095954. , 2024-01-09, 16:24:29
+2024, 01, 09, 16:52:11, 17:19:54, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.93654193425874. , 2024-01-09, 16:52:11
+2024, 01, 10, 13:57:23, 14:08:52, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.8276000798533. , 2024-01-10, 13:57:23
+2024, 01, 10, 15:00:40, 15:12:05, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.8840044673719. , 2024-01-10, 15:00:40
+2024, 01, 10, 15:24:09, 15:28:53, custom.txt, 15, flow=100 volume=500 temp=310 inject=24 blank=False. Failed on cool down: signal_handler() takes 2 positional arguments but 3 were given, 2024-01-10, 15:24:09
+2024, 01, 10, 16:40:09, 16:51:34, custom.txt, 15, flow=100 volume=500 temp=310 inject=24 blank=False. sampling returned: 500.8253676040185. , 2024-01-10, 16:40:09
+2024, 01, 11, 14:58:27, 15:04:33, custom.txt, 15, flow=100 volume=500 temp=310 inject=24 blank=False. Failed on cool down: signal_handler() takes 2 positional arguments but 3 were given, 2024-01-11, 14:58:27
+2024, 01, 21, 12:48:56, 13:13:03, custom.txt, 15, flow=100 volume=500 temp=310 inject=30 blank=True. , 2024-01-21, 12:48:56
+2024, 01, 21, 13:13:03, 13:27:59, custom.txt, 15, flow=100 volume=500 temp=310 inject=30 blank=True. Failed on off: signal_handler() takes 2 positional arguments but 3 were given, 2024-01-21, 13:13:03
+2024, 01, 21, 13:56:05, 14:05:11, custom.txt, 15, flow=100 volume=500 temp=310 inject=30 blank=True. , 2024-01-21, 13:56:05
+2024, 01, 21, 14:22:32, 14:34:03, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.8445942019977. , 2024-01-21, 14:22:32
+2024, 01, 21, 15:28:41, 15:55:07, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.82102938970087. , 2024-01-21, 15:28:41
+2024, 01, 21, 15:55:07, 16:22:29, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.826176253894. , 2024-01-21, 15:55:07
+2024, 01, 21, 16:22:29, 16:50:11, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.97289144095225. , 2024-01-21, 16:22:29
+2024, 01, 21, 16:50:11, 17:00:03, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.8063973281751. Failed on check heater: System failed to reach temperature in time., 2024-01-21, 16:50:11
+2024, 01, 21, 17:05:01, 17:21:14, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.8064739491884. , 2024-01-21, 17:05:01
+2024, 01, 22, 11:59:29, 11:59:30, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. Failed on cool down: list assignment index out of range, 2024-01-22, 11:59:29
+2024, 01, 22, 12:40:40, 12:51:56, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 501.0128965943279. , 2024-01-22, 12:40:40
+2024, 01, 22, 13:23:30, 13:34:56, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.66572185820974. , 2024-01-22, 13:23:30
+2024, 01, 24, 11:51:00, 12:06:31, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.60537359770757. Failed on start GC: GC not ready in time. Aborting run., 2024-01-24, 11:51:00
+2024, 01, 24, 12:49:03, 12:49:25, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. Failed on flush: signal_handler() takes 2 positional arguments but 3 were given, 2024-01-24, 12:49:03
+2024, 01, 24, 12:49:52, 13:00:49, custom.txt, 15, flow=100 volume=500 temp=310 inject=30 blank=True. , 2024-01-24, 12:49:52
+2024, 01, 24, 13:06:30, 13:19:45, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.78145170857596. Failed on check GC: GC not ready in time. Aborting run., 2024-01-24, 13:06:30
+2024, 01, 24, 13:20:19, 13:46:44, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.7782982877618. , 2024-01-24, 13:20:19
+2024, 01, 24, 13:46:44, 14:14:33, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.29636274937155. , 2024-01-24, 13:46:44
+2024, 01, 24, 14:14:33, 14:42:21, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.4740290628312. , 2024-01-24, 14:14:33
+2024, 01, 24, 14:42:21, 15:10:11, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.64133870422904. , 2024-01-24, 14:42:21
+2024, 01, 24, 15:10:11, 15:38:01, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.29936408872265. , 2024-01-24, 15:10:11
+2024, 01, 24, 15:38:01, 16:05:50, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.6495004827927. , 2024-01-24, 15:38:01
+2024, 01, 24, 16:05:50, 16:33:38, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.60452580449845. , 2024-01-24, 16:05:50
+2024, 01, 25, 13:03:05, 13:36:51, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.26870279929534. , 2024-01-25, 13:03:05
+2024, 01, 25, 13:36:51, 13:50:00, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.60946454767725. Failed on check GC: GC not ready in time. Aborting run., 2024-01-25, 13:36:51
+2024, 01, 25, 13:59:06, 14:35:31, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.7111999010818. , 2024-01-25, 13:59:06
+2024, 01, 25, 14:35:31, 15:13:21, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.64719754657887. , 2024-01-25, 14:35:31
+2024, 01, 25, 15:13:21, 15:51:23, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.4646387238135. , 2024-01-25, 15:13:21
+2024, 01, 25, 15:51:23, 16:29:26, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.71527896970946. , 2024-01-25, 15:51:23
+2024, 01, 25, 16:29:26, 17:07:28, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.4483733144677. , 2024-01-25, 16:29:26
+2024, 01, 25, 17:07:28, 17:45:30, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.6076213283133. , 2024-01-25, 17:07:27
+2024, 01, 25, 17:45:30, 18:23:38, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.6249357712434. , 2024-01-25, 17:45:30
+2024, 01, 25, 18:23:38, 19:01:41, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.61931886769827. , 2024-01-25, 18:23:38
+2024, 01, 25, 19:01:41, 19:39:48, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.4302290860115. , 2024-01-25, 19:01:41
+2024, 01, 25, 19:39:48, 20:17:51, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.65572594542243. , 2024-01-25, 19:39:48
+2024, 01, 25, 20:17:51, 20:55:53, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.76880181780854. , 2024-01-25, 20:17:51
+2024, 01, 25, 20:55:53, 21:33:56, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.29166022596416. , 2024-01-25, 20:55:53
+2024, 01, 25, 21:33:56, 22:11:58, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.59234202846864. , 2024-01-25, 21:33:56
+2024, 01, 25, 22:11:58, 22:50:01, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.57768371337596. , 2024-01-25, 22:11:58
+2024, 01, 25, 22:50:01, 23:28:03, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.7328286233153. , 2024-01-25, 22:50:01
+2024, 01, 25, 23:28:03, 00:06:05, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.6130275543284. , 2024-01-25, 23:28:03
+2024, 01, 26, 00:06:05, 00:44:08, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.4413443345793. , 2024-01-26, 00:06:05
+2024, 01, 26, 00:44:08, 01:22:10, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.47006814491215. , 2024-01-26, 00:44:08
+2024, 01, 26, 01:22:10, 02:00:13, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.7580896183938. , 2024-01-26, 01:22:10
+2024, 01, 26, 02:00:13, 02:38:16, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.65858735609. , 2024-01-26, 02:00:13
+2024, 01, 26, 02:38:16, 03:16:15, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.5281277380083. , 2024-01-26, 02:38:16
+2024, 01, 26, 03:16:15, 03:54:17, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.69099599929547. , 2024-01-26, 03:16:15
+2024, 01, 26, 03:54:17, 04:32:15, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.7584077931303. , 2024-01-26, 03:54:17
+2024, 01, 26, 04:32:15, 05:10:13, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.3871646235148. , 2024-01-26, 04:32:15
+2024, 01, 26, 05:10:13, 05:48:15, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.5973800031734. , 2024-01-26, 05:10:13
+2024, 01, 26, 05:48:15, 06:26:12, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.71611969414727. , 2024-01-26, 05:48:15
+2024, 01, 26, 06:26:12, 07:04:10, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.7322689297829. , 2024-01-26, 06:26:12
+2024, 01, 26, 07:04:10, 07:42:04, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.63352086414756. , 2024-01-26, 07:04:10
+2024, 01, 26, 07:42:04, 08:20:01, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.73956937976897. , 2024-01-26, 07:42:04
+2024, 01, 26, 08:20:01, 08:33:11, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.67000086649875. Failed on check GC: GC not ready in time. Aborting run., 2024-01-26, 08:20:01
+2024, 01, 26, 09:05:46, 09:17:12, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.76272134897766. , 2024-01-26, 09:05:46
+2024, 01, 26, 10:41:20, 11:15:47, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.59242966394584. , 2024-01-26, 10:41:20
+2024, 01, 26, 11:15:47, 11:53:35, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.4749011437718. , 2024-01-26, 11:15:47
+2024, 01, 26, 11:53:35, 12:31:42, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.756792445764. , 2024-01-26, 11:53:35
+2024, 01, 28, 15:10:55, 15:18:28, custom.txt, 2, flow=100 volume=50 temp=310 inject=21 blank=False. sampling returned: 50.15600401379744. , 2024-01-28, 15:10:55
+2024, 01, 28, 15:37:33, 15:54:40, custom.txt, 15, flow=100 volume=1000 temp=310 inject=21 blank=False. sampling returned: 1000.9566980698582. , 2024-01-28, 15:37:33
+2024, 01, 28, 16:10:01, 16:21:27, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.74832028264706. , 2024-01-28, 16:10:01
+2024, 01, 28, 17:08:44, 17:25:10, custom.txt, 15, flow=100 volume=1000 temp=310 inject=20 blank=False. sampling returned: 1001.1883315059509. , 2024-01-28, 17:08:44
+2024, 01, 29, 14:32:36, 14:44:06, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.5106242135177. , 2024-01-29, 14:32:36
+2024, 01, 29, 15:03:03, 15:18:03, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.60787688598236. , 2024-01-29, 15:03:03
+2024, 01, 29, 15:33:03, 15:53:35, custom.txt, 15, flow=100 volume=1000 temp=310 inject=21 blank=False. sampling returned: 1001.3166068320085. , 2024-01-29, 15:33:03
+2024, 01, 29, 16:28:48, 16:40:13, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.6701218141568. , 2024-01-29, 16:28:48
+2024, 01, 29, 17:40:45, 17:52:11, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.35033271111314. , 2024-01-29, 17:40:45
+2024, 01, 30, 12:01:51, 12:35:46, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.21059352154174. , 2024-01-30, 12:01:51
+2024, 01, 30, 12:35:46, 13:11:36, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.52893854551115. , 2024-01-30, 12:35:46
+2024, 01, 30, 13:11:36, 13:47:38, custom.txt, 15, flow=100 volume=500 temp=310 inject=21 blank=False. sampling returned: 500.73336846555674. , 2024-01-30, 13:11:36
+2024, 02, 01, 13:54:37, 14:09:46, custom.txt, 15, flow=100 volume=500 temp=310 inject=30 blank=False. sampling returned: 500.60928100474814. , 2024-02-01, 13:54:37
+2024, 02, 05, 09:58:57, 10:35:39, custom.txt, 15, flow=100 volume=500 temp=310 inject=30 blank=False. sampling returned: 500.61224572560053. , 2024-02-05, 09:58:57
+2024, 02, 05, 10:35:39, 11:11:55, custom.txt, 15, flow=100 volume=500 temp=310 inject=30 blank=False. sampling returned: 500.6176027858364. , 2024-02-05, 10:35:39
+2024, 02, 05, 11:11:55, 11:48:07, custom.txt, 15, flow=100 volume=500 temp=310 inject=30 blank=False. sampling returned: 500.24621130469205. , 2024-02-05, 11:11:55
+2024, 02, 05, 11:49:30, 12:15:22, custom.txt, 15, flow=100 volume=500 temp=310 inject=60 blank=False. sampling returned: 500.61975011164685. Failed on off: signal_handler() takes 2 positional arguments but 3 were given, 2024-02-05, 11:49:30
+2024, 02, 05, 12:34:54, 12:46:20, custom.txt, 15, flow=100 volume=500 temp=310 inject=30 blank=False. sampling returned: 500.5612533224273. , 2024-02-05, 12:34:54
+2024, 02, 05, 13:03:40, 13:22:32, custom.txt, 15, flow=50 volume=500 temp=310 inject=30 blank=False. sampling returned: 500.6234769799729. , 2024-02-05, 13:03:40
+2024, 02, 05, 13:27:26, 13:58:54, custom.txt, 15, flow=100 volume=2000 temp=310 inject=30 blank=False. sampling returned: 2002.8263867764579. , 2024-02-05, 13:27:26
+2024, 02, 05, 15:13:41, 15:25:07, custom.txt, 15, flow=100 volume=500 temp=310 inject=30 blank=False. sampling returned: 500.5684215793622. , 2024-02-05, 15:13:41
+2024, 02, 05, 15:50:16, 16:01:43, custom.txt, 15, flow=100 volume=500 temp=310 inject=30 blank=False. sampling returned: 500.77987153353456. , 2024-02-05, 15:50:16
+2024, 02, 05, 16:08:46, 16:24:38, custom.txt, 15, flow=100 volume=500 temp=290 inject=30 blank=False. sampling returned: 500.3508216777625. Failed on off: signal_handler() takes 2 positional arguments but 3 were given, 2024-02-05, 16:08:46
+2024, 02, 05, 16:37:18, 16:50:28, custom.txt, 15, flow=100 volume=500 temp=295 inject=27 blank=False. sampling returned: 500.6349475334759. Failed on check GC: GC not ready in time. Aborting run., 2024-02-05, 16:37:18
+2024, 02, 05, 16:51:21, 16:57:41, custom.txt, 15, flow=100 volume=1 temp=295 inject=27 blank=False. sampling returned: 1.0673485039665302. , 2024-02-05, 16:51:21

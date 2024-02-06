@@ -57,7 +57,7 @@ class pre_con:
             
             self.current_state = {}
             self.current_state = {'name':      'off',
-                                  'valves':    [0,0,0,0],
+                                  'valves':    [0,0,0,0,0],
                                   "h2o":       None,
                                   "ads":       None,
                                   "sample":    None,
@@ -83,10 +83,10 @@ class pre_con:
             pos = positions[1:-1]
             pos.append(0)
             pos.append(positions[-1])
-            self.valve(range(0,5), pos)
+            self.valve(range(0, 6), pos)
             self.current_state['name'] = 'manual override'
-            self.current_state['valves'] = pos[1:4]
-            self.current_state['pump'] = pos[5]
+            self.current_state['valves'] = pos[1:5]
+            self.current_state['pump'] = pos[6]
 
 ###########################################################################
 # Code for PID Controllers
@@ -131,7 +131,11 @@ class pre_con:
         val = []
         for i in position:
             msg = 'MFC[{}].flowrate({})'.format(i, flowrate)
-            val.append(self.mfc.echo(msg, timeout = self.mfc.timeout))
+            if flowrate == None:
+                timeout = 0.5
+            else:
+                timeout = self.mfc.timeout
+            val.append(self.mfc.echo(msg, timeout=timeout))
         return val
 
     def sample(self, flowrate=None, display=True):
@@ -158,7 +162,7 @@ class pre_con:
     def valve(self, valve=None, position=None):
         if isinstance(valve, int):
             self.vc.write(f'v[{valve}]({position})')
-            if valve < 4:
+            if valve < 5:
                 self.current_state['valves'][valve] = position
         if isinstance(valve, (list, range)):
             check = []
@@ -209,10 +213,10 @@ class pre_con:
         if command == None:
             print(f"The pump is currently turned {self.current_state['pump']}.")
         elif (command == 'off') or (command == 0):
-            self.valve(4, 0)
+            self.valve(5, 0)
             self.current_state['pump'] = 'off'
         elif (command == 'on') or (command == 1):
-            self.valve(4, 1)
+            self.valve(5, 1)
             self.current_state['pump'] = 'on'
         else:
             print('Invalid input, must be 0 or 1, or "off or "on". Use no input to return the current pump state.')
@@ -348,7 +352,7 @@ class pre_con:
             print('GC ready.')
             dt = new_state['value']
             if new_state['value'] == None:
-                return True
+                return
             
         #######################################################
         # Precision Timing Condition
@@ -484,11 +488,12 @@ class pre_con:
             t0 = time.time()
             while time.time() < t0 + dt:
                 t = time.time() - t0
-                progressbar(i = t,
-                            total = dt,
-                            remaining = dt - t,
-                            units='s',
-                            interval = 'seconds')
+                if dt > 10:
+                    progressbar(i = t,
+                                total = dt,
+                                remaining = dt - t,
+                                units='s',
+                                interval = 'seconds')
                 time.sleep(.2)
             progressbar(i=dt, total=dt, remaining=0, units='s', interval='seconds')
 
@@ -610,6 +615,7 @@ class pre_con:
             notes += f'Run time of {round(run_time,2)} to {round(run_time+timeout,2)} minutes.\n'
         notes += f'{name} has {len(sequence)} states.\n'
         print(notes)
+        return run_time
         
     def run_sequence(self, name=None, stream=None, notes=''):
         """
@@ -632,26 +638,25 @@ class pre_con:
             name = 'User Input Sequence'
             modified_date = datetime.now().strftime('%Y-%m-%d, %H:%M:%S')
         error_flag = False
-
-        if stream != None:
+        if stream != None and stream != self.stream():
             print(f'Selecting sample #{stream}.')
+            self.pump(1)
             self.stream(stream)
+            self.state('flush')
+            self.state('standby')
         else:
             stream = self.stream()
 
-        notes = ""
         try:
             for state in sequence:
                 result = self.state(state)
                 if result != None:
                     notes += f'{state["name"]} returned: {result}. '
         except Exception as x:
-            notes = f'Failed on {state["name"]}: {x}'
+            notes += f'Failed on {state["name"]}: {x}'.replace('\n', '')
             error_flag = True
-            print(notes)
-        
+
         end_time = datetime.now().strftime('%H:%M:%S')
-        notes = notes.replace('\n', '')
         log_entry = f'\n{start_time}, {end_time}, {name}'
         log_entry += f', {str(stream)}, {notes}, {modified_date}'
         with open('src/Sample Sequencing/log.csv', 'a') as file:
@@ -660,6 +665,8 @@ class pre_con:
         if error_flag:
             self.state('off')
             raise Exception(notes)
+        else:
+            print(notes)
 
     def standard_run(self, flow=None, volume=None, temp=None, delay=None,
                      inject=None, blank=False, stream=None):
@@ -675,7 +682,7 @@ class pre_con:
         if temp is None:
             temp = 300
         if inject is None:
-            inject = 20
+            inject = 30
         if delay is None:
             delay = 0
 
@@ -705,10 +712,6 @@ class pre_con:
                 else:
                     sequence.remove(state)
                     
-        if delay > 0:
-            sequence[-1]['condition'] = 'time'
-            sequence[-1]['value'] = delay
-        
         if blank:
             for state in sequence.copy():
                 if (state['name'] == 'flush') or (state['name'] == 'sampling'):
@@ -716,9 +719,19 @@ class pre_con:
         
         with open('src/Sample Sequencing/custom.txt', 'w') as file:
             file.write(json.dumps(sequence))
-        notes = f'flow={flow} volume={volume} temp={temp} inject={inject} blank={blank}'
-        if stream is None:
-            stream = [None]
+
+        if delay > 0:
+            sequence[-1]['condition'] = 'time'
+            block_print()
+            run_time = self.check_sequence('custom')
+            enable_print()
+            sequence[-1]['value'] = delay - run_time
+            with open('src/Sample Sequencing/custom.txt', 'w') as file:
+                file.write(json.dumps(sequence))
+
+        notes = f'flow={flow} volume={volume} temp={temp} inject={inject} blank={blank}. '
+        if stream is None or isinstance(stream, int):
+            stream = [stream]
         for index in stream:
             self.run_sequence(name='custom.txt', stream=index, notes=notes)
         
