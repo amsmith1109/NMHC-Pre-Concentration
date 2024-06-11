@@ -1,0 +1,54 @@
+Successfully connected to adsorbent trap!
+Successfully connected to MFC Controller!
+Successfully connected to Valve Controller!
+
+Beginning state: off.
+
+Sample flow disabled.
+Backflush flow disabled.
+Set point changed to: -99.
+
+**********************************************************************
+                          BEGINNING DAY RUN.                          
+**********************************************************************
+Checking sequence custom, last modified: 2024-02-17, 13:04:27
+
+List of states:
+cool down
+flush
+sampling
+pre-backflush
+backflush
+drop backflush
+isolate trap
+check GC
+flash heat
+check heater
+start GC
+inject
+bake out
+post bake
+off
+
+No errors or warnings were detected.
+Run time of 25.4 to 50.55 minutes.
+custom has 15 states.
+
+
+Beginning state: cool down.
+
+Checking that ads trap temperature is <-30.
+
+Temperature threshold reached! Currently measuring -31.2
+
+
+Beginning state: flush.
+
+Setting sample flow rate to 100. Please wait for flow to stabilize.
+Waiting to proceed.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: sampling.
+
+Precision timed pulse on valve 1.
+[                    ] 0.00 min [20.00 minutes remaining]     [                    ] 0.01 min [19.99 minutes remaining]     [                    ] 0.01 min [19.99 minutes remaining]     [                    ] 0.02 min [19.98 minutes remaining]     [                    ] 0.02 min [19.98 minutes remaining]     [                    ] 0.03 min [19.97 minutes remaining]     [                    ] 0.03 min [19.97 minutes remaining]     [                    ] 0.04 min [19.96 minutes remaining]     [                    ] 0.04 min [19.96 minutes remaining]     [                    ] 0.05 min [19.95 minutes remaining]     [                    ] 0.05 min [19.95 minutes remaining]     [                    ] 0.06 min [19.94 minutes remaining]     [                    ] 0.06 min [19.94 minutes remaining]     [                    ] 0.07 min [19.93 minutes remaining]     [                    ] 0.08 min [19.92 minutes remaining]     [                    ] 0.08 min [19.92 minutes remaining]     [                    ] 0.09 min [19.91 minutes remaining]     [                    ] 0.09 min [19.91 minutes remaining]     [                    ] 0.10 min [19.90 minutes remaining]     [                    ] 0.10 min [19.90 minutes remaining]     [                    ] 0.11 min [19.89 minutes remaining]     [                    ] 0.11 min [19.89 minutes remaining]     [                    ] 0.12 min [19.88 minutes remaining]     [                    ] 0.12 min [19.88 minutes remaining]     [                    ] 0.13 min [19.87 minutes remaining]     [                    ] 0.13 min [19.87 minutes remaining]     [                    ] 0.14 min [19.86 minutes remaining]     [                    ] 0.15 min [19.85 minutes remaining]     [                    ] 0.15 min [19.85 minutes remaining]     [                    ] 0.16 min [19.84 minutes remaining]     [                    ] 0.16 min [19.84 minutes remaining]     [                    ] 0.17 min [19.83 minutes remaining]     [                    ] 0.17 min [19.83 minutes remaining]     [                    ] 0.18 min [19.82 minutes remaining]     [                    ] 0.18 min [19.82 minutes remaining]     [                    ] 0.19 min [19.81 minutes remaining]     [                    ] 0.19 min [19.81 minutes remaining]     [                    ] 0.20 min [19.80 minutes remaining]     [                    ] 0.20 min [19.80 minutes remaining]     [                    ] 0.21 min [19.79 minutes remaining]     [                    ] 0.22 min [19.78 minutes remaining]     [                    ] 0.22 min [19.78 minutes remaining]     [                    ] 0.23 min [19.77 minutes remaining]     [                    ] 0.23 min [19.77 minutes remaining]     [                    ] 0.24 min [19.76 minutes remaining]     [                    ] 0.24 min [19.76 minutes remaining]     [                    ] 0.25 min [19.75 minutes remaining]     [                    ] 0.25 min [19.75 minutes remaining]     [                    ] 0.26 min [19.74 minutes remaining]     [                    ] 0.26 min [19.74 minutes remaining]     [                    ] 0.27 min [19.73 minutes remaining]     [                    ] 0.27 min [19.73 minutes remaining]     [                    ] 0.28 min [19.72 minutes remaining]     [                    ] 0.29 min [19.71 minutes remaining]     [                    ] 0.29 min [19.71 minutes remaining]     [                    ] 0.30 min [19.70 minutes remaining]     [                    ] 0.30 min [19.70 minutes remaining]     [                    ] 0.31 min [19.69 minutes remaining]     [                    ] 0.31 min [19.69 minutes remaining]     

@@ -1,0 +1,5 @@
+usage: pre_con.py [-h] [-r] [-m METHOD] [-s SEQUENCE] [-c] [-l] [--flow FLOW]
+                  [--volume VOLUME] [--temp TEMP] [--inject INJECT] [--blank]
+                  [--stream STREAM [STREAM ...]] [--repeat REPEAT]
+                  [--delay DELAY]
+pre_con.py: error: unrecognized arguments: --continuous

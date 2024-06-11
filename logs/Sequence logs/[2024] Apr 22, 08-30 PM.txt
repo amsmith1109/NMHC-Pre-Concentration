@@ -1,0 +1,34 @@
+Successfully connected to adsorbent trap on port /dev/ttyUSB2!
+Successfully connected to MFC Controller on port /dev/ttyUSB1!
+Successfully connected to Valve Controller on port /dev/ttyUSB0!
+**********************************************************************
+*                    BEGINNING SEQUENCE: DR.TXT.                     *
+**********************************************************************
+**********************************************************************
+*                        BEGINNING RUN (1/1)                         *
+*                        METHOD: 2000 ML TEST                        *
+*                      SAMPLE: "BREATHING AIR".                      *
+**********************************************************************
+Beginning state: cool down.
+
+Checking that ads trap temperature is < -29.
+
+Temperature threshold reached! Currently measuring -29.0
+
+Beginning state: flush.
+
+Setting backflush flow rate to 35. Please wait for flow to stabilize.
+Waiting 12 seconds to proceed.
+Wait will complete at [2024] Apr 22 20:31:03.
+[====================] 12.00 s [0.00 seconds remaining]     
+Beginning state: sampling.
+
+Precision timed pulse (0.5 min) on valve 1.
+Pulse will complete at [2024] Apr 22 20:31:33.
+True volume: -1.0745820115665 mL
+Beginning state: pre-backflush.
+
+Sample flow disabled.
+Setting backflush flow rate to 50. Please wait for flow to stabilize.
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 22 20:31:52.

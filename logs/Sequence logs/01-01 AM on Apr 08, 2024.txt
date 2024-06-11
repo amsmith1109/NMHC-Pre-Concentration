@@ -1,0 +1,59 @@
+Successfully connected to Valve Controller on port /dev/ttyUSB2!
+Successfully connected to adsorbent trap on port /dev/ttyUSB1!
+Successfully connected to MFC Controller on port /dev/ttyUSB0!
+
+Beginning state: off.
+
+Sample flow disabled.
+Backflush flow disabled.
+Set point changed to: -99.
+
+**********************************************************************
+*                    BEGINNING SEQUENCE: DR.TXT.                     *
+**********************************************************************
+**********************************************************************
+*                        BEGINNING RUN (1/1)                         *
+*                        METHOD: 2000 ML TEST                        *
+*                      SAMPLE: "BREATHING AIR".                      *
+**********************************************************************
+Selecting sample #15.
+Running change over method to prime sample line.
+
+Beginning state: evacuate.
+
+Waiting 30 seconds to proceed.
+Wait will complete at [2024] Apr 08 01:01:46.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: flush.
+
+Setting sample flow rate to 50. Please wait for flow to stabilize.
+Waiting 30 seconds to proceed.
+Wait will complete at [2024] Apr 08 01:02:32.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: off.
+
+Sample flow disabled.
+
+
+Change over complete. Continuing to 2000 mL test method.
+
+Beginning state: cool down.
+
+Checking that ads trap temperature is < -29.
+
+Temperature threshold reached! Currently measuring -30.0
+
+
+Beginning state: flush.
+
+Setting sample flow rate to 35. Please wait for flow to stabilize.
+Waiting 12 seconds to proceed.
+Wait will complete at [2024] Apr 08 01:02:56.
+[====================] 12.00 s [0.00 seconds remaining]     
+
+Beginning state: sampling.
+
+Precision timed pulse (1 min) on valve 1.
+Pulse will complete at [2024] Apr 08 01:03:56.

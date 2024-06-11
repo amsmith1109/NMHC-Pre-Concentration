@@ -1,0 +1,17 @@
+Successfully connected to MFC Controller on port /dev/ttyUSB2!
+Successfully connected to adsorbent trap on port /dev/ttyUSB1!
+Successfully connected to Valve Controller on port /dev/ttyUSB0!
+
+Beginning state: off.
+
+Set point changed to: -99.
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 996, in <module>
+    pc = pre_con()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 67, in __init__
+    self.state('off')
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 492, in state
+    self.aux(position=aux)
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 271, in aux
+    raise ValueError(f'Invalid aux input: {i}-{position[i]}')
+ValueError: Invalid aux input: 0-0

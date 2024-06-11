@@ -1,0 +1,44 @@
+Successfully connected to adsorbent trap on port /dev/ttyUSB2!
+Successfully connected to MFC Controller on port /dev/ttyUSB0!
+Successfully connected to Valve Controller on port /dev/ttyUSB1!
+**********************************************************************
+*                    BEGINNING SEQUENCE: DR.TXT.                     *
+**********************************************************************
+**********************************************************************
+*                        BEGINNING RUN (1/1)                         *
+*                        METHOD: 2000 ML REF                         *
+*                      SAMPLE: "BREATHING AIR".                      *
+**********************************************************************
+Beginning state: cool down.
+
+Checking that ads is <-29
+
+ads threshold reached! Currently measuring -29.00
+
+Beginning state: pre-check battery.
+
+Checking that battery is >13.8
+Beginning state: off.
+
+Set point changed to: -99.
+Sample flow disabled.
+Backflush flow disabled.
+
+Beginning state: off.
+
+Set point changed to: -99.
+Sample flow disabled.
+Backflush flow disabled.
+
+<class 'Exception'>
+("Failed at [2024] Apr 27 18:51:57 on pre-check battery: unsupported operand type(s) for -: 'float' and 'NoneType'. Sample Name: Breathing Air",)
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 1005, in <module>
+    pc.run_sequence(args.sequence, continuous=args.continuous)
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 892, in run_sequence
+    raise x
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 881, in run_sequence
+    self.run_method(item['Method'],
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 777, in run_method
+    raise Exception(f'{error_notes} {notes}')
+Exception: Failed at [2024] Apr 27 18:51:57 on pre-check battery: unsupported operand type(s) for -: 'float' and 'NoneType'. Sample Name: Breathing Air

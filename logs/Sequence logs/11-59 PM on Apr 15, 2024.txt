@@ -1,0 +1,145 @@
+Successfully connected to MFC Controller on port /dev/ttyUSB2!
+Successfully connected to adsorbent trap on port /dev/ttyUSB1!
+Successfully connected to Valve Controller on port /dev/ttyUSB0!
+**********************************************************************
+*                    BEGINNING SEQUENCE: DR.TXT.                     *
+**********************************************************************
+**********************************************************************
+*                        BEGINNING RUN (1/1)                         *
+*                        METHOD: 2000 ML TEST                        *
+*                      SAMPLE: "BREATHING AIR".                      *
+**********************************************************************
+Selecting sample #15.
+Running change over method to prime sample line.
+
+Beginning state: evacuate.
+
+Waiting 30 seconds to proceed.
+Wait will complete at [2024] Apr 15 23:59:42.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: flush.
+
+Setting sample flow rate to 50. Please wait for flow to stabilize.
+Waiting 30 seconds to proceed.
+Wait will complete at [2024] Apr 16 00:00:30.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: off.
+
+Sample flow disabled.
+
+
+Change over complete. Continuing to 2000 mL test method.
+
+Beginning state: cool down.
+
+Checking that ads trap temperature is < -29.
+
+Temperature threshold reached! Currently measuring -28.9
+
+
+Beginning state: flush.
+
+Setting backflush flow rate to 35. Please wait for flow to stabilize.
+Waiting 12 seconds to proceed.
+Wait will complete at [2024] Apr 16 00:06:50.
+[====================] 12.00 s [0.00 seconds remaining]     
+
+Beginning state: sampling.
+
+Precision timed pulse (0.5 min) on valve 1.
+Pulse will complete at [2024] Apr 16 00:07:20.
+True volume: 17.556986839398338 mL
+
+Beginning state: pre-backflush.
+
+Sample flow disabled.
+Setting backflush flow rate to 50. Please wait for flow to stabilize.
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 16 00:07:40.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: backflush.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 16 00:07:56.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: drop backflush.
+
+Setting backflush flow rate to 15. Please wait for flow to stabilize.
+
+
+Beginning state: isolate trap.
+
+Waiting 3 seconds to proceed.
+Wait will complete at [2024] Apr 16 00:08:06.
+[====================] 3.00 s [0.00 seconds remaining]     
+
+Beginning state: check GC.
+
+Waiting for GC to be ready.
+Method will time out at [2024] Apr 16 00:14:06 if the GC is not ready.
+GC ready.
+
+Beginning state: flash heat.
+
+Setting calibrated setpoint for 290
+Set point changed to: 688.7.
+Waiting 6 seconds to proceed.
+Wait will complete at [2024] Apr 16 00:08:14.
+[====================] 6.00 s [0.00 seconds remaining]     
+
+Beginning state: check heater.
+
+Checking that ads trap temperature is > 275.
+
+Temperature threshold reached! Currently measuring 278.7
+
+
+Beginning state: inject.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 16 00:08:33.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: bake out.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 16 00:08:49.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: post bake.
+
+Set point changed to: -99.
+Waiting 30 seconds to proceed.
+Wait will complete at [2024] Apr 16 00:09:20.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: off.
+
+Set point changed to: -99.
+<class 'TypeError'>
+('string indices must be integers',)
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 770, in run_method
+    result = self.state(state, background=background)
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 490, in state
+    self.aux(position=aux)
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 271, in aux
+    self.current_state['aux'][i] = position[i]
+TypeError: 'NoneType' object does not support item assignment
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 1051, in <module>
+    pc.run_sequence(args.sequence, continuous=args.continuous)
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 907, in run_sequence
+    raise x
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 896, in run_sequence
+    self.run_method(item['Method'],
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 779, in run_method
+    error_notes = f'Failed at {now()} on {state["name"]}: {x}.'.replace('\n', '')
+TypeError: string indices must be integers

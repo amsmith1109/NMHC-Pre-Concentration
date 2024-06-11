@@ -1,0 +1,27 @@
+[
+{"name":	"Initialize Off",
+"valves": 	[0,0,0,1,0],
+"pump":		0,
+"backflush":	0,
+"sample":	0,
+"ads":		-99,
+"h2o":		-99,
+"condition":"manual",
+"message":	"This method will allow you to check that both MFCs are working properly. Make sure you have selected a sample line that is pressurized. Check the rotameter on the side of the machine to verify flow."
+},
+{"name":	"sample 100 sccm",
+"sample":   100,
+"condition":"manual"
+},
+{"name":	"backflush 100 sccm",
+"valves":	[0,0,1,1,0],
+"sample":	0,
+"backflush":   100,
+"condition":"manual"
+},
+{"name":	"off",
+"valves":	[0,0,0,0,0],
+"backflush":0,
+"pump":		0
+}
+]
