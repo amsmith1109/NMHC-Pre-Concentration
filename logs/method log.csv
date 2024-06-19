@@ -1037,3 +1037,316 @@ start date, end date, method, input port, method creation date, error log
 [2024] Apr 30 20:50:48, [2024] Apr 30 20:50:56, bake out.txt, 15, , [2024] Feb 22 16:08:25, Failed at [2024] Apr 30 20:50:56 on pre-backflush: signal_handler() takes 2 positional arguments but 3 were given.
 [2024] Apr 30 22:11:13, [2024] Apr 30 22:11:22, User Input method, 15, , [2024] Apr 30 22:11:13, 
 [2024] Apr 30 22:16:27, [2024] Apr 30 22:16:39, 2000 mL test, 15, check battery returned: 13.56. , [2024] Apr 30 21:58:48, Failed at [2024] Apr 30 22:16:39 on flush: signal_handler() takes 2 positional arguments but 3 were given.
+[2024] May 01 15:06:37, [2024] May 01 15:38:12, custom.txt, 15, flow=100 volume=250 temp=300 inject=30 blank=False.  pre-check battery returned: 14.39.  sampling returned: 249.52.  check heater returned: 298.30.  post-check battery returned: 13.35. , [2024] May 01 15:06:37, 
+[2024] May 01 15:38:12, [2024] May 01 16:10:05, custom.txt, 15, flow=100 volume=500 temp=300 inject=30 blank=False.  pre-check battery returned: 14.41.  sampling returned: 499.21.  check heater returned: 299.60.  post-check battery returned: 13.35. , [2024] May 01 15:38:12, 
+[2024] May 01 16:10:05, [2024] May 01 16:41:34, custom.txt, 15, flow=100 volume=750 temp=300 inject=30 blank=False.  pre-check battery returned: 14.08.  sampling returned: 750.24.  check heater returned: 303.80.  post-check battery returned: 13.36. , [2024] May 01 16:10:05, 
+[2024] May 01 16:41:34, [2024] May 01 17:14:16, custom.txt, 15, flow=100 volume=1000 temp=300 inject=30 blank=False.  pre-check battery returned: 13.80.  sampling returned: 1000.44.  check heater returned: 302.50.  post-check battery returned: 13.36. , [2024] May 01 16:41:34, 
+[2024] May 01 17:14:17, [2024] May 01 17:49:32, custom.txt, 15, flow=100 volume=1250 temp=300 inject=30 blank=False.  pre-check battery returned: 13.81.  sampling returned: 1251.06.  check heater returned: 302.90.  post-check battery returned: 13.36. , [2024] May 01 17:14:17, 
+[2024] May 01 17:49:32, [2024] May 01 17:54:43, custom.txt, 15, flow=100 volume=1500 temp=300 inject=30 blank=False. , [2024] May 01 17:49:32, Failed at [2024] May 01 17:54:43 on pre-check battery: battery failed to reach 13.8 in time. Currently measuring: 13.65.
+[2024] May 03 13:03:04, [2024] May 03 13:03:59, custom.txt, 15, flow=100 volume=1 temp=300 inject=30 blank=True.  pre-check battery returned: 14.39. , [2024] May 03 13:03:04, Failed at [2024] May 03 13:03:59 on backflush: division by zero.
+[2024] May 03 13:08:35, [2024] May 03 13:09:27, custom.txt, 15, flow=100 volume=1 temp=300 inject=30 blank=True.  pre-check battery returned: 14.39. , [2024] May 03 13:08:35, Failed at [2024] May 03 13:09:27 on backflush: division by zero.
+[2024] May 03 13:12:57, [2024] May 03 13:17:30, custom.txt, 15, flow=100 volume=1 temp=300 inject=30 blank=True.  pre-check battery returned: 14.39.  check heater returned: 303.80.  post-check battery returned: 13.34. , [2024] May 03 13:12:57, 
+[2024] May 03 13:44:17, [2024] May 03 13:51:43, custom.txt, 15, flow=100 volume=1 temp=300 inject=30 blank=True.  pre-check battery returned: 14.40.  check heater returned: 300.80.  post-check battery returned: 13.36. , [2024] May 03 13:44:17, 
+[2024] May 03 14:27:45, [2024] May 03 14:32:24, custom.txt, 15, flow=100 volume=1 temp=300 inject=30 blank=True.  pre-check battery returned: 14.40.  check heater returned: 302.40.  post-check battery returned: 13.36. , [2024] May 03 14:27:45, 
+[2024] May 03 18:52:08, [2024] May 03 18:52:17, custom.txt, 2, Blank run. , [2024] May 03 18:52:08, Failed at [2024] May 03 18:52:17 on cool down: signal_handler() takes 2 positional arguments but 3 were given.
+[2024] May 03 18:54:32, [2024] May 03 18:54:37, custom.txt, 2, Blank run. , [2024] May 03 18:54:32, Failed at [2024] May 03 18:54:37 on cool down: signal_handler() takes 2 positional arguments but 3 were given.
+[2024] May 03 18:54:43, [2024] May 03 18:54:54, custom.txt, 2, Blank run. , [2024] May 03 18:54:43, Failed at [2024] May 03 18:54:54 on cool down: signal_handler() takes 2 positional arguments but 3 were given.
+[2024] May 06 16:37:56, [2024] May 06 16:38:38, custom.txt, 2, flow=100 volume=1000 temp=300 inject=21.0.  cool down returned: -32.00.  pre-battery check returned: 14.39. , [2024] May 06 16:37:56, Failed at [2024] May 06 16:38:38 on flush: Setpoint not reached before the timeout of 30 s.>>>  (from uPy device).
+[2024] May 06 16:41:13, [2024] May 06 16:41:22, custom.txt, 15, flow=100 volume=1000 temp=300 inject=21.0. , [2024] May 06 16:41:13, Failed at [2024] May 06 16:41:22 on cool down: signal_handler() takes 2 positional arguments but 3 were given.
+[2024] May 06 17:12:30, [2024] May 06 17:17:02, bake out, 15, , [2024] Feb 22 16:08:25, 
+[2024] May 06 17:23:26, [2024] May 06 17:37:25, custom.txt, 15, flow=100 volume=1000 temp=300 inject=30.0.  cool down returned: -28.70.  pre-battery check returned: 13.45.  sampling returned: 1000.41. , [2024] May 06 17:23:26, Failed at [2024] May 06 17:37:25 on check heater: ads failed to reach 275 in time. Currently measuring: 124.20.
+[2024] May 06 19:38:01, [2024] May 06 19:40:02, custom.txt, 15, Blank run.  cool down returned: -31.40.  pre-battery check returned: 14.39. , [2024] May 06 19:38:01, Failed at [2024] May 06 19:40:02 on check heater: ads failed to reach 275 in time. Currently measuring: 130.70.
+[2024] May 06 19:40:15, [2024] May 06 19:50:40, custom.txt, 15, Blank run.  cool down returned: -28.80.  pre-battery check returned: 14.08.  check heater returned: 301.90.  battery check returned: 13.23. , [2024] May 06 19:40:15, 
+[2024] May 06 20:05:38, [2024] May 06 20:34:51, custom.txt, 15, flow=100 volume=1250 temp=300 inject=30.0.  cool down returned: -31.00.  pre-battery check returned: 13.50.  sampling returned: 1250.67.  check heater returned: 302.40.  battery check returned: 13.24. , [2024] May 06 20:05:38, 
+[2024] May 06 20:57:20, [2024] May 06 21:02:02, bake out, 15, , [2024] Feb 22 16:08:25, 
+[2024] May 07 13:56:20, [2024] May 07 14:18:46, custom.txt, 15, flow=100 volume=1250 temp=300 inject=30.0.  cool down returned: -31.40.  pre-battery check returned: 14.39.  sampling returned: 1250.04.  check heater returned: 291.90. , [2024] May 07 13:56:20, Failed at [2024] May 07 14:18:46 on inject: GC not ready in time. Aborting run.
+[2024] May 07 17:34:51, [2024] May 07 17:39:39, bake out, 15, , [2024] Feb 22 16:08:25, 
+[2024] May 07 17:39:57, [2024] May 07 17:52:44, custom.txt, 15, Blank run.  cool down returned: -28.90.  pre-battery check returned: 13.46.  check heater returned: 287.90.  battery check returned: 13.18. , [2024] May 07 17:39:57, 
+[2024] May 07 18:29:03, [2024] May 07 18:33:49, bake out, 15, , [2024] Feb 22 16:08:25, 
+[2024] May 07 18:46:44, [2024] May 07 19:17:52, custom.txt, 15, flow=100 volume=1500 temp=300 inject=30.0.  cool down returned: -30.50.  pre-battery check returned: 13.46.  sampling returned: 1502.60.  check heater returned: 298.90.  battery check returned: 13.34. , [2024] May 07 18:46:44, 
+[2024] May 07 19:17:53, [2024] May 07 19:52:29, custom.txt, 15, flow=100 volume=1750 temp=300 inject=30.0.  cool down returned: -29.60.  pre-battery check returned: 13.49.  sampling returned: 1753.03.  check heater returned: 300.50.  battery check returned: 13.34. , [2024] May 07 19:17:52, 
+[2024] May 07 19:52:29, [2024] May 07 20:28:36, custom.txt, 15, flow=100 volume=2000 temp=300 inject=30.0.  cool down returned: -29.60.  pre-battery check returned: 13.48.  sampling returned: 2002.79.  check heater returned: 298.80.  battery check returned: 13.34. , [2024] May 07 19:52:29, 
+[2024] May 07 20:28:36, [2024] May 07 21:07:12, custom.txt, 15, flow=100 volume=2250 temp=300 inject=30.0.  cool down returned: -29.60.  pre-battery check returned: 13.48.  sampling returned: 2253.44.  check heater returned: 298.80.  battery check returned: 13.34. , [2024] May 07 20:28:36, 
+[2024] May 07 21:07:12, [2024] May 07 21:48:20, custom.txt, 15, flow=100 volume=2500 temp=300 inject=30.0.  cool down returned: -29.90.  pre-battery check returned: 13.49.  sampling returned: 2503.67.  check heater returned: 297.80.  battery check returned: 13.33. , [2024] May 07 21:07:12, 
+[2024] May 08 14:56:39, [2024] May 08 14:56:50, custom.txt, 15, flow=25 volume=750 temp=300 inject=30.0.  cool down returned: -31.80.  pre-battery check returned: 14.39. , [2024] May 08 14:56:39, Failed at [2024] May 08 14:56:50 on flush: 'sampling is an invalid key'.
+[2024] May 08 15:04:56, [2024] May 08 15:05:07, custom.txt, 15, flow=25 volume=750 temp=300 inject=30.0.  cool down returned: -31.80.  pre-battery check returned: 14.39. , [2024] May 08 15:04:56, Failed at [2024] May 08 15:05:07 on flush: 'sampling is an invalid key'.
+[2024] May 08 15:20:26, [2024] May 08 15:20:57, custom.txt, 15, flow=25 volume=750 temp=300 inject=30.0.  cool down returned: -32.10.  pre-battery check returned: 14.39. , [2024] May 08 15:20:26, Failed at [2024] May 08 15:20:57 on flush: signal_handler() takes 2 positional arguments but 3 were given.
+[2024] May 08 15:21:26, [2024] May 08 16:09:09, custom.txt, 15, flow=25 volume=750 temp=300 inject=30.0.  cool down returned: -31.90.  pre-battery check returned: 14.39.  sampling returned: 755.44.  check heater returned: 296.30.  battery check returned: 13.31. , [2024] May 08 15:21:26, 
+[2024] May 08 16:09:09, [2024] May 08 16:43:25, custom.txt, 15, flow=50 volume=750 temp=300 inject=30.0.  cool down returned: -30.10.  pre-battery check returned: 13.48.  sampling returned: 751.50.  check heater returned: 299.30.  battery check returned: 13.35. , [2024] May 08 16:09:09, 
+[2024] May 08 16:43:25, [2024] May 08 17:03:05, custom.txt, 15, flow=75 volume=750 temp=300 inject=30.0.  cool down returned: -29.80.  pre-battery check returned: 13.47.  sampling returned: 749.78. , [2024] May 08 16:43:25, Failed at [2024] May 08 17:03:05 on check gc: GC not ready in time. Aborting run.
+[2024] May 08 17:39:22, [2024] May 08 18:27:05, custom.txt, 15, flow=25 volume=750 temp=300 inject=30.0.  cool down returned: -31.40.  pre-battery check returned: 14.39.  sampling returned: 755.32.  check heater returned: 298.40.  battery check returned: 13.33. , [2024] May 08 17:39:22, 
+[2024] May 08 18:48:59, [2024] May 08 18:52:34, bake out, 15, , [2024] Feb 22 16:08:25, Failed at [2024] May 08 18:52:34 on cool down: signal_handler() takes 2 positional arguments but 3 were given.
+[2024] May 08 18:53:08, [2024] May 08 18:54:21, custom.txt, 15, flow=25 volume=750 temp=300 inject=30.0. , [2024] May 08 18:53:08, Failed at [2024] May 08 18:54:21 on cool down: signal_handler() takes 2 positional arguments but 3 were given.
+[2024] May 08 18:54:26, [2024] May 08 20:00:24, custom.txt, 15, flow=25 volume=750 temp=300 inject=30.0.  cool down returned: -29.00.  pre-battery check returned: 13.44.  sampling returned: 755.36.  check heater returned: 296.20.  battery check returned: 13.33. , [2024] May 08 18:54:26, 
+[2024] May 08 20:00:24, [2024] May 08 20:42:02, custom.txt, 15, flow=50 volume=750 temp=300 inject=30.0.  cool down returned: -31.10.  pre-battery check returned: 14.41.  sampling returned: 751.10.  check heater returned: 297.90.  battery check returned: 13.33. , [2024] May 08 20:00:24, 
+[2024] May 08 20:42:02, [2024] May 08 21:18:22, custom.txt, 15, flow=75 volume=750 temp=300 inject=30.0.  cool down returned: -31.20.  pre-battery check returned: 14.43.  sampling returned: 750.48.  check heater returned: 299.00.  battery check returned: 13.34. , [2024] May 08 20:42:02, 
+[2024] May 08 21:18:22, [2024] May 08 21:53:02, custom.txt, 15, flow=100 volume=750 temp=300 inject=30.0.  cool down returned: -31.20.  pre-battery check returned: 14.41.  sampling returned: 750.25.  check heater returned: 298.80.  battery check returned: 13.36. , [2024] May 08 21:18:22, 
+[2024] May 08 21:53:02, [2024] May 08 22:27:43, custom.txt, 15, flow=125 volume=750 temp=300 inject=30.0.  cool down returned: -31.10.  pre-battery check returned: 13.82.  sampling returned: 750.38.  check heater returned: 299.40.  battery check returned: 13.36. , [2024] May 08 21:53:02, 
+[2024] May 09 13:42:04, [2024] May 09 13:42:05, custom.txt, 15, flow=100 volume=500 temp=300 inject=30.0. , [2024] May 09 13:42:03, Failed at [2024] May 09 13:42:05 on cool down: signal_handler() takes 2 positional arguments but 3 were given.
+[2024] May 09 13:42:56, [2024] May 09 13:47:44, bake out, 15, , [2024] Feb 22 16:08:25, 
+[2024] May 09 13:47:46, [2024] May 09 14:11:14, custom.txt, 15, flow=25 volume=125 temp=300 inject=30.0.  cool down returned: -28.80.  pre-battery check returned: 13.43.  sampling returned: 125.69. , [2024] May 09 13:47:46, Failed at [2024] May 09 14:11:14 on check gc: GC not ready in time. Aborting run.
+[2024] May 13 14:48:42, [2024] May 13 14:53:38, bake out, 15, , [2024] Feb 22 16:08:25, 
+[2024] May 13 15:04:00, [2024] May 13 15:51:49, custom.txt, 15, flow=25 volume=1000 temp=300 inject=30.0.  cool down returned: -31.40.  pre-battery check returned: 13.51.  sampling returned: 1007.13.  check heater returned: 296.50.  battery check returned: 13.32. , [2024] May 13 15:04:00, 
+[2024] May 13 15:51:49, [2024] May 13 16:27:09, custom.txt, 15, flow=50 volume=1000 temp=300 inject=30.0.  cool down returned: -28.90.  pre-battery check returned: 13.47.  sampling returned: 1001.74.  check heater returned: 297.20.  battery check returned: 13.32. , [2024] May 13 15:51:49, 
+[2024] May 13 16:27:09, [2024] May 13 17:01:25, custom.txt, 15, flow=75 volume=1000 temp=300 inject=30.0.  cool down returned: -28.90.  pre-battery check returned: 13.46.  sampling returned: 997.53.  check heater returned: 298.10.  battery check returned: 13.34. , [2024] May 13 16:27:09, 
+[2024] May 13 17:01:25, [2024] May 13 17:29:21, custom.txt, 15, flow=100 volume=1000 temp=300 inject=30.0.  cool down returned: -28.80.  pre-battery check returned: 13.46.  sampling returned: 1000.97. , [2024] May 13 17:01:25, Failed at [2024] May 13 17:29:21 on check gc: GC not ready in time. Aborting run.
+[2024] May 13 17:41:07, [2024] May 13 17:45:53, bake out, 15, , [2024] Feb 22 16:08:25, 
+[2024] May 13 18:18:15, [2024] May 13 18:34:24, custom.txt, 15, flow=100 volume=1000 temp=300 inject=30.0.  cool down returned: -32.10.  pre-battery check returned: 14.39.  sampling returned: 1001.64.  check heater returned: 294.60.  battery check returned: 13.34. , [2024] May 13 18:18:15, 
+[2024] May 13 18:34:24, [2024] May 13 19:00:35, custom.txt, 15, flow=125 volume=1000 temp=300 inject=30.0.  cool down returned: -28.90.  pre-battery check returned: 13.47.  sampling returned: 999.01. , [2024] May 13 18:34:24, Failed at [2024] May 13 19:00:35 on check gc: GC not ready in time. Aborting run.
+[2024] May 13 19:00:52, [2024] May 13 19:05:20, bake out, 15, , [2024] Feb 22 16:08:25, 
+[2024] May 13 19:10:55, [2024] May 13 19:26:08, custom.txt, 15, flow=125 volume=1000 temp=300 inject=30.0.  cool down returned: -28.90.  pre-battery check returned: 13.45.  sampling returned: 999.15.  check heater returned: 292.80.  battery check returned: 13.34. , [2024] May 13 19:10:55, 
+[2024] May 13 20:22:14, [2024] May 13 20:34:54, custom.txt, 15, flow=150 volume=1000 temp=300 inject=30.0.  cool down returned: -32.20.  pre-battery check returned: 14.39.  sampling returned: 1002.11.  check heater returned: 293.90.  battery check returned: 13.33. , [2024] May 13 20:22:14, 
+[2024] May 15 13:21:09, [2024] May 15 13:51:45, 2000 mL Ref, 15, pre-check battery returned: 14.39.  sampling returned: 2002.53.  check heater returned: 291.80.  post-check battery returned: 13.35. , [2024] Apr 30 20:17:55, 
+[2024] May 15 14:20:53, [2024] May 15 14:47:34, 2000 mL Ref, 15, pre-check battery returned: 14.39.  sampling returned: 2001.94.  check heater returned: 294.70.  post-check battery returned: 13.35. , [2024] Apr 30 20:17:55, 
+[2024] May 15 15:14:27, [2024] May 15 15:15:44, change over, 10, , [2024] Feb 22 14:51:17, 
+[2024] May 15 15:14:24, [2024] May 15 15:42:17, 2000 mL Ref, 10, pre-check battery returned: 14.40.  sampling returned: 2003.09.  check heater returned: 293.90.  post-check battery returned: 13.36. , [2024] Apr 30 20:17:55, 
+[2024] May 15 16:25:59, [2024] May 15 16:52:33, 2000 mL Ref, 10, pre-check battery returned: 14.39.  sampling returned: 2001.47.  check heater returned: 294.70.  post-check battery returned: 13.36. , [2024] Apr 30 20:17:55, 
+[2024] May 15 17:20:01, [2024] May 15 17:46:37, 2000 mL Ref, 10, pre-check battery returned: 14.40.  sampling returned: 1988.91.  check heater returned: 293.70.  post-check battery returned: 13.36. , [2024] Apr 30 20:17:55, 
+[2024] May 15 22:04:36, [2024] May 15 22:05:56, change over, 15, , [2024] Feb 22 14:51:17, 
+[2024] May 15 22:04:34, [2024] May 15 22:07:46, direct inject, 15, , [2024] May 15 22:04:05, 
+[2024] May 15 22:09:13, [2024] May 15 22:11:03, auto inject, 15, , [2024] May 15 22:08:53, 
+[2024] May 15 22:12:41, [2024] May 15 22:14:45, auto inject, 15, , [2024] May 15 22:08:53, 
+[2024] May 15 22:17:43, [2024] May 15 22:19:40, auto inject, 15, , [2024] May 15 22:17:40, 
+[2024] May 15 22:21:42, [2024] May 15 22:23:00, change over, 10, , [2024] Feb 22 14:51:17, 
+[2024] May 15 22:21:39, [2024] May 15 22:24:57, auto inject, 10, , [2024] May 15 22:17:40, 
+[2024] May 15 22:27:58, [2024] May 15 22:29:15, change over, 15, , [2024] Feb 22 14:51:17, 
+[2024] May 15 22:27:56, [2024] May 15 22:31:05, direct inject, 15, , [2024] May 15 22:04:05, 
+[2024] May 15 22:38:03, [2024] May 15 22:40:31, direct inject, 15, , [2024] May 15 22:37:54, 
+[2024] May 15 22:53:01, [2024] May 15 22:54:17, change over, 10, , [2024] Feb 22 14:51:17, 
+[2024] May 15 22:52:57, [2024] May 15 22:56:35, direct inject, 10, , [2024] May 15 22:37:54, 
+[2024] May 15 22:59:38, [2024] May 15 23:01:35, auto inject, 10, , [2024] May 15 22:17:40, 
+[2024] May 15 23:17:30, [2024] May 15 23:19:57, direct inject, 10, , [2024] May 15 22:37:54, 
+[2024] May 15 23:28:56, [2024] May 15 23:33:45, direct inject, 10, , [2024] May 15 22:37:54, 
+[2024] May 16 19:38:57, [2024] May 16 19:39:47, direct inject, 11, , [2024] May 15 22:37:54, Failed at [2024] May 16 19:39:47 on sample: Setpoint not reached before the timeout of 30 s.>>>  (from uPy device).
+[2024] May 16 19:40:01, [2024] May 16 19:40:14, direct inject, 11, , [2024] May 15 22:37:54, Failed at [2024] May 16 19:40:14 on sample: signal_handler() takes 2 positional arguments but 3 were given.
+[2024] May 16 19:40:43, [2024] May 16 19:43:03, direct inject, 10, , [2024] May 15 22:37:54, 
+[2024] May 20 14:41:10, [2024] May 20 14:42:32, change over, 15, , [2024] Feb 22 14:51:17, 
+[2024] May 20 14:41:09, [2024] May 20 15:09:23, custom.txt, 15, flow=100 volume=2000 temp=300 inject=30.0.  cool down returned: -29.00.  pre-battery check returned: 13.52.  sampling returned: 2001.93.  check heater returned: 290.30.  battery check returned: 13.34. , [2024] May 20 14:41:09, 
+[2024] May 20 15:20:58, [2024] May 20 15:25:42, bake out, 15, , [2024] Feb 22 16:08:25, 
+[2024] May 20 15:32:48, [2024] May 20 16:01:15, custom.txt, 15, flow=100 volume=2000 temp=300 inject=30.0.  cool down returned: -28.90.  pre-battery check returned: 13.45.  sampling returned: 2003.24.  check heater returned: 297.40.  battery check returned: 13.33. , [2024] May 20 15:32:48, 
+[2024] May 20 16:08:15, [2024] May 20 16:36:09, custom.txt, 15, flow=100 volume=2000 temp=300 inject=30.0.  cool down returned: -29.00.  pre-battery check returned: 13.47.  sampling returned: 2001.74.  check heater returned: 298.80.  battery check returned: 13.34. , [2024] May 20 16:08:15, 
+[2024] May 20 17:25:38, [2024] May 20 17:51:50, custom.txt, 15, flow=100 volume=2000 temp=300 inject=30.0.  cool down returned: -31.40.  pre-battery check returned: 14.39.  sampling returned: 2003.15.  check heater returned: 296.80.  battery check returned: 13.33. , [2024] May 20 17:25:38, 
+[2024] May 20 17:58:20, [2024] May 20 18:03:04, bake out, 15, , [2024] Feb 22 16:08:25, 
+[2024] May 20 18:14:46, [2024] May 20 18:40:54, custom.txt, 15, flow=100 volume=2000 temp=300 inject=30.0.  cool down returned: -30.40.  pre-battery check returned: 13.46.  sampling returned: 2002.94.  check heater returned: 297.40.  battery check returned: 13.34. , [2024] May 20 18:14:46, 
+[2024] May 20 19:21:25, [2024] May 20 19:31:22, custom.txt, 15, Blank run.  cool down returned: -29.20.  pre-battery check returned: 13.42.  check heater returned: 288.20.  battery check returned: 13.34. , [2024] May 20 19:21:25, 
+[2024] May 20 21:49:29, [2024] May 20 21:51:30, 2000 mL Ref, 15, Sample Name: Breathing Air pre-check battery returned: 14.39. , [2024] Apr 30 20:17:55, Failed at [2024] May 20 21:51:30 on sampling: signal_handler() takes 2 positional arguments but 3 were given.
+[2024] May 20 21:54:37, [2024] May 20 22:21:10, 2000 mL Ref, 15, Sample Name: Breathing Air pre-check battery returned: 14.39.  sampling returned: 2003.80.  check heater returned: 296.40.  post-check battery returned: 13.35. , [2024] Apr 30 20:17:55, 
+[2024] May 20 22:39:36, [2024] May 20 23:06:09, 2000 mL Ref, 15, Sample Name: Breathing Air pre-check battery returned: 14.35.  sampling returned: 2003.25.  check heater returned: 296.30.  post-check battery returned: 13.36. , [2024] Apr 30 20:17:55, 
+[2024] May 20 23:24:35, [2024] May 20 23:51:09, 2000 mL Ref, 15, Sample Name: Breathing Air pre-check battery returned: 14.37.  sampling returned: 2004.06.  check heater returned: 294.50.  post-check battery returned: 13.36. , [2024] Apr 30 20:17:55, 
+[2024] May 21 00:09:34, [2024] May 21 00:36:09, 2000 mL Ref, 15, Sample Name: Breathing Air pre-check battery returned: 14.34.  sampling returned: 2003.94.  check heater returned: 293.90.  post-check battery returned: 13.35. , [2024] Apr 30 20:17:55, 
+[2024] May 21 00:54:34, [2024] May 21 01:21:08, 2000 mL Ref, 15, Sample Name: Breathing Air pre-check battery returned: 14.31.  sampling returned: 2003.41.  check heater returned: 292.80.  post-check battery returned: 13.36. , [2024] Apr 30 20:17:55, 
+[2024] May 21 01:39:34, [2024] May 21 01:48:14, blank, 15, Sample Name: blank cool down returned: -30.30.  pre-battery check returned: 14.34. , [2024] May 20 21:49:14, Failed at [2024] May 21 01:48:14 on check gc: GC not ready in time. Aborting run.
+[2024] May 21 11:00:50, [2024] May 21 11:05:36, bake out, 15, , [2024] Feb 22 16:08:25, 
+[2024] May 21 11:46:37, [2024] May 21 12:12:46, custom.txt, 15, flow=100 volume=2000 temp=300 inject=30.0.  cool down returned: -30.50.  pre-battery check returned: 14.39.  sampling returned: 2002.72.  check heater returned: 291.20.  battery check returned: 13.32. , [2024] May 21 11:46:36, 
+[2024] May 21 12:37:06, [2024] May 21 12:38:22, change over, 15, , [2024] Feb 22 14:51:17, 
+[2024] May 21 12:37:04, [2024] May 21 13:04:21, custom.txt, 15, flow=100 volume=2000 temp=300 inject=30.0.  cool down returned: -29.50.  pre-battery check returned: 14.40.  sampling returned: 2003.91.  check heater returned: 292.90.  battery check returned: 13.32. , [2024] May 21 12:37:04, 
+[2024] May 21 13:37:22, [2024] May 21 13:42:10, bake out, 15, , [2024] Feb 22 16:08:25, 
+[2024] May 21 13:50:52, [2024] May 21 13:58:37, custom.txt, 15, Blank run.  cool down returned: -28.90.  pre-battery check returned: 13.50.  check heater returned: 285.90.  battery check returned: 13.33. , [2024] May 21 13:50:52, 
+[2024] May 21 17:13:40, [2024] May 21 17:23:26, custom.txt, 15, Blank run.  cool down returned: -28.90.  pre-battery check returned: 14.39.  check heater returned: 290.90.  battery check returned: 13.32. , [2024] May 21 17:13:40, 
+[2024] May 21 18:09:46, [2024] May 21 18:15:03, blank, 15, Sample Name: blank cool down returned: -30.00.  pre-battery check returned: 14.39.  check heater returned: 289.90.  battery check returned: 13.32. , [2024] May 20 21:49:14, 
+[2024] May 21 18:54:45, [2024] May 21 19:00:02, blank, 15, Sample Name: blank cool down returned: -30.20.  pre-battery check returned: 14.39.  check heater returned: 290.60.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] May 21 19:39:45, [2024] May 21 19:45:02, blank, 15, Sample Name: blank cool down returned: -29.70.  pre-battery check returned: 14.39.  check heater returned: 291.30.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] May 21 20:24:45, [2024] May 21 20:30:01, blank, 15, Sample Name: blank cool down returned: -29.90.  pre-battery check returned: 14.39.  check heater returned: 292.40.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] May 21 21:09:44, [2024] May 21 21:15:01, blank, 15, Sample Name: blank cool down returned: -30.10.  pre-battery check returned: 14.39.  check heater returned: 291.60.  battery check returned: 13.34. , [2024] May 20 21:49:14, 
+[2024] May 21 21:50:01, [2024] May 21 21:55:18, blank, 15, Sample Name: blank cool down returned: -29.50.  pre-battery check returned: 14.39.  check heater returned: 292.60.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] May 21 22:35:00, [2024] May 21 22:40:16, blank, 15, Sample Name: blank cool down returned: -29.70.  pre-battery check returned: 14.39.  check heater returned: 294.50.  battery check returned: 13.34. , [2024] May 20 21:49:14, 
+[2024] May 21 23:19:59, [2024] May 21 23:25:17, blank, 15, Sample Name: blank cool down returned: -30.00.  pre-battery check returned: 14.39.  check heater returned: 291.50.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] May 22 00:04:59, [2024] May 22 00:10:15, blank, 15, Sample Name: blank cool down returned: -30.10.  pre-battery check returned: 14.39.  check heater returned: 292.70.  battery check returned: 13.34. , [2024] May 20 21:49:14, 
+[2024] May 22 00:42:57, [2024] May 22 00:43:00, blank, 15, Sample Name: blank, [2024] May 20 21:49:14, Failed at [2024] May 22 00:43:00 on cool down: signal_handler() takes 2 positional arguments but 3 were given.
+[2024] May 22 00:43:12, [2024] May 22 00:48:29, blank, 15, Sample Name: blank cool down returned: -29.70.  pre-battery check returned: 14.39.  check heater returned: 293.10.  battery check returned: 13.34. , [2024] May 20 21:49:14, 
+[2024] May 22 01:28:11, [2024] May 22 01:33:27, blank, 15, Sample Name: blank cool down returned: -29.70.  pre-battery check returned: 14.39.  check heater returned: 292.20.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] May 22 02:13:11, [2024] May 22 02:18:28, blank, 15, Sample Name: blank cool down returned: -29.90.  pre-battery check returned: 14.39.  check heater returned: 294.30.  battery check returned: 13.34. , [2024] May 20 21:49:14, 
+[2024] May 22 02:58:11, [2024] May 22 03:03:28, blank, 15, Sample Name: blank cool down returned: -29.70.  pre-battery check returned: 14.39.  check heater returned: 286.30.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] May 22 03:43:10, [2024] May 22 03:48:27, blank, 15, Sample Name: blank cool down returned: -29.90.  pre-battery check returned: 14.39.  check heater returned: 280.80.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] May 22 04:28:10, [2024] May 22 04:31:16, blank, 15, Sample Name: blank cool down returned: -29.60.  pre-battery check returned: 14.39. , [2024] May 20 21:49:14, Failed at [2024] May 22 04:31:16 on check heater: ads failed to reach 275 in time. Currently measuring: 74.10.
+[2024] May 22 10:23:18, [2024] May 22 10:27:59, bake out, 15, , [2024] Feb 22 16:08:25, 
+[2024] May 22 11:32:22, [2024] May 22 11:35:34, custom.txt, 15, Blank run.  cool down returned: -29.90.  pre-battery check returned: 14.39. , [2024] May 22 11:32:22, Failed at [2024] May 22 11:35:34 on check heater: ads failed to reach 275 in time. Currently measuring: 88.30.
+[2024] May 22 11:35:53, [2024] May 22 11:46:34, custom.txt, 15, Blank run.  cool down returned: -29.00.  pre-battery check returned: 14.40. , [2024] May 22 11:35:53, Failed at [2024] May 22 11:46:34 on check heater: ads failed to reach 275 in time. Currently measuring: 90.20.
+[2024] May 22 11:46:41, [2024] May 22 11:51:07, bake out, 15, , [2024] Feb 22 16:08:25, 
+[2024] May 22 12:14:14, [2024] May 22 12:19:36, custom.txt, 15, Blank run.  cool down returned: -29.40.  pre-battery check returned: 14.43.  check heater returned: 285.20.  battery check returned: 13.34. , [2024] May 22 12:14:14, 
+[2024] May 22 12:44:32, [2024] May 22 13:10:43, custom.txt, 15, flow=100 volume=2000 temp=300 inject=30.0.  cool down returned: -29.10.  pre-battery check returned: 14.40.  sampling returned: 2003.15.  check heater returned: 291.00.  battery check returned: 13.33. , [2024] May 22 12:44:32, 
+[2024] May 22 13:32:40, [2024] May 22 13:34:00, change over, 10, , [2024] Feb 22 14:51:17, 
+[2024] May 22 13:32:36, [2024] May 22 13:59:59, custom.txt, 10, flow=100 volume=2000 temp=300 inject=30.0.  cool down returned: -30.00.  pre-battery check returned: 14.40.  sampling returned: 2003.59.  check heater returned: 290.80.  battery check returned: 13.33. , [2024] May 22 13:32:36, 
+[2024] May 31 17:16:29, [2024] May 31 17:30:24, blank, 10, Sample Name: blank cool down returned: -28.90.  pre-battery check returned: 14.39.  check heater returned: 292.40.  battery check returned: 13.31. , [2024] May 20 21:49:14, 
+[2024] May 31 18:01:29, [2024] May 31 18:10:11, blank, 10, Sample Name: blank cool down returned: -31.60.  pre-battery check returned: 14.39. , [2024] May 20 21:49:14, Failed at [2024] May 31 18:10:11 on check gc: GC not ready in time. Aborting run.
+[2024] May 31 19:08:37, [2024] May 31 19:14:01, blank, 10, Sample Name: blank cool down returned: -31.20.  pre-battery check returned: 14.39.  check heater returned: 292.80.  battery check returned: 13.32. , [2024] May 20 21:49:14, 
+[2024] May 31 19:28:09, [2024] May 31 19:28:11, tester, 10, Blank run. , [2024] May 31 19:28:09, Failed at [2024] May 31 19:28:11 on cool down: signal_handler() takes 2 positional arguments but 3 were given.
+[2024] May 31 19:28:57, [2024] May 31 19:29:26, tester, 10, Sample Name: blank cool down returned: -30.70.  pre-battery check returned: 13.64. , [2024] May 31 19:28:29, Failed at [2024] May 31 19:29:26 on pre-backflush: signal_handler() takes 2 positional arguments but 3 were given.
+[2024] May 31 19:30:05, [2024] May 31 19:30:24, tester, 10, Sample Name: blank cool down returned: -30.60.  pre-battery check returned: 13.79. , [2024] May 31 19:29:55, Failed at [2024] May 31 19:30:24 on pre-backflush: signal_handler() takes 2 positional arguments but 3 were given.
+[2024] May 31 19:36:55, [2024] May 31 19:38:01, tester, 10, Sample Name: blank cool down returned: -31.40.  pre-battery check returned: 14.40. , [2024] May 31 19:36:41, Failed at [2024] May 31 19:38:01 on backflush: signal_handler() takes 2 positional arguments but 3 were given.
+[2024] May 31 19:38:33, [2024] May 31 19:43:41, tester, 10, Sample Name: blank cool down returned: -31.60.  pre-battery check returned: 14.40.  check heater returned: 291.80.  battery check returned: 13.32. , [2024] May 31 19:38:14, 
+[2024] May 31 20:11:15, [2024] May 31 20:17:36, tester, 10, Sample Name: blank cool down returned: -31.10.  pre-battery check returned: 14.40.  check heater returned: 291.70.  battery check returned: 13.33. , [2024] May 31 20:11:01, 
+[2024] May 31 20:56:15, [2024] May 31 21:01:23, tester, 10, Sample Name: blank cool down returned: -31.30.  pre-battery check returned: 14.42.  check heater returned: 292.40.  battery check returned: 13.33. , [2024] May 31 20:11:01, 
+[2024] May 31 21:41:15, [2024] May 31 21:46:22, tester, 10, Sample Name: blank cool down returned: -30.70.  pre-battery check returned: 14.39.  check heater returned: 293.20.  battery check returned: 13.33. , [2024] May 31 20:11:01, 
+[2024] May 31 22:26:14, [2024] May 31 22:31:22, tester, 10, Sample Name: blank cool down returned: -31.00.  pre-battery check returned: 14.39.  check heater returned: 294.10.  battery check returned: 13.33. , [2024] May 31 20:11:01, 
+[2024] May 31 23:11:14, [2024] May 31 23:16:22, tester, 10, Sample Name: blank cool down returned: -31.10.  pre-battery check returned: 14.39.  check heater returned: 293.00.  battery check returned: 13.33. , [2024] May 31 20:11:01, 
+[2024] May 31 23:56:13, [2024] Jun 01 00:01:21, tester, 10, Sample Name: blank cool down returned: -31.00.  pre-battery check returned: 14.39.  check heater returned: 293.70.  battery check returned: 13.33. , [2024] May 31 20:11:01, 
+[2024] Jun 01 00:41:12, [2024] Jun 01 00:46:20, tester, 10, Sample Name: blank cool down returned: -30.60.  pre-battery check returned: 14.39.  check heater returned: 293.70.  battery check returned: 13.33. , [2024] May 31 20:11:01, 
+[2024] Jun 01 01:26:12, [2024] Jun 01 01:31:21, tester, 10, Sample Name: blank cool down returned: -30.80.  pre-battery check returned: 14.39.  check heater returned: 292.40.  battery check returned: 13.33. , [2024] May 31 20:11:01, 
+[2024] Jun 01 02:11:12, [2024] Jun 01 02:16:20, tester, 10, Sample Name: blank cool down returned: -30.40.  pre-battery check returned: 14.39.  check heater returned: 292.40.  battery check returned: 13.33. , [2024] May 31 20:11:01, 
+[2024] Jun 01 02:56:11, [2024] Jun 01 03:01:19, tester, 10, Sample Name: blank cool down returned: -30.70.  pre-battery check returned: 14.39.  check heater returned: 292.20.  battery check returned: 13.33. , [2024] May 31 20:11:01, 
+[2024] Jun 01 03:41:11, [2024] Jun 01 03:46:19, tester, 10, Sample Name: blank cool down returned: -30.70.  pre-battery check returned: 14.39.  check heater returned: 291.30.  battery check returned: 13.33. , [2024] May 31 20:11:01, 
+[2024] Jun 01 04:26:11, [2024] Jun 01 04:31:19, tester, 10, Sample Name: blank cool down returned: -30.40.  pre-battery check returned: 14.39.  check heater returned: 290.60.  battery check returned: 13.33. , [2024] May 31 20:11:01, 
+[2024] Jun 01 05:11:10, [2024] Jun 01 05:16:19, tester, 10, Sample Name: blank cool down returned: -30.60.  pre-battery check returned: 14.39.  check heater returned: 290.70.  battery check returned: 13.32. , [2024] May 31 20:11:01, 
+[2024] Jun 01 05:56:10, [2024] Jun 01 06:01:18, tester, 10, Sample Name: blank cool down returned: -30.70.  pre-battery check returned: 14.39.  check heater returned: 290.20.  battery check returned: 13.33. , [2024] May 31 20:11:01, 
+[2024] Jun 01 06:41:09, [2024] Jun 01 06:46:18, tester, 10, Sample Name: blank cool down returned: -30.40.  pre-battery check returned: 14.39.  check heater returned: 290.40.  battery check returned: 13.33. , [2024] May 31 20:11:01, 
+[2024] Jun 01 07:26:09, [2024] Jun 01 07:31:17, tester, 10, Sample Name: blank cool down returned: -30.30.  pre-battery check returned: 14.39.  check heater returned: 292.10.  battery check returned: 13.33. , [2024] May 31 20:11:01, 
+[2024] Jun 01 08:11:08, [2024] Jun 01 08:16:17, tester, 10, Sample Name: blank cool down returned: -30.30.  pre-battery check returned: 14.39.  check heater returned: 281.70.  battery check returned: 13.33. , [2024] May 31 20:11:01, 
+[2024] Jun 01 08:56:08, [2024] Jun 01 09:01:16, tester, 10, Sample Name: blank cool down returned: -30.20.  pre-battery check returned: 14.39.  check heater returned: 279.20.  battery check returned: 13.32. , [2024] May 31 20:11:01, 
+[2024] Jun 01 09:41:07, [2024] Jun 01 09:44:05, tester, 10, Sample Name: blank cool down returned: -30.50.  pre-battery check returned: 14.39. , [2024] May 31 20:11:01, Failed at [2024] Jun 01 09:44:05 on check heater: ads failed to reach 275 in time. Currently measuring: 88.40.
+[2024] Jun 01 22:56:07, [2024] Jun 01 23:07:04, tester, 10, Sample Name: blank cool down returned: -28.90.  pre-battery check returned: 13.46. , [2024] May 31 20:11:01, Failed at [2024] Jun 01 23:07:04 on check heater: ads failed to reach 275 in time. Currently measuring: 90.70.
+[2024] Jun 01 23:13:08, [2024] Jun 01 23:17:30, tester, 10, Sample Name: blank cool down returned: -29.00.  pre-battery check returned: 13.53. , [2024] May 31 20:11:01, Failed at [2024] Jun 01 23:17:30 on check heater: ads failed to reach 275 in time. Last measured: 273.50.
+[2024] Jun 06 18:11:37, [2024] Jun 06 18:14:05, direct inject.txt, 10, , [2024] May 15 22:37:54, 
+[2024] Jun 06 18:26:43, [2024] Jun 06 18:29:58, direct inject.txt, 10, , [2024] May 15 22:37:54, 
+[2024] Jun 06 18:43:21, [2024] Jun 06 18:46:13, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 06 19:03:40, [2024] Jun 06 19:06:07, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 06 19:18:18, [2024] Jun 06 19:22:09, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 06 19:31:27, [2024] Jun 06 19:38:14, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 06 19:49:49, [2024] Jun 06 19:54:22, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 06 20:05:11, [2024] Jun 06 20:10:31, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 06 20:21:43, [2024] Jun 06 20:26:40, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 06 20:35:32, [2024] Jun 06 20:42:48, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 06 20:52:28, [2024] Jun 06 20:56:59, direct inject.txt, 10, , [2024] Jun 06 18:30:46, Failed at [2024] Jun 06 20:56:59 on sample: Setpoint not reached before the timeout of 30 s.>>>  (from uPy device).
+[2024] Jun 06 20:57:12, [2024] Jun 06 20:59:36, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 06 21:08:52, [2024] Jun 06 21:13:50, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 07 14:40:56, [2024] Jun 07 14:47:47, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 07 14:56:01, [2024] Jun 07 14:57:00, change over.txt, 10, , [2024] Feb 22 14:51:17, Failed at [2024] Jun 07 14:57:00 on flush: signal_handler() takes 2 positional arguments but 3 were given.
+[2024] Jun 07 15:06:53, [2024] Jun 07 15:06:53, manual change over, 10, , [2024] Jun 07 15:05:45, Failed at [2024] Jun 07 15:06:53 on initial check: unsupported operand type(s) for +: 'float' and 'NoneType'.
+[2024] Jun 07 15:09:57, [2024] Jun 07 15:09:57, manual change over, 10, , [2024] Jun 07 15:08:58, Failed at [2024] Jun 07 15:09:57 on initial check: unsupported operand type(s) for +: 'float' and 'NoneType'.
+[2024] Jun 07 15:10:09, [2024] Jun 07 15:10:11, valve test.txt, 10, , [2024] Apr 01 14:50:33, Failed at [2024] Jun 07 15:10:11 on Initialize Off: unsupported operand type(s) for +: 'float' and 'NoneType'.
+[2024] Jun 07 15:12:08, [2024] Jun 07 15:12:09, manual change over, 10, , [2024] Jun 07 15:08:58, Failed at [2024] Jun 07 15:12:09 on initial check: <class 'TypeError'> unsupported operand type(s) for +: 'float' and 'NoneType'.
+[2024] Jun 07 15:14:14, [2024] Jun 07 15:14:14, manual change over, 10, , [2024] Jun 07 15:08:58, Failed at [2024] Jun 07 15:14:14 on initial check: <class 'TypeError'> unsupported operand type(s) for +: 'float' and 'NoneType'.
+[2024] Jun 07 15:16:36, [2024] Jun 07 15:19:36, manual change over, 10, , [2024] Jun 07 15:08:58, 
+[2024] Jun 07 15:20:10, [2024] Jun 07 15:22:37, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 07 15:30:29, [2024] Jun 07 15:32:58, manual change over, 10, , [2024] Jun 07 15:08:58, 
+[2024] Jun 07 15:33:06, [2024] Jun 07 15:36:46, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 07 15:41:17, [2024] Jun 07 15:48:36, manual change over, 10, , [2024] Jun 07 15:08:58, 
+[2024] Jun 07 15:49:10, [2024] Jun 07 15:52:01, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 07 15:56:07, [2024] Jun 07 15:59:05, manual change over, 10, , [2024] Jun 07 15:08:58, 
+[2024] Jun 07 16:02:56, [2024] Jun 07 16:06:14, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 07 16:14:50, [2024] Jun 07 16:17:59, manual change over, 10, , [2024] Jun 07 15:08:58, 
+[2024] Jun 07 18:16:59, [2024] Jun 07 18:20:16, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 07 18:22:56, [2024] Jun 07 18:25:36, manual change over, 10, , [2024] Jun 07 15:08:58, 
+[2024] Jun 07 18:44:52, [2024] Jun 07 18:48:13, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 07 18:51:02, [2024] Jun 07 18:57:35, manual change over, 10, , [2024] Jun 07 15:08:58, Failed at [2024] Jun 07 18:57:35 on pre-flush check: <class 'TimeoutError'> Manual switching timed out after 300 minutes.
+[2024] Jun 07 19:23:30, [2024] Jun 07 19:26:55, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 07 19:30:16, [2024] Jun 07 19:34:23, manual change over, 10, , [2024] Jun 07 15:08:58, 
+[2024] Jun 07 19:43:37, [2024] Jun 07 19:46:33, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 07 19:50:22, [2024] Jun 07 19:53:01, manual change over, 10, , [2024] Jun 07 15:08:58, 
+[2024] Jun 07 19:54:53, [2024] Jun 07 20:00:40, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 07 20:11:23, [2024] Jun 07 20:13:44, manual change over, 10, , [2024] Jun 07 15:08:58, 
+[2024] Jun 07 20:18:22, [2024] Jun 07 20:21:42, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 07 20:28:06, [2024] Jun 07 20:33:06, manual change over, 10, , [2024] Jun 07 15:08:58, Failed at [2024] Jun 07 20:33:06 on initial check: <class 'TimeoutError'> Manual switching timed out after 300 minutes.
+[2024] Jun 07 20:33:56, [2024] Jun 07 20:36:48, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 07 20:41:26, [2024] Jun 07 20:45:34, manual change over, 10, , [2024] Jun 07 15:08:58, 
+[2024] Jun 07 20:45:38, [2024] Jun 07 20:51:03, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 07 20:56:32, [2024] Jun 07 21:02:47, manual change over, 10, , [2024] Jun 07 15:08:58, 
+[2024] Jun 07 21:04:27, [2024] Jun 07 21:06:53, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 09 18:14:43, [2024] Jun 09 18:15:18, manual change over, 10, , [2024] Jun 07 15:08:58, Failed at [2024] Jun 09 18:15:18 on evacuating line: <class 'SystemError'> Device timed out.
+[2024] Jun 09 18:18:24, [2024] Jun 09 18:20:59, manual change over, 10, , [2024] Jun 07 15:08:58, 
+[2024] Jun 09 18:21:02, [2024] Jun 09 18:23:20, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 09 18:26:13, [2024] Jun 09 18:30:21, manual change over, 10, , [2024] Jun 07 15:08:58, 
+[2024] Jun 09 18:31:13, [2024] Jun 09 18:37:31, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 09 18:44:14, [2024] Jun 09 18:46:36, manual change over, 10, , [2024] Jun 07 15:08:58, 
+[2024] Jun 09 18:47:03, [2024] Jun 09 18:51:47, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 09 18:54:20, [2024] Jun 09 18:57:56, manual change over, 10, , [2024] Jun 07 15:08:58, 
+[2024] Jun 09 18:59:32, [2024] Jun 09 19:06:02, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 09 19:06:51, [2024] Jun 09 19:09:17, manual change over, 10, , [2024] Jun 07 15:08:58, 
+[2024] Jun 09 19:11:32, [2024] Jun 09 19:17:34, direct inject.txt, 10, , [2024] Jun 06 18:30:46, Failed at [2024] Jun 09 19:17:34 on check gc: <class 'RuntimeError'> GC not ready in time. Aborting run.
+[2024] Jun 09 19:27:50, [2024] Jun 09 19:30:21, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 09 19:31:23, [2024] Jun 09 19:35:29, manual change over, 10, , [2024] Jun 07 15:08:58, 
+[2024] Jun 09 19:37:49, [2024] Jun 09 19:44:28, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 09 19:47:43, [2024] Jun 09 19:54:03, manual change over, 10, , [2024] Jun 09 19:47:23, 
+[2024] Jun 09 19:56:16, [2024] Jun 09 19:59:19, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 09 20:00:31, [2024] Jun 09 20:06:41, manual change over, 10, , [2024] Jun 09 19:47:23, 
+[2024] Jun 09 20:14:39, [2024] Jun 09 20:17:23, manual change over, 10, , [2024] Jun 09 19:47:23, 
+[2024] Jun 09 20:17:33, [2024] Jun 09 20:19:55, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 09 20:27:09, [2024] Jun 09 20:29:36, manual change over, 10, , [2024] Jun 09 19:47:23, 
+[2024] Jun 09 20:29:54, [2024] Jun 09 20:34:09, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 09 20:37:10, [2024] Jun 09 20:39:49, manual change over, 10, , [2024] Jun 09 19:47:23, 
+[2024] Jun 09 20:43:22, [2024] Jun 09 20:48:21, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 10 14:29:59, [2024] Jun 10 14:36:55, manual change over, 10, , [2024] Jun 09 19:47:23, 
+[2024] Jun 10 14:52:27, [2024] Jun 10 14:54:54, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 10 15:14:49, [2024] Jun 10 15:17:16, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 10 15:27:22, [2024] Jun 10 15:29:41, manual change over, 10, , [2024] Jun 09 19:47:23, 
+[2024] Jun 10 15:29:45, [2024] Jun 10 15:32:04, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 10 16:54:21, [2024] Jun 10 17:01:22, manual change over, 10, , [2024] Jun 09 19:47:23, 
+[2024] Jun 10 17:03:03, [2024] Jun 10 17:05:34, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 10 17:08:03, [2024] Jun 10 17:10:29, manual change over, 10, , [2024] Jun 09 19:47:23, 
+[2024] Jun 10 17:16:16, [2024] Jun 10 17:19:19, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 10 19:36:17, [2024] Jun 10 19:39:11, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 10 19:46:53, [2024] Jun 10 19:49:54, manual change over, 10, , [2024] Jun 09 19:47:23, Failed at [2024] Jun 10 19:49:54 on flush: <class 'RuntimeError'> Setpoint not reached before the timeout of 30 s.>>>  (from uPy device).
+[2024] Jun 10 19:51:00, [2024] Jun 10 19:51:45, direct inject.txt, 10, , [2024] Jun 06 18:30:46, Failed at [2024] Jun 10 19:51:45 on sample: <class 'RuntimeError'> Setpoint not reached before the timeout of 30 s.>>>  (from uPy device).
+[2024] Jun 10 19:57:53, [2024] Jun 10 20:02:13, manual change over, 10, , [2024] Jun 09 19:47:23, 
+[2024] Jun 10 20:04:02, [2024] Jun 10 20:06:32, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 10 20:08:58, [2024] Jun 10 20:11:49, manual change over, 10, , [2024] Jun 09 19:47:23, 
+[2024] Jun 10 20:13:57, [2024] Jun 10 20:20:26, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 10 20:28:17, [2024] Jun 10 20:33:41, manual change over, 10, , [2024] Jun 09 19:47:23, 
+[2024] Jun 10 20:34:57, [2024] Jun 10 20:38:12, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 10 20:48:13, [2024] Jun 10 20:51:44, manual change over, 10, , [2024] Jun 09 19:47:23, 
+[2024] Jun 10 20:52:42, [2024] Jun 10 20:55:12, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 10 20:56:17, [2024] Jun 10 21:01:47, manual change over, 10, , [2024] Jun 09 19:47:23, 
+[2024] Jun 10 21:03:39, [2024] Jun 10 21:09:19, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 10 21:10:18, [2024] Jun 10 21:12:43, manual change over, 10, , [2024] Jun 09 19:47:23, 
+[2024] Jun 10 21:17:06, [2024] Jun 10 21:23:23, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 11 15:13:39, [2024] Jun 11 15:15:58, manual change over, 10, , [2024] Jun 09 19:47:23, 
+[2024] Jun 11 15:16:11, [2024] Jun 11 15:22:28, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 11 15:44:16, [2024] Jun 11 15:46:43, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 11 16:00:39, [2024] Jun 11 16:03:06, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 12 13:43:40, [2024] Jun 12 13:47:14, manual change over, 10, , [2024] Jun 09 19:47:23, 
+[2024] Jun 12 13:47:22, [2024] Jun 12 13:50:36, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 12 13:57:47, [2024] Jun 12 14:04:32, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 12 14:14:00, [2024] Jun 12 14:18:55, direct inject.txt, 10, , [2024] Jun 06 18:30:46, 
+[2024] Jun 12 15:44:35, [2024] Jun 12 15:46:53, manual change over, 10, , [2024] Jun 09 19:47:23, 
+[2024] Jun 12 16:06:36, [2024] Jun 12 16:09:09, direct inject.txt, 10, Sample Name: None, [2024] Jun 06 18:30:46, 
+[2024] Jun 12 16:15:35, [2024] Jun 12 16:23:32, direct inject.txt, 10, Sample Name: None, [2024] Jun 06 18:30:46, 
+[2024] Jun 12 16:24:35, [2024] Jun 12 16:30:38, direct inject.txt, 10, Sample Name: None, [2024] Jun 06 18:30:46, Failed at [2024] Jun 12 16:30:38 on check gc: <class 'RuntimeError'> GC not ready in time. Aborting run.
+[2024] Jun 12 16:50:12, [2024] Jun 12 16:52:55, direct inject.txt, 10, Sample Name: None, [2024] Jun 06 18:30:46, 
+[2024] Jun 12 16:59:11, [2024] Jun 12 17:05:23, direct inject.txt, 10, Sample Name: None, [2024] Jun 06 18:30:46, Failed at [2024] Jun 12 17:05:23 on sample: <class 'RuntimeError'> Setpoint not reached before the timeout of 30 s.>>>  (from uPy device).
+[2024] Jun 12 17:35:35, [2024] Jun 12 17:36:08, direct inject.txt, 10, Sample Name: None, [2024] Jun 06 18:30:46, Failed at [2024] Jun 12 17:36:08 on sample: <class 'RuntimeError'> Setpoint not reached before the timeout of 30 s.>>>  (from uPy device).
+[2024] Jun 12 17:40:04, [2024] Jun 12 17:46:35, manual change over, 10, , [2024] Jun 09 19:47:23, Failed at [2024] Jun 12 17:46:35 on pre-flush check: <class 'TimeoutError'> Manual switching timed out after 300 minutes.
+[2024] Jun 12 17:47:43, [2024] Jun 12 17:50:01, direct inject.txt, 10, Sample Name: None, [2024] Jun 06 18:30:46, 
+[2024] Jun 12 17:57:42, [2024] Jun 12 18:04:29, direct inject.txt, 10, Sample Name: None, [2024] Jun 06 18:30:46, 
+[2024] Jun 12 18:07:42, [2024] Jun 12 18:13:44, direct inject.txt, 10, Sample Name: None, [2024] Jun 06 18:30:46, Failed at [2024] Jun 12 18:13:44 on check gc: <class 'RuntimeError'> GC not ready in time. Aborting run.
+[2024] Jun 12 18:23:01, [2024] Jun 12 18:25:36, direct inject.txt, 10, Sample Name: None, [2024] Jun 06 18:30:46, 
+[2024] Jun 12 18:35:00, [2024] Jun 12 18:40:22, direct inject.txt, 10, Sample Name: None, [2024] Jun 06 18:30:46, 
+[2024] Jun 12 18:46:59, [2024] Jun 12 18:55:18, direct inject.txt, 10, Sample Name: None, [2024] Jun 06 18:30:46, 
+[2024] Jun 12 18:58:59, [2024] Jun 12 19:05:01, direct inject.txt, 10, Sample Name: None, [2024] Jun 06 18:30:46, Failed at [2024] Jun 12 19:05:01 on check gc: <class 'RuntimeError'> GC not ready in time. Aborting run.
+[2024] Jun 12 19:17:56, [2024] Jun 12 19:18:29, direct inject.txt, 10, , [2024] Jun 06 18:30:46, Failed at [2024] Jun 12 19:18:29 on sample: <class 'RuntimeError'> Setpoint not reached before the timeout of 30 s.>>>  (from uPy device).
+[2024] Jun 17 14:35:31, [2024] Jun 17 14:43:40, custom.txt, 10, Blank run.  cool down returned: -30.70.  pre-battery check returned: 14.39.  check heater returned: 285.00.  battery check returned: 13.30. , [2024] Jun 17 14:35:31, 
+[2024] Jun 17 15:07:05, [2024] Jun 17 15:18:06, custom.txt, 10, Blank run.  cool down returned: -31.20.  pre-battery check returned: 14.40.  check heater returned: 288.10.  battery check returned: 13.32. , [2024] Jun 17 15:07:05, 
+[2024] Jun 17 15:49:38, [2024] Jun 17 15:55:00, custom.txt, 10, Blank run.  cool down returned: -30.80.  pre-battery check returned: 14.39.  check heater returned: 288.80.  battery check returned: 13.33. , [2024] Jun 17 15:49:38, 
+[2024] Jun 17 18:26:19, [2024] Jun 17 18:28:43, manual change over, 10, , [2024] Jun 09 19:47:23, 
+[2024] Jun 17 18:29:13, [2024] Jun 17 18:40:39, custom.txt, 10, flow=100 volume=500 temp=300 inject=30.0.  cool down returned: -29.50.  pre-battery check returned: 13.49.  sampling returned: 369.51.  check heater returned: 286.70.  battery check returned: 13.34. , [2024] Jun 17 18:29:13, 
+[2024] Jun 17 19:05:24, [2024] Jun 17 19:06:09, blank, 15, Sample Name: None cool down returned: -29.70.  pre-battery check returned: 14.40. , [2024] May 20 21:49:14, Failed at [2024] Jun 17 19:06:09 on pre-backflush: <class 'TypeError'> signal_handler() takes 2 positional arguments but 3 were given.
+[2024] Jun 17 21:00:52, [2024] Jun 17 21:14:44, blank, 15, Sample Name: None cool down returned: -28.80.  pre-battery check returned: 14.40.  check heater returned: 301.00.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 17 21:51:33, [2024] Jun 17 21:56:56, blank, 15, Sample Name: None cool down returned: -30.20.  pre-battery check returned: 14.39.  check heater returned: 299.80.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 17 22:41:33, [2024] Jun 17 22:46:55, blank, 15, Sample Name: None cool down returned: -30.20.  pre-battery check returned: 14.39.  check heater returned: 300.00.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 17 23:31:32, [2024] Jun 17 23:36:54, blank, 15, Sample Name: None cool down returned: -30.00.  pre-battery check returned: 14.39.  check heater returned: 299.70.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 18 00:21:32, [2024] Jun 18 00:26:55, blank, 15, Sample Name: None cool down returned: -29.80.  pre-battery check returned: 14.39.  check heater returned: 301.20.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 18 01:11:32, [2024] Jun 18 01:16:54, blank, 15, Sample Name: None cool down returned: -29.80.  pre-battery check returned: 14.39.  check heater returned: 298.60.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 18 02:01:31, [2024] Jun 18 02:06:54, blank, 15, Sample Name: None cool down returned: -29.80.  pre-battery check returned: 14.39.  check heater returned: 283.50.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 18 02:51:31, [2024] Jun 18 02:56:53, blank, 15, Sample Name: None cool down returned: -29.80.  pre-battery check returned: 14.39.  check heater returned: 282.50.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 18 03:41:31, [2024] Jun 18 03:46:53, blank, 15, Sample Name: None cool down returned: -29.40.  pre-battery check returned: 14.39.  check heater returned: 281.50.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 18 04:31:30, [2024] Jun 18 04:36:53, blank, 15, Sample Name: None cool down returned: -29.50.  pre-battery check returned: 14.41.  check heater returned: 280.10.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 18 05:21:30, [2024] Jun 18 05:26:52, blank, 15, Sample Name: None cool down returned: -29.60.  pre-battery check returned: 14.39.  check heater returned: 278.80.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 18 06:11:29, [2024] Jun 18 06:16:51, blank, 15, Sample Name: None cool down returned: -29.50.  pre-battery check returned: 14.39.  check heater returned: 274.50.  battery check returned: 13.32. , [2024] May 20 21:49:14, 
+[2024] Jun 18 07:01:29, [2024] Jun 18 07:06:51, blank, 15, Sample Name: None cool down returned: -29.60.  pre-battery check returned: 14.39.  check heater returned: 273.80.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 18 07:51:29, [2024] Jun 18 07:56:51, blank, 15, Sample Name: None cool down returned: -29.70.  pre-battery check returned: 14.39.  check heater returned: 274.00.  battery check returned: 13.32. , [2024] May 20 21:49:14, 
+[2024] Jun 18 08:41:29, [2024] Jun 18 08:46:50, blank, 15, Sample Name: None cool down returned: -29.60.  pre-battery check returned: 14.39.  check heater returned: 272.70.  battery check returned: 13.32. , [2024] May 20 21:49:14, 
+[2024] Jun 18 09:31:29, [2024] Jun 18 09:36:51, blank, 15, Sample Name: None cool down returned: -29.70.  pre-battery check returned: 14.39.  check heater returned: 272.90.  battery check returned: 13.32. , [2024] May 20 21:49:14, 
+[2024] Jun 18 10:21:28, [2024] Jun 18 10:26:50, blank, 15, Sample Name: None cool down returned: -29.60.  pre-battery check returned: 14.39.  check heater returned: 273.00.  battery check returned: 13.32. , [2024] May 20 21:49:14, 
+[2024] Jun 18 11:11:28, [2024] Jun 18 11:16:49, blank, 15, Sample Name: None cool down returned: -29.50.  pre-battery check returned: 14.39.  check heater returned: 274.60.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 18 12:01:27, [2024] Jun 18 12:06:49, blank, 15, Sample Name: None cool down returned: -29.40.  pre-battery check returned: 14.39.  check heater returned: 273.90.  battery check returned: 13.32. , [2024] May 20 21:49:14, 
+[2024] Jun 18 12:51:27, [2024] Jun 18 12:56:48, blank, 15, Sample Name: None cool down returned: -29.50.  pre-battery check returned: 14.41.  check heater returned: 276.20.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 18 13:41:26, [2024] Jun 18 13:46:47, blank, 15, Sample Name: None cool down returned: -29.70.  pre-battery check returned: 14.39.  check heater returned: 275.70.  battery check returned: 13.32. , [2024] May 20 21:49:14, 
+[2024] Jun 18 14:31:26, [2024] Jun 18 14:36:47, blank, 15, Sample Name: None cool down returned: -29.60.  pre-battery check returned: 14.39.  check heater returned: 277.40.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 18 15:21:26, [2024] Jun 18 15:26:47, blank, 15, Sample Name: None cool down returned: -29.30.  pre-battery check returned: 14.39.  check heater returned: 277.10.  battery check returned: 13.32. , [2024] May 20 21:49:14, 
+[2024] Jun 18 16:11:25, [2024] Jun 18 16:16:45, blank, 15, Sample Name: None cool down returned: -29.80.  pre-battery check returned: 14.39.  check heater returned: 277.00.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 18 17:01:24, [2024] Jun 18 17:06:45, blank, 15, Sample Name: None cool down returned: -29.30.  pre-battery check returned: 14.39.  check heater returned: 275.90.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 18 17:51:24, [2024] Jun 18 17:56:45, blank, 15, Sample Name: None cool down returned: -29.50.  pre-battery check returned: 14.39.  check heater returned: 275.70.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 18 18:41:24, [2024] Jun 18 18:46:45, blank, 15, Sample Name: None cool down returned: -29.30.  pre-battery check returned: 14.39.  check heater returned: 275.70.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 18 19:31:23, [2024] Jun 18 19:36:42, blank, 15, Sample Name: None cool down returned: -29.50.  pre-battery check returned: 14.39.  check heater returned: 275.60.  battery check returned: 13.32. , [2024] May 20 21:49:14, 
+[2024] Jun 18 20:21:22, [2024] Jun 18 20:26:43, blank, 15, Sample Name: None cool down returned: -29.40.  pre-battery check returned: 14.39.  check heater returned: 275.80.  battery check returned: 13.33. , [2024] May 20 21:49:14, 
+[2024] Jun 18 21:05:45, [2024] Jun 18 21:29:46, 2000 mL Ref, 15, Sample Name: None pre-check battery returned: 14.39.  sampling returned: 2003.33. , [2024] Apr 30 20:17:55, Failed at [2024] Jun 18 21:29:46 on check heater: <class 'SystemError'> ads failed to reach 275 in time. Last measured: 271.30.
+[2024] Jun 19 12:40:14, [2024] Jun 19 12:45:05, bake out, 15, , [2024] Feb 22 16:08:25, 

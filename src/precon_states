@@ -1,4 +1,5 @@
-{"standby":{
+{
+  "standby":{
 	"valves":       [0,0,0,0,0],
 	"h2o":          -99,
 	"ads":          -99,
@@ -15,9 +16,9 @@
 	"monitor":	true,
         "timeout":      15
 	},
-  "check battery":{
+  "pre-battery check":{
         "condition":    "temp",
-        "battery":      12.6,
+        "battery":      13.4,
         "value":        ">",
         "monitor":      true,
         "timeout":      10
@@ -34,25 +35,37 @@
 	"pump":		1,
 	"condition":	"pulse",
 	"value":        5,
-	"monitor":	"sample"
+	"monitor":	true
 	},
   "pre-backflush":{
-	"valves":       [0,0,1,0,0],
+	"valves":       [0,0,1,1,0],
 	"sample":	0,
-	"backflush":	50,	
+	"backflush":	100,	
 	"pump":		1,
 	"condition":	"time",
 	"value":        0.25
 	},
   "backflush":{
-	"valves":       [0,1,1,0,0],
-	"pump":		1
+	"valves":       [0,1,1,1,0],
+	"pump":		1,
+	"condition":	"time",
+	"value":	1.5	
+	},
+  "drop backflush":{
+	"backflush":	15
+	},
+  "isolate trap":{
+	"valves":	[0,0,1,1,0]
+	},
+  "pause":{
+	"condition":	"time",
+	"value":	0.05
 	},
   "check backflush":{
 	"valves":       [0,1,0,0,0],
 	"condition":	"pulse",
 	"value":	0.25,
-	"monitor":	"backflush"
+	"monitor":	true
 	},
   "check gc":{
 	"condition":	"gc"
@@ -62,35 +75,40 @@
 	"value":        0
 	},
   "flash heat":{
-	"valves":       [0,0,1,0,0],
+	"valves":       [1,0,1,1,0],
 	"ads":          300,
 	"sample":	0,
-	"pump":		0.5,
+	"value":	0.1,
 	"condition":	"time"
 	},
-  "inject":{
-	"valves":       [1,0,0,0,0],
-	"pump":		1,
-	"condition":	"gc",
-	"value":        0.35
+  "check heater":{
+	"ads":          270,
+	"condition":	"temp",
+	"value":        ">",
+	"monitor":	true,
+        "timeout":      0.15
 	},
-  "bake out":{
-	"valves":       [0,1,1,0,0],
-	"h2o":          80,
-	"ads":          300,
-	"backflush":	50,
+  "inject":{
+	"valves":       [1,1,1,1,0],
 	"pump":		1,
 	"condition":	"time",
-	"value":	1.5
+	"value":        0.5
+	},
+  "bake out":{
+	"valves":       [0,1,1,1,0],
+	"pump":		1,
+	"condition":	"time",
+	"value":	1.25
 	},
   "post bake":{
-	"valves":       [0,1,1,0,0],
+	"valves":       [0,1,1,0,1],
 	"h2o":          -99,
 	"ads":	        -99,
 	"sample":	0,
 	"backflush":	0,
 	"pump":		1,
-	"condition":	null
+	"condition":	"time",
+	"value":	0.5
 	},
   "evacuate":{
 	"valves":       [0,0,0,0,0],
@@ -103,6 +121,13 @@
 	"value":        0.5,
 	"message":	"Sample line is being evacuated. Make sure the attached can was not accidentally opened!"
 	},
+  "battery check":{
+        "condition":    "temp",
+        "battery":      0,
+        "value":        ">",
+        "monitor":      true,
+        "timeout":      1
+        },
   "off":{
 	"valves":       [0,0,0,0,0],
 	"h2o":          -99,
@@ -111,6 +136,8 @@
 	"backflush":	0,
 	"pump":		0,
         "aux1":         0,
-	"aux2":		0
+	"aux2":		0,
+	"condition":	"time",
+	"value":	0
 	}
 }

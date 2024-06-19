@@ -1,6 +1,4 @@
-["off",
-"check gc"
-,
+["standby",
 {"name":		"sample",
 "valves":		[0,0,0,1,0],
 "sample":		50,
@@ -15,8 +13,8 @@
 ,
 {"name":		"inject",
 "valves":		[1,0,0,0,0],
-"condition":	"gc",
-"value":		1}
+"condition":	"pulse",
+"value":		0.5}
 ,
 "off"
 ]

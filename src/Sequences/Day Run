@@ -1,57 +1,8 @@
 [
 {
-"Method":       "2000 mL",
-"Stream":       15,
-"Sample Name":  "Breathing Air",
-"Repetition":   1,
-"Description":  "",
-"on error":     "reset"
-},
-{
-"Method":       "2000 mL",
-"Stream":	2,
-"Sample Name":	"PDX Air",
-"Repetition":	26,
-"Description":	"",
-"on error":     "reset"
-},
-{
-"Method":	"2000 mL",
-"Stream":	15,
-"Sample Name":	"Breathing Air",
-"Repetition":   1,
-"Description":	"",
-"on error":     "reset"
-},
-{
-"Method":       "2000 mL",
-"Stream":       2,
-"Sample Name":  "PDX Air",
-"Repetition":   26,
-"Description":  "",
-"on error":     "reset"
-},
-{
-"Method":       "2000 mL",
-"Stream":       15,
-"Sample Name":  "Breathing Air",
-"Repetition":   1,
-"Description":  "",
-"on error":     "reset"
-},
-{
-"Method":       "2000 mL",
-"Stream":       2,
-"Sample Name":  "PDX Air",
-"Repetition":   26,
-"Description":  "",
-"on error":     "reset"
-},
-{
-"Method":       "2000 mL",
-"Stream":       15,
-"Sample Name":  "Breathing Air",
-"Repetition":   1,
-"Description":  ""
+"Method":       "tester",
+"Sample Name":	"blank",
+"Repetition":	5,
+"time":         45
 }
 ]

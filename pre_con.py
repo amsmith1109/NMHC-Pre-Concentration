@@ -32,20 +32,21 @@ class pre_con:
         if not debug: # debug being true disables connecting to external devices in init
             devices = find_devices()
             for device in ['vc', 'mfc', 'ads']:
-                port = devices[device]
                 try:
-                    if device == 'vc':
-                        self.vc = uPy(port)
-                    elif device == 'mfc':
-                        self.mfc = uPy(port)
-                        self.mfc.sample = 0
-                        self.mfc.backflush = 1
-                        self.mfc.ports = self.mfc.echo('len(MFC)')
-                        self.mfc.timeout = self.mfc.echo('timeout') + 1
-                    elif device == 'ads':
-                        self.ads_connect(devices[device])
+                    port = devices[device]
                 except KeyError:
                     print(f'{device.upper()} not found.')
+                    continue
+                if device == 'vc':
+                    self.vc = uPy(port)
+                elif device == 'mfc':
+                    self.mfc = uPy(port)
+                    self.mfc.sample = 0
+                    self.mfc.backflush = 1
+                    self.mfc.ports = self.mfc.echo('len(MFC)')
+                    self.mfc.timeout = self.mfc.echo('timeout') + 1
+                elif device == 'ads':
+                    self.ads_connect(devices[device])
 
                 print(f'Successfully connected to {device.upper()} on port {port}!')
 
@@ -97,7 +98,13 @@ class pre_con:
         except AttributeError:
             pass
         block_print()
-        self.ads = CNi(serial, limit=320, band=2)
+        try:
+            self.ads = CNi(serial, limit=320, band=2)
+        except SystemError:
+            reset_usb(Serial(serial))
+            devices = find_devices()
+            serial = devices['ads']
+            self.ads = CNi(serial, limit=320, band=2)
         self.ads.convert = lambda x: x*cal['ads'][0] + cal['ads'][1]
         enable_print()
 
@@ -273,6 +280,10 @@ class pre_con:
         elif device == 'battery':
             return self.check_battery()
 
+    def get_param(self, state, index):
+            state = self.state(state, check=True, background=True)
+            return state[index]
+
     def state(self, state=None, check=False, background=False):
         """
         This function has 4 different routes that depend on name and check:
@@ -361,6 +372,7 @@ class pre_con:
             name = new_state['name']
 
             if check:
+                state = {'name': state.pop('name'), **state} # ensures 'name' is first
                 if not background:
                     print(f"Settings for the {name} state: \n")
                     print_state(new_state)
@@ -376,7 +388,7 @@ class pre_con:
             condition = condition.lower()
         valid_conditions = (None, 'gc', 'pulse', 'time', 'temp', 'manual')
         valid_conditions.index(condition) # Causes an error if an invalid condition is called.
-        print(f"Beginning state: {name}.\n{new_state['message']}")            
+        print(f"Beginning state: {name}.\n{new_state['message']}")
 
         #############################################################
         # GC Ready Condition
@@ -503,6 +515,7 @@ class pre_con:
                     print(f'Checking that {device} is {new_state["value"]}{new_state[device]}')
                     def check():
                         return test(new_state[device], self.measure(device)), self.measure(device)
+                    break
             t0 = time.time()
             while True:
                 if monitor:
@@ -528,10 +541,12 @@ class pre_con:
                 time.sleep(0.5)
                 if time.time() > t0 + timeout*60:
                     self.state('off')
-                    if abs(check()[1]-new_state[device]) < abs(new_state[device])*.01:
-                        print(f'System within ({check()[1]}) within 1%. Continuing to next state.')
+                    print(f'{abs(check()[1]-new_state[device])}')
+                    print(f'{abs(new_state[device])*.03}')
+                    if abs(check()[1]-new_state[device]) < abs(new_state[device])*.03:
+                        print(f'{check()[1]} within 3%. Continuing to next state.')
                         break
-                    raise SystemError(f'{device} failed to reach {new_state[device]} in time. Currently measuring: {check()[1]:.2f}')
+                    raise SystemError(f'{device} failed to reach {new_state[device]} in time. Last measured: {_monitor[-1]:.2f}')
             print('')
             print(f"{device} threshold reached! Currently measuring {check()[1]:.2f}")
 
@@ -560,9 +575,8 @@ class pre_con:
         #############################################################
         if condition == 'manual':
             print('Flick the "debug" switch on then front on then off to continue.')
-            try:
-                timeout = new_state['timeout']
-            except:
+            timeout = new_state['timeout']
+            if timeout is None:
                 timeout = 5*60
             t0 = time.time()
             pointer = 0
@@ -613,7 +627,7 @@ class pre_con:
                 try:
                     self.state(state, check=True, background=True)
                 except KeyError:
-                    raise KeyError(f'{next_name} is not a valid default state.')
+                    notes += f'{next_name} is not a valid default state.'
             else:
                 next_name = state['name']
             notes += f'{next_name}\n'
@@ -744,7 +758,7 @@ class pre_con:
         try:
             for state in method:
                 if isinstance(state, str):
-                    state = self.state(state, check=True, background=False)
+                    state = self.state(state, check=True, background=True)
                 result = self.state(state, background=background)
                 if result != None:
                     if notes != '':
@@ -754,7 +768,7 @@ class pre_con:
                         result = result[-1]
                     notes += f'{state["name"]} returned: {result:.2f}. '
         except Exception as x:
-            error_notes = f'Failed at {now()} on {state["name"]}: {x}.'.replace('\n', '')
+            error_notes = f'Failed at {now()} on {state["name"]}: {type(x)} {x}.'.replace('\n', '')
             error_notes = error_notes.replace('..','.')
 
         end_time = now()
@@ -769,9 +783,57 @@ class pre_con:
         else:
             print(notes)
 
-    def standard_run(self, flow=None, volume=None, temp=None, delay=None,
-                     inject=None, blank=False, stream=None, background=False,
-                     save_name=None, run=True):
+    def linearity(self, parameter='volume', start=None, stop=None, step=None, background=False,
+                  stream=None, repeat=1, **kwargs):
+        _defaults = {'volume': {'start': 500,
+                                'stop':  2500,
+                                'step':  250},
+                     'flow':   {'start': 25,
+                                'stop':  125,
+                                'step':  25},
+                     'temp':   {'start': 285,
+                                'stop':  315,
+                                'step':  10},
+                     'inject': {'start': 10,
+                                'stop':  50,
+                                'step':  10}}
+        try:
+            _defaults[parameter]
+        except KeyError:
+            raise ValueError(f'{parameter} is not a valid parameter.')
+        if start is None:
+            start = _defaults[parameter]['start']
+        if stop is None:
+            stop = _defaults[parameter]['stop']
+        if step is None:
+            step = _defaults[parameter]['step']
+
+        if start > stop:
+            raise ValueError('Stop size must be larger than start size.')
+        if step < 0:
+            raise ValueError('Step size must be positive.')
+        val = start - step
+        while val < stop:
+            val += step
+            for run in range(repeat):
+                if parameter == 'flow':
+                    flow = val + step
+                else:
+                    flow = self.get_param('flush', 'sample')
+                if parameter == 'volume':
+                    volume = val + step
+                else:
+                    volume = flow*self.get_param('sampling', 'value')
+                if (flow*volume + 5) > 35:
+                    delay = 30 - flow*volume
+                method = self.standard_run(**{parameter:val},
+                                           delay=delay,
+                                           background=background,
+                                           stream=stream,
+                                           run=True, **kwargs)
+
+
+    def standard_run(self, background=False, save_name=None, run=True, stream=None, **kwargs):
         ''' standard_run is a simple way to make small adjustments
         to the "standard.txt" run without needing to create a new file.
         This is to be used for repeated experiments that only need minor
@@ -781,74 +843,120 @@ class pre_con:
         modifications to the standard run. These can then be called directly
         in a sequence.
         '''
+        # ADD CORRECTION FOR CHANGING FLOW SETTING
+        # SAMPLING VALUE NEEDS TO BE INCREASED WHEN FLOW IS CHANGED
+        # TO MAINTAIN THE SAME VOLUME
+        def update_state(method, name, remove=False, **kwargs):
+            if remove:
+                method.remove(name)
+                return
+            idx = method.index(name)
+            state = self.state(name, check=True, background=True)
+            for name, value in kwargs.items():
+                state[name] = value
+            method[idx] = state
+            return method
+
         if save_name is None:
             save_name = 'custom.txt'
-        if flow is None:
-            flow = 100
-        if volume is None:
-            volume = 500
-        if temp is None:
-            temp = 300
-        if inject is None:
-            inject = 30
-        if delay is None:
-            delay = 0
+        _valid_kwargs = ['flow', 'volume', 'temp', 'delay',
+                         'inject', 'blank', 'stream', 'aux', 'ambient']
+        for name in kwargs: # Raises an error if there is an invalid name
+            _valid_kwargs.index(name) 
+        for name in _valid_kwargs: # Sets missing keys to None
+            try:
+                kwargs[name]
+            except KeyError:
+                kwargs[name] = None
 
-        fname = f'src/Methods/standard.txt'
-        method, modified_date = read_file(fname)
+        method = read_file(f'src/Methods/standard.txt')[0]
 
-        for n, state in enumerate(method):
-            if state['name'] == 'flush':
-                method[n]['value'] = 50/flow # set flush to purge 50 mL
-                method[n]['sample'] = flow
-            elif state['name'] == 'sampling':
-                method[n]['value'] = volume/flow # volume/flowrate = time
-            elif state['name'] == 'pre-backflush':
-                if blank:
-                    method[n]['backflush'] = flow
-            elif state['name'] == 'backflush':
-                if blank:
-                    method[n]['value'] = volume/flow
-            elif state['name'] == 'flash heat':
-                method[n]['ads'] = temp
-            elif state['name'] == 'inject':
-                method[n]['value'] = inject/60
-            elif state['name'] == 'bake out':
-                bakeout_time = (120 - inject)/60
-                if bakeout_time > 0:
-                    method[n]['value'] = bakeout_time
-                else:
-                    method.remove(state)
+        if kwargs['blank']:
+            method.remove('flush')
+            method.remove('sampling')
 
-        if blank:
-            for state in method.copy():
-                if (state['name'] == 'flush') or (state['name'] == 'sampling'):
-                    method.remove(state)
+        if kwargs['flow'] is not None:
+            if not kwargs['blank']:
+                method = update_state(method, 'flush',
+                                      sample=kwargs['flow'],
+                                      value=round(50/kwargs['flow'], 1))
+        else:
+            kwargs['flow'] = self.get_param('flush','sample')
+        if kwargs['volume'] is not None:
+            if kwargs['blank']:
+                Warning('Volume given for a blank run. This parameter will not affect anything.')
+            else:
+                method = update_state(method, 'sampling',
+                                      value=round(kwargs['volume']/kwargs['flow'], 1))
+        else:
+            kwargs['volume'] = self.get_param('sampling', 'value')*kwargs['flow']
+        if kwargs['temp'] is not None:
+            method = update_state(method, 'flash heat',
+                      ads=kwargs['temp'])
+        else:
+            kwargs['temp'] = self.get_param('flash heat','ads')
+        if kwargs['inject'] is not None:
+            method = update_state(method, 'inject',
+                                  value=kwargs['inject']/60)
+            method = update_state(method, 'bakeout',
+                                  value=(120 - kwargs['inject'])/60)
+        else:
+            kwargs['inject'] = self.get_param('inject', 'value')*60
+        if kwargs['delay'] is not None:
+            method = update_state(method, 'off',
+                                  value=kwargs['delay'])
+        if kwargs['aux'] is not None:
+            if kwargs['aux'] == 1:
+                method = update_state(method, 'flush',
+                                      aux1=1)
+                method = update_state(method, 'pre-backflush',
+                                      aux1=0)
+            elif kwargs['aux'] == 2:
+                method = update_state(method, 'flush',
+                                      aux2=1)
+                method = update_state(method, 'pre-backflush',
+                                      aux2=0)
+        if kwargs['ambient']:
+            method = update_state(method, 'cool down',
+                                  pump=0)
+            method = update_state(method, 'post bake',
+                                  pump=0)
+            for state in range(1, method.__len__()-1):
+                try: # Only states that specify the valves positions get updated
+                    if isinstance(method[state], dict):
+                        valve = method[state]['valves']
+                        valve[3] = 1
+                        method[state]['valves'] = valve
+                    else:
+                        valve = self.get_param(method[state], 'valves')
+                        valve[3] = 1
+                        method = update_state(method, method[state], valves=valve)
+                except KeyError:
+                    pass
 
         with open(f'src/Methods/{save_name}', 'w') as file:
             file.write(print_method(method))
 
-        if delay > 0:
-            method[-1]['condition'] = 'time'
-            run_time = self.check_method(save_name, background=True)
-            method[-1]['value'] = delay - run_time
-            with open(f'src/Methods/{save_name}', 'w') as file:
-                file.write(json.dumps(method))
-            clean_method(f'src/Methods/{save_name}')
-
-        notes = f'flow={flow} volume={volume} temp={temp} inject={inject} blank={blank}. '
         if stream is None or isinstance(stream, int):
             stream = [stream]
         if run:
+            if not kwargs['blank']:
+                notes = f'flow={kwargs["flow"]} '
+                notes += f'volume={kwargs["volume"]} '
+                notes += f'temp={kwargs["temp"]} '
+                notes += f'inject={kwargs["inject"]}. '
+            else:
+                notes = 'Blank run. '
             for index in stream:
                 self.run_method(name=save_name, stream=index, notes=notes, background=background)
+        return kwargs
 
     def run_sequence(self, sequence=None, continuous=False, background=True):
         if sequence is None:
             files = print_files('src/Sequences/', background=background)
             return files
-        sequence_name = sequence
         if isinstance(sequence, str):
+            sequence_name = sequence
             try:
                 sequence = read_file(f'src/Sequences/{sequence}')[0]
             except FileNotFoundError:
@@ -856,6 +964,7 @@ class pre_con:
                 print(self.run_sequence)
                 return
         elif isinstance(sequence, list):
+            sequence_name = 'user defined sequence'
             pass
         while True:
             print_header(f'Beginning sequence: {sequence_name}.')

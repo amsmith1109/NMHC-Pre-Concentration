@@ -1,8 +1,6 @@
 [
 "cool down",
 "pre-battery check",
-"flush",
-"sampling",
 "pre-backflush",
 "backflush",
 "drop backflush",

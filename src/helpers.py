@@ -86,9 +86,10 @@ def progressbar(i,
                 interval='minutes',
                 size = 20):
     sys.stdout.write('\r')
-    sys.stdout.write("[%-20s] %s %s [%s %s remaining]     " %
-                     ('='*int(i/total*size),
-                      f'{i:.2f}', units, f'{remaining:.2f}', interval))
+    if total != 0:
+        sys.stdout.write("[%-20s] %s %s [%s %s remaining]     " %
+                         ('='*int(i/total*size),
+                          f'{i:.2f}', units, f'{remaining:.2f}', interval))
     sys.stdout.flush()
 
 def print_files(folder, background=False):
@@ -108,6 +109,9 @@ def now():
 def print_method(method):
     file_text = '[\n'
     for state in method:
+        if isinstance(state, str):
+            file_text += f'"{state}",\n'
+            continue
         file_text += '{\n'
         for key in state:
             key_text = f'    "{key}":'
@@ -126,7 +130,7 @@ def print_method(method):
     return file_text
 
 def clean_method(file):
-    met, dt = read_file(file)
+    met = read_file(file)[0]
     txt = print_method(met)
     with open(file, 'w') as file:
         file.write(txt)
@@ -190,7 +194,7 @@ def reset_usb(obj):
     This is only done for pre_con devices. The setup file devices is
     used to locate the ID for resetting the port, finding what the new
     port path is, and reconnecting.
-    
+
     Input:
     obj is either the serial object, or an object with a serial device
     attached to it.
