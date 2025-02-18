@@ -1,0 +1,22 @@
+Successfully connected to MFC Controller on port /dev/ttyUSB2!
+Successfully connected to Valve Controller on port /dev/ttyUSB1!
+Successfully connected to adsorbent trap on port /dev/ttyUSB0!
+
+Beginning state: off.
+
+Sample flow disabled.
+Backflush flow disabled.
+Set point changed to: -99.
+
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 963, in <module>
+    pc.run_sequence(args.sequence)
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 831, in run_sequence
+    sequence = read_file(f'src/Sequences/{sequence}')[0]
+  File "/home/pi/NMHC-Pre-Concentration/src/helpers.py", line 66, in read_file
+    return json.loads(data), mod_date
+  File "/usr/lib/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.9/json/decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 58 column 1 (char 972)

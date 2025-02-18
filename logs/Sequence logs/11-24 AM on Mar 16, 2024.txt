@@ -1,0 +1,4 @@
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 894
+    help='Run specified sequence continuously.')
+    ^
+SyntaxError: invalid syntax

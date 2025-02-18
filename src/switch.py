@@ -24,11 +24,11 @@ class switch:
                  v2=26,      # Pin 37
                  v3=12,      # Pin 32
                  v4=16,      # Pin 36
-                 v5=20,      # Pin 38
-                 pump=21,    # Pin 40
+                 pump=20,    # Pin 38
+                 debug=21,   # Pin 40
                  connected_obj=None):
         pins = {'enable': enable, 'V0': v0, 'V1': v1, 'V2': v2,
-                'V3': v3, 'V4': v4, 'V5': v5, 'pump': pump}
+                'V3': v3, 'V4': v4, 'pump': pump, 'debug': debug}
         self.pins = pins
         self.keys = [x for x in pins.keys()]
         self.pin_list = [x for x in pins.values()]
@@ -41,11 +41,22 @@ class switch:
             GPIO.add_event_detect(i,
                                   GPIO.BOTH,
                                   callback=self.switch_detected,
-                                  bouncetime=10)
+                                  bouncetime=20)
             self.state[self.keys[n]] = GPIO.input(i)
 
         signal.signal(signal.SIGINT, signal_handler)
 
+    def poll(self, pin):
+        if isinstance(pin, str):
+            name = pin
+            pin = self.keys.index(pin)
+        if isinstance(pin, int):
+            name = self.keys[pin]
+            pin = self.pin_list[pin]
+        else:
+            raise TypeError('Invalid pin input, must be pin name (str) or index (int)')
+        self.switch_detected(pin)
+        return self.state[name]
 
 if __name__ == '__main__':
     sw = switch()

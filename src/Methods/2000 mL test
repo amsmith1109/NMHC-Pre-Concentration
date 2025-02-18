@@ -1,0 +1,88 @@
+[
+{
+    "name":        "cool down",
+    "valves":      [0, 0, 0, 0, 0],
+    "ads":         -29,
+    "pump":        1,
+    "condition":   "temp",
+    "value":       "<",
+    "timeout":     20},
+{
+    "name":        "flush",
+    "valves":      [0, 0, 1, 0, 0],
+    "backflush":   35,
+    "pump":        1,
+    "condition":   "time",
+    "value":       0.2,
+    "aux1":        1},
+{
+    "name":        "sampling",
+    "valves":      [0, 1, 0, 0, 0],
+    "pump":        1,
+    "condition":   "pulse",
+    "value":       0.5,
+    "monitor":     true},
+{
+    "name":        "pre-backflush",
+    "valves":      [0, 0, 1, 1, 0],
+    "sample":      0,
+    "backflush":   50,
+    "pump":        1,
+    "condition":   "time",
+    "value":       0.25},
+{
+    "name":        "backflush",
+    "valves":      [0, 1, 1, 1, 0],
+    "pump":        1,
+    "condition":   "time",
+    "value":       0.25},
+{
+    "name":        "drop backflush",
+    "backflush":   15},
+{
+    "name":        "isolate trap",
+    "valves":      [0, 0, 1, 1, 0],
+    "pump":        1,
+    "condition":   "time",
+    "value":       0.05},
+{
+    "name":        "check GC",
+    "valves":      [0, 0, 1, 1, 0],
+    "pump":        1,
+    "condition":   "gc"},
+{
+    "name":        "flash heat",
+    "valves":      [0, 0, 1, 1, 0],
+    "ads":         290,
+    "pump":        1,
+    "condition":   "time",
+    "value":       0.1},
+{
+    "name":        "check heater",
+    "ads":         275,
+    "condition":   "temp",
+    "value":       ">",
+    "timeout":     0.15,
+    "monitor":     true},
+{
+    "name":        "inject",
+    "valves":      [0, 1, 1, 1, 0],
+    "pump":        1,
+    "condition":   "time",
+    "value":       0.25},
+{
+    "name":        "bake out",
+    "valves":      [0, 1, 1, 1, 0],
+    "pump":        1,
+    "condition":   "time",
+    "value":       0.25},
+{
+    "name":        "post bake",
+    "valves":      [0, 1, 1, 0, 1],
+    "h2o":         -99,
+    "ads":         -99,
+    "pump":        1,
+    "condition":   "time",
+    "value":       0.5},
+"off"
+]

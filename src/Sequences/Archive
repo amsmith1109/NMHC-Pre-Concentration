@@ -1,0 +1,66 @@
+[
+{
+"Method":      "2000 mL Ref",
+"Stream":      15,
+"Repetition":  1,
+"Sample Name": "Breathing Air",
+"Description": "",
+"time":        45
+},
+{
+"Method":      "2000 mL Ref",
+"Stream":      2,
+"Repetition":  1,
+"Sample Name": "Archive 1",
+"Description": "",
+"time":        45
+},
+{
+"Method":      "2000 mL Ref",
+"Stream":      4,
+"Repetition":  1,
+"Sample Name": "Archive 2",
+"Description": "",
+"time":        45
+},
+{
+"Method":      "2000 mL Ref",
+"Stream":      6,
+"Repetition":  1,
+"Sample Name": "Archive 3",
+"Description": "",
+"time":        45
+},
+{
+"Method":      "2000 mL Ref",
+"Stream":      8,
+"Repetition":  1,
+"Sample Name": "Archive 4",
+"Description": "",
+"time":        45
+},
+{
+"Method":      "2000 mL Ref",
+"Stream":      10,
+"Repetition":  1,
+"Sample Name": "Archive 5",
+"Description": "",
+"time":        45
+},
+{
+"Method":      "2000 mL Ref",
+"Stream":      12,
+"Repetition":  1,
+"Sample Name": "Archive 6",
+"Description": "",
+"time":        45
+},
+{
+"Method":      "2000 mL Ref",
+"Stream":      15,
+"Repetition":  1,
+"Sample Name": "Breathing Air",
+"Description": "",
+"time":        45
+}
+]
