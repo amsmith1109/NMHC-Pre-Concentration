@@ -1,5 +1,6 @@
 [
 {"name":        "pre-backflush",
+<<<<<<< Updated upstream
 "valves": 	[0,0,1,0,0],
 "backflush":	100,
 "pump":		1,
@@ -21,10 +22,29 @@
 "value":	">",
 "timeout":	0.2
 },
+=======
+"valves":       [0,0,1,0,0],
+"backflush":	100,
+"pump":		1,
+"condition":	"time",
+"value":	0.25
+},
+{"name":        "backflush",
+"valves":	[0,1,1,0,0],
+"condition":	"time",
+"value":	0.5
+},
+{"name":        "heat Trap",
+"valves":	[0,1,1,0,0],
+"ads":          300
+},
+"check heater",
+>>>>>>> Stashed changes
 {"name":        "bake out",
 "condition":	"time",
 "value":	2
 },
+<<<<<<< Updated upstream
 {"name":        "cool down",
 "valves": 	[0,1,1,0,1],
 "ads":    	-99,
@@ -40,4 +60,9 @@
 "backflush":	0,
 "pump":		0
 }
+=======
+"post bake"
+,
+"off"
+>>>>>>> Stashed changes
 ]

@@ -139,11 +139,19 @@ def bash2list(bstring):
     ''' Converts a list of strings printed while executing a cmd line
     function to a python list.
     '''
+<<<<<<< Updated upstream
     return str(bstring)[2:-3].split('\\n')    
 
 def get_devices():
     ''' loads and returns the dictionary specified in the devices setup file
     Includes the path this script is located in to 
+=======
+    return str(bstring)[2:-3].split('\\n')
+
+def get_devices():
+    ''' loads and returns the dictionary specified in the devices setup file
+    Includes the path this script is located in.
+>>>>>>> Stashed changes
     '''
     fd = os.path.abspath(__file__)
     cwd = os.path.dirname(fd)
@@ -154,12 +162,20 @@ def find_devices():
         adsorbent trap
         mass flow controller
         valve controller
+<<<<<<< Updated upstream
     
+=======
+
+>>>>>>> Stashed changes
     This runs the bash script scan.sh which returns the port path and the
     name of the device. An issue with this method is that it doesn't deal
     with multiple devices that use the same serial devices, e.g., there are
     two CH340 devices attached.
+<<<<<<< Updated upstream
     
+=======
+
+>>>>>>> Stashed changes
     The found devices are compared to the setup file "devices" to specify
     which serial device is which. If an unknown device appears, the user
     will be prompted to add it to the list. They can skip over it.

@@ -1,6 +1,10 @@
 [
 "cool down",
+<<<<<<< Updated upstream
 "pre-battery check",
+=======
+"trap power check",
+>>>>>>> Stashed changes
 "pre-backflush",
 "backflush",
 "drop backflush",
@@ -12,6 +16,11 @@
 "inject",
 "bake out",
 "post bake",
+<<<<<<< Updated upstream
 "battery check",
 "off"
 ]
+=======
+"off"
+]
+>>>>>>> Stashed changes

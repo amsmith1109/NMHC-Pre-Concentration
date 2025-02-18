@@ -1,6 +1,10 @@
 [
 {"name":	"Initialize Off",
+<<<<<<< Updated upstream
 "valves": 	[0,0,0,1,0],
+=======
+"valves":       [0,0,0,1,0],
+>>>>>>> Stashed changes
 "pump":		0,
 "backflush":	0,
 "sample":	0,

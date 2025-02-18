@@ -1,4 +1,5 @@
 [
+<<<<<<< Updated upstream
 {
     "name":        "cool down",
     "valves":      [0, 0, 0, 0, 0],
@@ -14,6 +15,9 @@
     "value":       ">",
     "monitor":     true,
     "timeout":     5},
+=======
+"cool down",
+>>>>>>> Stashed changes
 {
     "name":        "flush",
     "valves":      [0, 0, 0, 0, 0],
@@ -59,13 +63,21 @@
 {
     "name":        "flash heat",
     "valves":      [1, 0, 1, 1, 0],
+<<<<<<< Updated upstream
     "ads":         300,
+=======
+    "ads":         305,
+>>>>>>> Stashed changes
     "pump":        1,
     "condition":   "time",
     "value":       0.1},
 {
     "name":        "check heater",
+<<<<<<< Updated upstream
     "ads":         275,
+=======
+    "ads":         270,
+>>>>>>> Stashed changes
     "condition":   "temp",
     "value":       ">",
     "monitor":     true,
@@ -87,6 +99,7 @@
     "valves":      [0, 1, 1, 1, 0],
     "pump":        1,
     "condition":   "time",
+<<<<<<< Updated upstream
     "value":       1.25},
 {
     "name":        "post bake",
@@ -103,5 +116,9 @@
     "value":       ">",
     "monitor":     true,
     "timeout":     5},
+=======
+    "value":       1.5},
+"post bake",
+>>>>>>> Stashed changes
 "off"
 ]

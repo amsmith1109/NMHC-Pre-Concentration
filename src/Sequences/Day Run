@@ -1,8 +1,14 @@
 [
 {
+<<<<<<< Updated upstream
 "Method":       "tester",
 "Sample Name":	"blank",
 "Repetition":	5,
+=======
+"Method":       "2000 mL Ref",
+"Sample Name":	"breathing air",
+"Repetition":	1,
+>>>>>>> Stashed changes
 "time":         45
 }
 ]

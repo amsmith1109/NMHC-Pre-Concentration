@@ -1,6 +1,9 @@
 [
 "cool down",
+<<<<<<< Updated upstream
 "pre-battery check",
+=======
+>>>>>>> Stashed changes
 "flush",
 "sampling",
 "pre-backflush",
@@ -14,6 +17,9 @@
 "inject",
 "bake out",
 "post bake",
+<<<<<<< Updated upstream
 "battery check",
+=======
+>>>>>>> Stashed changes
 "off"
 ]

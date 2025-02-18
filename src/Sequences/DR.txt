@@ -5,14 +5,35 @@
 "Repetition":  1,
 "Sample Name": "Breathing Air",
 "Description": "",
+<<<<<<< Updated upstream
 "time":        50
+=======
+"time":        50,
+"on_error":    "continue"
+>>>>>>> Stashed changes
 },
 {
 "Method":      "2000 mL SA",
 "Stream":      2,
+<<<<<<< Updated upstream
 "Repetition":  22,
 "Sample Name": "PDX Air",
 "Description": "",
 "time":        50
+=======
+"Repetition":  21,
+"Sample Name": "PDX Air",
+"Description": "",
+"time":        50,
+"on_error":    "continue"
+},
+{
+"Method":      "2000 mL Ref",
+"Stream":      15,
+"Sample Name": "Breathing Air",
+"Description": "",
+"time":        50,
+"on_error":    "continue"
+>>>>>>> Stashed changes
 }
 ]

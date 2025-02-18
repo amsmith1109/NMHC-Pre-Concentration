@@ -37,7 +37,12 @@ class state_item(rigid_dict):
                         'condition': [str, None],
                         'value':     [(int, float, str), None],
                         'message':   [str, ''],
+<<<<<<< Updated upstream
                         'timeout':   [(int, float), None]}
+=======
+                        'timeout':   [(int, float), None],
+                        'active':    [str, None]}
+>>>>>>> Stashed changes
         super().__init__(default_keys, dct, **kwargs)
 
 class sequence_item(rigid_dict):
@@ -50,4 +55,11 @@ class sequence_item(rigid_dict):
                        'Macro':       [str, None],
                        'on_error':    [str, None],
                        'time':        [(int, float), 0],}
+<<<<<<< Updated upstream
        super().__init__(default_keys, dct, **kwargs)
+=======
+       super().__init__(default_keys, dct, **kwargs)
+
+class LowTemp(Exception):
+        pass
+>>>>>>> Stashed changes

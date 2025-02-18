@@ -1,6 +1,9 @@
 [
 "cool down",
+<<<<<<< Updated upstream
 "pre-battery check",
+=======
+>>>>>>> Stashed changes
 "flush",
 {
     "name":        "sampling",
@@ -14,12 +17,25 @@
 "drop backflush",
 "isolate trap",
 "check gc",
+<<<<<<< Updated upstream
 "flash heat",
+=======
+{
+    "name":        "flash heat",
+    "valves":      [1, 0, 1, 1, 0],
+    "ads":         305,
+    "sample":      0,
+    "value":       0.1,
+    "condition":   "time"},
+>>>>>>> Stashed changes
 "check heater",
 "start gc",
 "inject",
 "bake out",
 "post bake",
+<<<<<<< Updated upstream
 "battery check",
+=======
+>>>>>>> Stashed changes
 "off"
 ]
