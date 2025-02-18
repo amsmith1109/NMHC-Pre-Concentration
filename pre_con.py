@@ -39,18 +39,10 @@ class pre_con:
                     continue
                 if device == 'vc':
                     self.vc = uPy(port)
-                    try:
-                        self.vc.echo('dir()')
-                    except TimeoutError:
-                        reset_usb(self.vc)
                 elif device == 'mfc':
                     self.mfc = uPy(port)
                     self.mfc.sample = 0
                     self.mfc.backflush = 1
-                    try:
-                        self.mfc.echo('dir()')
-                    except TimeoutError:
-                        reset_usb(self.mfc)
                     self.mfc.ports = self.mfc.echo('len(MFC)')
                     self.mfc.timeout = self.mfc.echo('timeout') + 1
                 elif device == 'ads':
@@ -70,8 +62,7 @@ class pre_con:
                                   "aux2":      0,
                                   "condition": None,
                                   "value":     None,
-                                  "message":   None,
-                                  "active":    None}
+                                  "message":   None}
 
     @property
     def switch_state(self):
@@ -108,31 +99,29 @@ class pre_con:
             pass
         block_print()
         try:
-            self.ads = CNi(serial, limit=330, band=2)
+            self.ads = CNi(serial, limit=320, band=2)
         except SystemError:
             reset_usb(Serial(serial))
             devices = find_devices()
             serial = devices['ads']
-            self.ads = CNi(serial, limit=330, band=2)
+            self.ads = CNi(serial, limit=320, band=2)
         self.ads.convert = lambda x: x*cal['ads'][0] + cal['ads'][1]
         enable_print()
 
     def ads_temp(self, temp=None):
-        self.current_state['active'] = 'ads'
         if temp > self.ads.limit:
-            raise ValueError(f'Set point of {temp} is too high! Must be lower than {self.ads.limit}.')
+            print(f'Set point too high! Must be lower than {self.ads.limit}.')
+            return
         if temp is None:
             print(self.ads.set_point())
         else:
-            set_point = temp
             if temp > 100:
                 print(f'Setting calibrated setpoint for {temp}')
-                set_point = self.ads.convert(temp)
-            self.ads.set_point(round(set_point, 1))
+                temp = self.ads.convert(temp)
+            self.ads.set_point(round(temp,1))
         self.current_state['ads'] = temp
 
     def ads_calibrate(self, temp=None):
-        self.current_state['active'] = 'ads'
         from src.thermal_controller import pid_tuning
         new_cal = pid_tuning.calibrate(pre_con=self, temp=temp)
         filename = 'src/thermal_controller/PID calibration.txt'
@@ -145,7 +134,6 @@ class pre_con:
         self.__init__(debug=True)
 
     def h2o_temp(self, temp=None):
-        self.current_state['active'] = 'ads'
         if temp > self.h2o.limit:
             print(f'Set point too high! Must be lower than {self.h2o.limit}.')
             return
@@ -161,7 +149,6 @@ class pre_con:
 # Code for Mass Flow Controller
 ###########################################################################
     def flowrate(self, position=None, flowrate=None):
-        self.current_state['active'] = 'mfc'
         if position == None:
             position = range(self.mfc.ports)
         else:
@@ -177,7 +164,6 @@ class pre_con:
         return val
 
     def sample(self, flowrate=None, display=True):
-        self.current_state['active'] = 'mfc'
         sample_flowrate = self.flowrate(position=0, flowrate=flowrate)[0]
         self.current_state['sample'] = flowrate
         if flowrate is None:
@@ -187,7 +173,6 @@ class pre_con:
                 return(sample_flowrate)
 
     def backflush(self, flowrate=None, display=True):
-        self.current_state['active'] = 'mfc'
         backflush_flowrate = self.flowrate(position=1, flowrate=flowrate)[0]
         self.current_state['backflush'] = flowrate
         if flowrate is None:
@@ -197,24 +182,13 @@ class pre_con:
                 return(backflush_flowrate)
 
     def check_battery(self):
-        self.current_state['active'] = 'mfc'
-        cal = [3.4459, 0.0152] # ad hoc calibration performed offline
+        cal = [3.4459, 0.0152]
         return cal[0]*self.mfc.echo('adc.single(3)') + cal[1]
-
-    def measure(self, device=None):
-        self.current_state['active'] = 'mfc'
-        if device == 'ads':
-            return self.ads.measure()
-        elif device == 'h2o':
-            return self.h2o.measure()
-        elif device == 'battery':
-            return self.check_battery()
 
 ###########################################################################
 # Code for valve controller
 ###########################################################################
     def valve(self, valve=None, position=None):
-        self.current_state['active'] = 'vc'
         if isinstance(valve, int):
             self.vc.write(f'rotate({valve},{position})')
             if valve < 5:
@@ -238,7 +212,6 @@ class pre_con:
                 return p
 
     def pulse(self, valve, sleep):
-        self.current_state['active'] = 'vc'
         if not isinstance(valve, int):
             raise ValueError('Selected valve must be an integer.')
         if valve > 8 or valve < 0:
@@ -259,7 +232,6 @@ class pre_con:
         self.valve(range(0,8),0)
 
     def stream(self, position=None):
-        self.current_state['active'] = 'vc'
         if position==None:
             return int(self.vc.echo('m.readpos()'))
         elif isinstance(position, int):
@@ -276,11 +248,9 @@ class pre_con:
             raise(ValueError)
 
     def step(self):
-        self.current_state['active'] = 'vc'
         self.vc.write(f'm.step()\r')
 
     def relay(self, name, command):
-        self.current_state['active'] = 'vc'
         pin = {'pump':5, 'aux1':6, 'aux2':7}[name]
         if command == None:
             print(f"The {name} is currently turned {self.current_state['pump']}.")
@@ -302,9 +272,13 @@ class pre_con:
     def aux2(self, command=None):
         self.relay(name='aux2', command=command)
 
-###########################################################################
-# Abstract Code for controlling the entire system
-###########################################################################
+    def measure(self, device=None):
+        if device == 'ads':
+            return self.ads.measure()
+        elif device == 'h2o':
+            return self.h2o.measure()
+        elif device == 'battery':
+            return self.check_battery()
 
     def get_param(self, state, index):
             state = self.state(state, check=True, background=True)
@@ -334,11 +308,8 @@ class pre_con:
         """
         def state_help():
             # need to update to look up pre_con states
-            with open('src/precon_states') as file:
-                data = file.read()
-            states = json.loads(data)
             print('You may use one of the following keys:')
-            for i in states.keys():
+            for i in self.states.keys():
                 print(i)
             return
 
@@ -415,7 +386,7 @@ class pre_con:
         _monitor = []
         if condition != None:
             condition = condition.lower()
-        valid_conditions = (None, 'gc', 'pulse', 'time', 'temp', 'manual', 'error')
+        valid_conditions = (None, 'gc', 'pulse', 'time', 'temp', 'manual')
         valid_conditions.index(condition) # Causes an error if an invalid condition is called.
         print(f"Beginning state: {name}.\n{new_state['message']}")
 
@@ -495,7 +466,7 @@ class pre_con:
             if monitor:
                 flow_volume = trapz(_monitor, t)/60
                 print(f'{monitor} volume: {flow_volume} mL')
-                return round(flow_volume, 1)
+                return flow_volume
             return
 
         ads = new_state['ads']
@@ -534,7 +505,6 @@ class pre_con:
         #  Temperature Condition
         #############################################################
         if condition=='temp':
-            ttest = time.time()
             test = get_test(new_state['value'])
             timeout = new_state['timeout']
             if timeout is None:
@@ -544,15 +514,13 @@ class pre_con:
                     device = i
                     print(f'Checking that {device} is {new_state["value"]}{new_state[device]}')
                     def check():
-                        measurement = self.measure(device)
-                        return test(measurement, new_state[device]), measurement
+                        return test(new_state[device], self.measure(device)), self.measure(device)
                     break
             t0 = time.time()
             while True:
-                passing, value = check()
                 if monitor:
-                    _monitor.append(value)
-                if value is False:
+                    _monitor.append(check()[1])
+                if check()[1] is False:
                     print()
                     if device == 'ads':
                         if not self.ads.measure():
@@ -562,31 +530,25 @@ class pre_con:
                                 raise RuntimeError('Failed to reconnect to ADS.')
                             self.state(new_state)
                 if not background:
-                    txt = f"Currently measuring: {value:.2f}"
+                    txt = f"Currently measuring: {check()[1]:.2f}"
                     remaining = round((t0 + timeout*60- time.time())/60, 2)
                     txt += f" [timing out in {remaining} minutes]   "
                     sys.stdout.write('\r')
                     sys.stdout.write(txt)
                     sys.stdout.flush()
-                else:
-                    time.sleep(1)
-                if passing:
+                if not check()[0]:
                     break
+                time.sleep(0.5)
                 if time.time() > t0 + timeout*60:
-                    if abs(check()[1]-new_state[device]) < abs(new_state[device])*.01:
-                        print(f'\n{check()[1]} within 1%. Continuing to next state.')
+                    self.state('off')
+                    print(f'{abs(check()[1]-new_state[device])}')
+                    print(f'{abs(new_state[device])*.03}')
+                    if abs(check()[1]-new_state[device]) < abs(new_state[device])*.03:
+                        print(f'{check()[1]} within 3%. Continuing to next state.')
                         break
-                    if new_state['value'] == '>' and new_state[device] - check()[1] < 11:
-                        print('Temperature came in low, attempting to correct it.')
-                        self.ads_temp(self.current_state['ads'] + 10)
-                        time.sleep(1)
-                        if monitor:
-                            _monitor.append(check()[1])
-                        if passing:
-                            break
                     raise SystemError(f'{device} failed to reach {new_state[device]} in time. Last measured: {_monitor[-1]:.2f}')
             print('')
-            print(f"{device} threshold reached! Currently measuring {value:.2f}")
+            print(f"{device} threshold reached! Currently measuring {check()[1]:.2f}")
 
         #############################################################
         # Timing Condition
@@ -626,8 +588,6 @@ class pre_con:
                         break
                 if time.time() > t0 + timeout:
                     raise TimeoutError(f'Manual switching timed out after {timeout} minutes.')
-        if condition == 'error':
-            raise SystemError
 
         self.current_state['name'] = name
         print('')
@@ -636,7 +596,7 @@ class pre_con:
         else:
             return
 
-    def check_method(self, name='standard.txt', output_string=False, background=False):
+    def check_method(self, name='standard.txt', background=False):
         """
         check_method prints each state in a method file. This
         also provides a rudamentary check that the method file
@@ -745,8 +705,6 @@ class pre_con:
                 elif condition == 'manual':
                     if value != None:
                         notes += f"Warnings: {state['name']} a value is given for a manual advancing condition"
-                elif condition == 'error':
-                    notes += f"Warnings: {state['name']} uses the error condition. This is method is only for debugging."
                 else:
                     notes += f"Error: {state['name']} - {condition} is not a valid condition.\n"
             except Exception as x:
@@ -764,10 +722,7 @@ class pre_con:
         notes += f'{name} has {len(method)} states.\n'
         if not background:
             print(notes)
-        if output_string:
-            return notes
-        else:
-            return run_time
+        return run_time
 
     def run_method(self, name=None, stream=None, notes='', background=False):
         """
@@ -803,11 +758,7 @@ class pre_con:
         try:
             for state in method:
                 if isinstance(state, str):
-                    try:
-                        state = self.state(state, check=True, background=True)
-                    except TimeoutError:
-                        usb_reset(self.current_state['active'])
-                        state = self.state(state, check=True, background=True)
+                    state = self.state(state, check=True, background=True)
                 result = self.state(state, background=background)
                 if result != None:
                     if notes != '':
@@ -816,19 +767,13 @@ class pre_con:
                         # Save list results to something (temp monitors currently return a list)
                         result = result[-1]
                     notes += f'{state["name"]} returned: {result:.2f}. '
-                if self.current_state['condition'] == 'GC' and self.current_state['value'] is not None:
-                    notes += 'GC Triggered.'
         except Exception as x:
-            traceback_obj = sys.exc_info()[2]
-            line_number = traceback_obj.tb_lineno
-            error_notes = f'Failed at {now()} on {state["name"]}, line {line_number}: {type(x)} {x}.'
-            error_notes = error_notes.replace('\n', '')
+            error_notes = f'Failed at {now()} on {state["name"]}: {type(x)} {x}.'.replace('\n', '')
             error_notes = error_notes.replace('..','.')
 
         end_time = now()
-        log_entry = f'{start_time}, {end_time}, {name}'
+        log_entry = f'\n{start_time}, {end_time}, {name}'
         log_entry += f', {str(stream)}, {notes}, {modified_date}, {error_notes}'
-        log_entry = '\n' + log_entry.replace("\n", ". ")
         with open('logs/method log.csv', 'a') as file:
             file.write(log_entry)
 
@@ -862,23 +807,14 @@ class pre_con:
             stop = _defaults[parameter]['stop']
         if step is None:
             step = _defaults[parameter]['step']
-        if step > 0:
-            if start > stop:
-                raise ValueError('Stop must be larger than start with a positive step size.')
+
+        if start > stop:
+            raise ValueError('Stop size must be larger than start size.')
         if step < 0:
-            if start < stop:
-                raise ValueError('Stop must be smaller than start with a negative step.')
-        if step == 0:
-                raise ValueError('Step size cannot be zero.')
+            raise ValueError('Step size must be positive.')
         val = start - step
-        while True:
+        while val < stop:
             val += step
-            if step < 0:
-                if val < stop:
-                    break
-            else:
-                if val > stop:
-                    break
             for run in range(repeat):
                 if parameter == 'flow':
                     flow = val + step
@@ -926,7 +862,7 @@ class pre_con:
         _valid_kwargs = ['flow', 'volume', 'temp', 'delay',
                          'inject', 'blank', 'stream', 'aux', 'ambient']
         for name in kwargs: # Raises an error if there is an invalid name
-            _valid_kwargs.index(name)
+            _valid_kwargs.index(name) 
         for name in _valid_kwargs: # Sets missing keys to None
             try:
                 kwargs[name]
@@ -951,7 +887,7 @@ class pre_con:
                 Warning('Volume given for a blank run. This parameter will not affect anything.')
             else:
                 method = update_state(method, 'sampling',
-                                      value=kwargs['volume']/kwargs['flow'])
+                                      value=round(kwargs['volume']/kwargs['flow'], 1))
         else:
             kwargs['volume'] = self.get_param('sampling', 'value')*kwargs['flow']
         if kwargs['temp'] is not None:
@@ -962,7 +898,7 @@ class pre_con:
         if kwargs['inject'] is not None:
             method = update_state(method, 'inject',
                                   value=kwargs['inject']/60)
-            method = update_state(method, 'bake out',
+            method = update_state(method, 'bakeout',
                                   value=(120 - kwargs['inject'])/60)
         else:
             kwargs['inject'] = self.get_param('inject', 'value')*60
@@ -1054,33 +990,17 @@ class pre_con:
                             print(type(x))
                             print(x.args)
                             raise x
-                        if on_error == 'retry':
+                        if on_error == 'reset':
                             print(f'Exception occurred: {x}')
                             print('Resetting system and continuing.')
                             GPIO.cleanup()
                             self.__init__()
                             self.run_method('bake out', background=True)
-                            self.run_method(item['Method'],
-                                            stream=item['Stream'],
-                                            notes=f'Sample Name: {item["Sample Name"]}',
-                                            background=background)
+                            continue
                         elif on_error == 'continue':
-                            GPIO.cleanup()
-                            self.__init__()
-                            check_met = self.check_method(item['Method'],
-                                                          output_string=True,
-                                                          background=True)
-                            if "this method does not trigger the GC" not in check_met:
-                                with open('logs/method log.csv', 'r') as file:
-                                    log = file.readlines()[-1].split(',')
-                                notes = log[4]
-                                if "GC Triggered" not in notes:
-                                    state = pc.state('check gc', check=True, background=True)
-                                    state['timeout'] = start_time + item['time']*60 - time.time()
-                                    self.state(state)
-                                    self.state('pause', background=True)
-                                    self.state('start gc')
-                            self.run_method('bake out', background=True)
+                            print(f'Exception occurred: {type(x)}:{x}')
+                            print('Continuing sequence.')
+                            continue
                     finally:
                         if self.switch.poll('debug'):
                             print('debug switch enabled')

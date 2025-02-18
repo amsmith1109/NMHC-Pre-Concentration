@@ -37,8 +37,7 @@ class state_item(rigid_dict):
                         'condition': [str, None],
                         'value':     [(int, float, str), None],
                         'message':   [str, ''],
-                        'timeout':   [(int, float), None],
-                        'active':    [str, None]}
+                        'timeout':   [(int, float), None]}
         super().__init__(default_keys, dct, **kwargs)
 
 class sequence_item(rigid_dict):
@@ -52,6 +51,3 @@ class sequence_item(rigid_dict):
                        'on_error':    [str, None],
                        'time':        [(int, float), 0],}
        super().__init__(default_keys, dct, **kwargs)
-
-class LowTemp(Exception):
-        pass

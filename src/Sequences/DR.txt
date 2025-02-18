@@ -5,24 +5,14 @@
 "Repetition":  1,
 "Sample Name": "Breathing Air",
 "Description": "",
-"time":        50,
-"on_error":    "continue"
+"time":        50
 },
 {
 "Method":      "2000 mL SA",
 "Stream":      2,
-"Repetition":  21,
+"Repetition":  22,
 "Sample Name": "PDX Air",
 "Description": "",
-"time":        50,
-"on_error":    "continue"
-},
-{
-"Method":      "2000 mL Ref",
-"Stream":      15,
-"Sample Name": "Breathing Air",
-"Description": "",
-"time":        50,
-"on_error":    "continue"
+"time":        50
 }
 ]
