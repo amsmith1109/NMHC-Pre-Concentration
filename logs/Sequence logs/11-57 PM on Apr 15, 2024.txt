@@ -1,0 +1,16 @@
+Successfully connected to MFC Controller on port /dev/ttyUSB2!
+Successfully connected to adsorbent trap on port /dev/ttyUSB1!
+Successfully connected to Valve Controller on port /dev/ttyUSB0!
+**********************************************************************
+*                    BEGINNING SEQUENCE: DR.TXT.                     *
+**********************************************************************
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 1051, in <module>
+    pc.run_sequence(args.sequence, continuous=args.continuous)
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 885, in run_sequence
+    item = sequence_item(item)
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 950, in __init__
+    self[key] = dct[key]
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 956, in __setitem__
+    raise TypeError(f'{value} is not a {self.keys[key]}.')
+TypeError: 15 is not a <class 'str'>.

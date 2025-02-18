@@ -1,0 +1,50 @@
+Successfully connected to VC on port /dev/ttyUSB1!
+Successfully connected to MFC on port /dev/ttyUSB2!
+Successfully connected to ADS on port /dev/ttyUSB0!
+**********************************************************************
+*                    BEGINNING SEQUENCE: DR.TXT.                     *
+**********************************************************************
+**********************************************************************
+*                        BEGINNING RUN (1/1)                         *
+*                        METHOD: 2000 ML REF                         *
+*                      SAMPLE: "BREATHING AIR".                      *
+**********************************************************************
+Beginning state: cool down.
+
+Checking that ads is <-29
+
+ads threshold reached! Currently measuring -29.00
+
+Beginning state: pre-check battery.
+
+Checking that battery is >13.5
+
+battery threshold reached! Currently measuring 13.53
+
+Beginning state: flush.
+
+Setting sample flow rate to 100. Please wait for flow to stabilize.
+Waiting 30 seconds to proceed.
+Wait will complete at [2024] Apr 30 20:21:39.
+[====================] 30.00 s [0.00 seconds remaining]     
+Beginning state: sampling.
+
+Precision timed pulse (20.0 min) on valve 1.
+Pulse will complete at [2024] Apr 30 20:41:39.
+Beginning state: off.
+
+Sample flow disabled.
+Backflush flow disabled.
+
+<class 'Exception'>
+('Failed at [2024] Apr 30 20:25:15 on sampling: device reports readiness to read but returned no data (device disconnected or multiple access on port?). Sample Name: Breathing Air pre-check battery returned: 13.54. ',)
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 994, in <module>
+    pc.run_sequence(args.sequence, continuous=args.continuous)
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 881, in run_sequence
+    raise x
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 870, in run_sequence
+    self.run_method(item['Method'],
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 766, in run_method
+    raise Exception(f'{error_notes} {notes}')
+Exception: Failed at [2024] Apr 30 20:25:15 on sampling: device reports readiness to read but returned no data (device disconnected or multiple access on port?). Sample Name: Breathing Air pre-check battery returned: 13.54. 

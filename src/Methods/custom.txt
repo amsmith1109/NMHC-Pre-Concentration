@@ -1,0 +1,29 @@
+[
+"cool down",
+"flush",
+{
+    "name":        "sampling",
+    "valves":      [0, 1, 0, 0, 0],
+    "pump":        1,
+    "condition":   "pulse",
+    "value":       20.0,
+    "monitor":     true},
+"pre-backflush",
+"backflush",
+"drop backflush",
+"isolate trap",
+"check gc",
+{
+    "name":        "flash heat",
+    "valves":      [1, 0, 1, 1, 0],
+    "ads":         305,
+    "sample":      0,
+    "value":       0.1,
+    "condition":   "time"},
+"check heater",
+"start gc",
+"inject",
+"bake out",
+"post bake",
+"off"
+]

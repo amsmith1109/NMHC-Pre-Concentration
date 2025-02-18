@@ -7,28 +7,22 @@ class uPy:
     def __init__(self,
                  port,
                  baudrate=115200,
-                 timeout=0.05):
+                 timeout=0.2):
         self.serial = Serial(port, baudrate=baudrate, timeout=timeout)
         self.port = port
         # Enter normal REPL mode
         self.connect()
         signal.signal(signal.SIGINT, self.signal_handler)
-        
-        
+
     def connect(self):
         if(self.serial.isOpen() == False):
             self.serial.open()
         self.interrupt()
         self.normal_mode()
-        msg = self.echo('dir()')
-#         if not(self.reboot()):
-#             print('Failed to connect to micropython device.')
-#         else:
-#             print(self.readline(timeout=2))
-        
+
     def write(self, message):
         # convert input to byte string
-        
+
         if isinstance(message, str):
             msg = message.encode('utf-8')
         elif isinstance(message, bytes):
@@ -37,13 +31,13 @@ class uPy:
             msg = str(message).encode('utf-8')
         else:
             print('Invalid input variable type.')
-        
+
         # add carriage return if it doesn't exist
-        if msg[-1] != b'\r': 
+        if msg[-1] != b'\r':
             msg = msg + b'\r'
-        
+
         #clear serial buffer
-        self.read() 
+        self.read()
         # Write to serial
         self.serial.write(msg)
         t = time.time()
@@ -55,8 +49,8 @@ class uPy:
             return True
         else:
             return False
-        
-        
+
+
     def read(self, n=None):
         if n==None:
             msg = self.serial.readall()
@@ -64,8 +58,8 @@ class uPy:
             msg = self.serial.read(n)
         msg = msg.decode('utf-8')
         return msg
-    
-    
+
+
     def readline(self, timeout=None):
         if timeout==None:
             timeout = self.serial.timeout
@@ -81,12 +75,16 @@ class uPy:
                 if (time.time()) > (t + timeout):
                     return False
         return result
-        
-    
+
+
     def echo(self, msg, timeout=None):
         if timeout==None:
             timeout = self.serial.timeout
         self.write(msg)
+#         try:
+#             self.write(msg)
+#         except Exception as x:
+#             if type(x)
         result = ''
         t = time.time()
         while True:
@@ -97,12 +95,11 @@ class uPy:
                     break
             else:
                 if (time.time()) > (t + timeout):
-                    print('Device timed out.')
-                    return False
-        error_check = [x for x in error_types if (x in msg)]
+                    raise TimeoutError('Device timed out.')
+        error_check = [x for x in error_types if (x in result)]
         if len(error_check) > 0:
-            index = msg.find(error_check[0]) + len(error_check[0])
-            result = msg[index:]
+            index = result.find(error_check[0]) + len(error_check[0]) + 2
+            result = result[index:]
             result = result.strip('\r\n')
             raise eval(error_check[0])(f'{result} (from uPy device)')
         result = result[1:]
@@ -114,11 +111,11 @@ class uPy:
             return eval(result)
         except:
             return result
-            
+
     def close(self):
         self.write('\x01')
         self.serial.close()
-    
+
     def normal_mode(self):
         self.write('\x02')
 
@@ -134,7 +131,7 @@ class uPy:
         timeout = 5
         while self.serial.in_waiting==0:
             if time.time() > t + timeout:
-                return False
+                raise SystemError('Device unresponsive.')
         result = ''
         t = time.time()
         while True:
@@ -145,17 +142,22 @@ class uPy:
                     break
             else:
                 if (time.time()) > (t + timeout):
-                    return False
-        return True               
+                    raise SystemError('Device timed out.')
 
     def escape(self):
-        self.write('\x1b')    
-    
+        self.write('\x1b')
+
     def signal_handler(sig, frame):
         self.close()
         sys.exit(0)
-    
-error_types = ('TypeError', 'Syntax error', 'NameError', 'ValueError',
+
+    def timeout_handler(self):
+        try:
+            self.echo('dir()')
+        except:
+            raise SystemError('Device timed out.')
+
+error_types = ('TypeError', 'SyntaxError', 'NameError', 'ValueError',
                'AttributeError', 'IndexError', 'ZeroDivisionError',
                'KeyError', 'RuntimeError', 'AssertionError', 'EOFError',
                'IndentationError', 'MemoryError', 'SystemError', 'OSError',

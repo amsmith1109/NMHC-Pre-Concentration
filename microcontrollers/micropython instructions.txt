@@ -1,0 +1,9 @@
+Open command line
+`pip install esptool`
+Identify which port the module is connected to. → {PORT}
+`esptool --port {PORT} erase_flash`
+Identify file name of micropython bin file {NAME} (ESP8266_GENERIC-20240222-v1.22.2.bin)
+`esptool --port {PORT} --baud 460800 write_flash --flash_size=detect 0 {NAME}`
+
+Device is ready to be used.
+Open in Thonny

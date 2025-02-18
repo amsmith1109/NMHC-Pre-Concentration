@@ -1,0 +1,42 @@
+Successfully connected to Valve Controller on port /dev/ttyUSB2!
+Successfully connected to adsorbent trap on port /dev/ttyUSB1!
+Successfully connected to MFC Controller on port /dev/ttyUSB0!
+
+Beginning state: off.
+
+Sample flow disabled.
+Backflush flow disabled.
+Set point changed to: -99.
+
+**********************************************************************
+*                    BEGINNING SEQUENCE: DR.TXT.                     *
+**********************************************************************
+**********************************************************************
+*                        BEGINNING RUN (1/1)                         *
+*                       METHOD: 2000 ML - TEST                       *
+*                      SAMPLE: "BREATHING AIR".                      *
+**********************************************************************
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/helpers.py", line 58, in read_file
+    with open(name) as file:
+FileNotFoundError: [Errno 2] No such file or directory: 'src/Methods/2000 mL - test'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 900, in run_sequence
+    self.run_method(method,
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 750, in run_method
+    method, modified_date = read_file(fname)
+  File "/home/pi/NMHC-Pre-Concentration/src/helpers.py", line 62, in read_file
+    with open(name) as file:
+FileNotFoundError: [Errno 2] No such file or directory: 'src/Methods/2000 mL - test.txt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 1013, in <module>
+    pc.run_sequence(args.sequence, continuous=args.continuous)
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 908, in run_sequence
+    raise Exception(x)
+Exception: [Errno 2] No such file or directory: 'src/Methods/2000 mL - test.txt'
