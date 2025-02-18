@@ -1,6 +1,6 @@
 [
 {"name":	"Initialize Off",
-"valves":       [0,0,0,1,0],
+"valves": 	[0,0,0,1,0],
 "pump":		0,
 "backflush":	0,
 "sample":	0,

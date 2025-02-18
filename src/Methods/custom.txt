@@ -1,5 +1,6 @@
 [
 "cool down",
+"pre-battery check",
 "flush",
 {
     "name":        "sampling",
@@ -13,17 +14,12 @@
 "drop backflush",
 "isolate trap",
 "check gc",
-{
-    "name":        "flash heat",
-    "valves":      [1, 0, 1, 1, 0],
-    "ads":         305,
-    "sample":      0,
-    "value":       0.1,
-    "condition":   "time"},
+"flash heat",
 "check heater",
 "start gc",
 "inject",
 "bake out",
 "post bake",
+"battery check",
 "off"
 ]

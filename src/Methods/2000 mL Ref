@@ -1,5 +1,19 @@
 [
-"cool down",
+{
+    "name":        "cool down",
+    "valves":      [0, 0, 0, 0, 0],
+    "ads":         -29,
+    "pump":        1,
+    "condition":   "temp",
+    "value":       "<",
+    "timeout":     15},
+{
+    "name":        "pre-check battery",
+    "battery":     13.5,
+    "condition":   "temp",
+    "value":       ">",
+    "monitor":     true,
+    "timeout":     5},
 {
     "name":        "flush",
     "valves":      [0, 0, 0, 0, 0],
@@ -45,13 +59,13 @@
 {
     "name":        "flash heat",
     "valves":      [1, 0, 1, 1, 0],
-    "ads":         305,
+    "ads":         300,
     "pump":        1,
     "condition":   "time",
     "value":       0.1},
 {
     "name":        "check heater",
-    "ads":         270,
+    "ads":         275,
     "condition":   "temp",
     "value":       ">",
     "monitor":     true,
@@ -73,7 +87,21 @@
     "valves":      [0, 1, 1, 1, 0],
     "pump":        1,
     "condition":   "time",
-    "value":       1.5},
-"post bake",
+    "value":       1.25},
+{
+    "name":        "post bake",
+    "valves":      [0, 1, 1, 0, 1],
+    "h2o":         -99,
+    "ads":         -99,
+    "pump":        1,
+    "condition":   "time",
+    "value":       1},
+{
+    "name":        "post-check battery",
+    "battery":     5,
+    "condition":   "temp",
+    "value":       ">",
+    "monitor":     true,
+    "timeout":     5},
 "off"
 ]

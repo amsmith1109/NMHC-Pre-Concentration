@@ -1,5 +1,6 @@
 [
 "cool down",
+"pre-battery check",
 "flush",
 "sampling",
 "pre-backflush",
@@ -13,5 +14,6 @@
 "inject",
 "bake out",
 "post bake",
+"battery check",
 "off"
 ]
