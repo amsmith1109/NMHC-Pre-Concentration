@@ -1,0 +1,679 @@
+Successfully connected to adsorbent trap!
+Successfully connected to Valve Controller!
+Successfully connected to MFC Controller!
+
+Beginning state: off.
+
+Sample flow disabled.
+Backflush flow disabled.
+Set point changed to: -99.
+
+**********************************************************************
+                          BEGINNING DAY RUN.                          
+**********************************************************************
+
+Beginning state: cool down.
+
+Checking that ads trap temperature is <-30.
+
+Temperature threshold reached! Currently measuring -31.2
+
+
+Beginning state: flush.
+
+Setting sample flow rate to 100. Please wait for flow to stabilize.
+Waiting 30.0 min to proceed.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: sampling.
+
+Precision timed pulse (20.0 min) on valve 1.
+sample volume: 2001.7490134633729 mL
+
+Beginning state: pre-backflush.
+
+Sample flow disabled.
+Setting backflush flow rate to 100. Please wait for flow to stabilize.
+Waiting 15.0 min to proceed.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: backflush.
+
+Waiting 90.0 min to proceed.
+[====================] 90.00 s [0.00 seconds remaining]     
+
+Beginning state: drop backflush.
+
+Setting backflush flow rate to 15. Please wait for flow to stabilize.
+
+
+Beginning state: isolate trap.
+
+Waiting 3.0 min to proceed.
+[====================] 3.00 s [0.00 seconds remaining]     
+
+Beginning state: check GC.
+
+Waiting for GC to be ready.
+GC ready.
+
+Beginning state: flash heat.
+
+Set point changed to: 685.6.
+Waiting 6.0 min to proceed.
+[====================] 6.00 s [0.00 seconds remaining]     
+
+Beginning state: check heater.
+
+Checking that ads trap temperature is >275.
+
+Temperature threshold reached! Currently measuring 310.6
+
+
+Beginning state: start GC.
+
+Waiting for GC to be ready.
+GC ready.
+
+Beginning state: inject.
+
+Waiting 30.0 min to proceed.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: bake out.
+
+Waiting 90.0 min to proceed.
+[====================] 90.00 s [0.00 seconds remaining]     
+
+Beginning state: post bake.
+
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Set point changed to: -99.
+Waiting 60 min to proceed.
+[====================] 60.00 s [0.00 seconds remaining]     
+
+Beginning state: off.
+
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Sample flow disabled.
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Backflush flow disabled.
+Set point changed to: -99.
+Waiting 575.9999999999999 min to proceed.
+[====================] 576.00 s [0.00 seconds remaining]     
+flow=100 volume=2000 temp=300 inject=30 blank=False. sampling returned: 2001.7490134633729. 
+**********************************************************************
+                           BEGINNING RUN 1!                           
+**********************************************************************
+Selecting sample #2.
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+
+Beginning state: flush.
+
+Setting sample flow rate to 100. Please wait for flow to stabilize.
+Waiting 30.0 min to proceed.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: standby.
+
+Sample flow disabled.
+Backflush flow disabled.
+Set point changed to: -99.
+
+
+Beginning state: cool down.
+
+Checking that ads trap temperature is <-30.
+
+Temperature threshold reached! Currently measuring -30.2
+
+
+Beginning state: flush.
+
+Setting sample flow rate to 100. Please wait for flow to stabilize.
+Waiting 30.0 min to proceed.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: sampling.
+
+Precision timed pulse (20.0 min) on valve 1.
+sample volume: 2002.9708979567365 mL
+
+Beginning state: pre-backflush.
+
+Sample flow disabled.
+Setting backflush flow rate to 100. Please wait for flow to stabilize.
+Waiting 15.0 min to proceed.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: backflush.
+
+Waiting 90.0 min to proceed.
+[====================] 90.00 s [0.00 seconds remaining]     
+
+Beginning state: drop backflush.
+
+Setting backflush flow rate to 15. Please wait for flow to stabilize.
+
+
+Beginning state: isolate trap.
+
+Waiting 3.0 min to proceed.
+[====================] 3.00 s [0.00 seconds remaining]     
+
+Beginning state: check GC.
+
+Waiting for GC to be ready.
+GC ready.
+
+Beginning state: flash heat.
+
+Set point changed to: 685.6.
+Waiting 6.0 min to proceed.
+[====================] 6.00 s [0.00 seconds remaining]     
+
+Beginning state: check heater.
+
+Checking that ads trap temperature is >275.
+
+Temperature threshold reached! Currently measuring 299.9
+
+
+Beginning state: start GC.
+
+Waiting for GC to be ready.
+GC ready.
+
+Beginning state: inject.
+
+Waiting 30.0 min to proceed.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: bake out.
+
+Waiting 90.0 min to proceed.
+[====================] 90.00 s [0.00 seconds remaining]     
+
+Beginning state: post bake.
+
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Set point changed to: -99.
+Waiting 60 min to proceed.
+[====================] 60.00 s [0.00 seconds remaining]     
+
+Beginning state: off.
+
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Sample flow disabled.
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Backflush flow disabled.
+Set point changed to: -99.
+Waiting 575.9999999999999 min to proceed.
+[====================] 576.00 s [0.00 seconds remaining]     
+flow=100 volume=2000 temp=300 inject=30 blank=False. sampling returned: 2002.9708979567365. 
+**********************************************************************
+                           BEGINNING RUN 2!                           
+**********************************************************************
+
+Beginning state: cool down.
+
+Checking that ads trap temperature is <-30.
+
+Temperature threshold reached! Currently measuring -30.0
+
+
+Beginning state: flush.
+
+Setting sample flow rate to 100. Please wait for flow to stabilize.
+Waiting 30.0 min to proceed.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: sampling.
+
+Precision timed pulse (20.0 min) on valve 1.
+sample volume: 2002.964263790634 mL
+
+Beginning state: pre-backflush.
+
+Sample flow disabled.
+Setting backflush flow rate to 100. Please wait for flow to stabilize.
+Waiting 15.0 min to proceed.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: backflush.
+
+Waiting 90.0 min to proceed.
+[====================] 90.00 s [0.00 seconds remaining]     
+
+Beginning state: drop backflush.
+
+Setting backflush flow rate to 15. Please wait for flow to stabilize.
+
+
+Beginning state: isolate trap.
+
+Waiting 3.0 min to proceed.
+[====================] 3.00 s [0.00 seconds remaining]     
+
+Beginning state: check GC.
+
+Waiting for GC to be ready.
+GC ready.
+
+Beginning state: flash heat.
+
+Set point changed to: 685.6.
+Waiting 6.0 min to proceed.
+[====================] 6.00 s [0.00 seconds remaining]     
+
+Beginning state: check heater.
+
+Checking that ads trap temperature is >275.
+
+Temperature threshold reached! Currently measuring 291.5
+
+
+Beginning state: start GC.
+
+Waiting for GC to be ready.
+GC ready.
+
+Beginning state: inject.
+
+Waiting 30.0 min to proceed.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: bake out.
+
+Waiting 90.0 min to proceed.
+[====================] 90.00 s [0.00 seconds remaining]     
+
+Beginning state: post bake.
+
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Set point changed to: -99.
+Waiting 60 min to proceed.
+[====================] 60.00 s [0.00 seconds remaining]     
+
+Beginning state: off.
+
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Sample flow disabled.
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/src/switch.py", line 18, in switch_detected
+    self.connected_obj.switch_state = self.state
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 82, in switch_state
+    self.manual_override()
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 85, in manual_override
+    if self.switch.state['enable']:
+AttributeError: 'pre_con' object has no attribute 'switch'
+Backflush flow disabled.
+Set point changed to: -99.
+Waiting 575.9999999999999 min to proceed.

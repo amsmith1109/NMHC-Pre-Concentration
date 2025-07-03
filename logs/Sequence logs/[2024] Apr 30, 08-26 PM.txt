@@ -1,0 +1,94 @@
+Successfully connected to VC on port /dev/ttyUSB1!
+Successfully connected to MFC on port /dev/ttyUSB2!
+Successfully connected to ADS on port /dev/ttyUSB0!
+**********************************************************************
+*                    BEGINNING SEQUENCE: DR.TXT.                     *
+**********************************************************************
+**********************************************************************
+*                        BEGINNING RUN (1/1)                         *
+*                        METHOD: 2000 ML REF                         *
+*                      SAMPLE: "BREATHING AIR".                      *
+**********************************************************************
+Beginning state: cool down.
+
+Checking that ads is <-29
+
+ads threshold reached! Currently measuring -30.50
+
+Beginning state: pre-check battery.
+
+Checking that battery is >13.5
+
+battery threshold reached! Currently measuring 13.55
+
+Beginning state: flush.
+
+Setting sample flow rate to 100. Please wait for flow to stabilize.
+Waiting 30 seconds to proceed.
+Wait will complete at [2024] Apr 30 20:27:07.
+[====================] 30.00 s [0.00 seconds remaining]     
+Beginning state: sampling.
+
+Precision timed pulse (20.0 min) on valve 1.
+Pulse will complete at [2024] Apr 30 20:47:07.
+True volume: 2002.176772618122 mL
+Beginning state: pre-backflush.
+
+Sample flow disabled.
+Setting backflush flow rate to 100. Please wait for flow to stabilize.
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 30 20:47:53.
+[====================] 15.00 s [0.00 seconds remaining]     
+Beginning state: backflush.
+
+Waiting 90 seconds to proceed.
+Wait will complete at [2024] Apr 30 20:49:23.
+[====================] 90.00 s [0.00 seconds remaining]     
+Beginning state: drop backflush.
+
+Setting backflush flow rate to 15. Please wait for flow to stabilize.
+
+Beginning state: isolate trap.
+
+Waiting 3 seconds to proceed.
+Wait will complete at [2024] Apr 30 20:49:42.
+[====================] 3.00 s [0.00 seconds remaining]     
+Beginning state: check GC.
+
+Waiting for GC to be ready.
+Method will time out at [2024] Apr 30 20:55:42 if the GC is not ready.
+GC ready.
+Beginning state: flash heat.
+
+Setting calibrated setpoint for 300
+Set point changed to: 719.4.
+Waiting 6 seconds to proceed.
+Wait will complete at [2024] Apr 30 20:49:50.
+[====================] 6.00 s [0.00 seconds remaining]     
+Beginning state: check heater.
+
+Checking that ads is >275
+Beginning state: off.
+
+Set point changed to: -99.
+Sample flow disabled.
+Backflush flow disabled.
+
+Beginning state: off.
+
+Set point changed to: -99.
+Sample flow disabled.
+Backflush flow disabled.
+
+<class 'Exception'>
+('Failed at [2024] Apr 30 20:50:08 on check heater: ads failed to reach 275 in time. Currently measuring: -31.90. Sample Name: Breathing Air pre-check battery returned: 13.54.  sampling returned: 2002.18. ',)
+Traceback (most recent call last):
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 994, in <module>
+    pc.run_sequence(args.sequence, continuous=args.continuous)
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 881, in run_sequence
+    raise x
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 870, in run_sequence
+    self.run_method(item['Method'],
+  File "/home/pi/NMHC-Pre-Concentration/pre_con.py", line 766, in run_method
+    raise Exception(f'{error_notes} {notes}')
+Exception: Failed at [2024] Apr 30 20:50:08 on check heater: ads failed to reach 275 in time. Currently measuring: -31.90. Sample Name: Breathing Air pre-check battery returned: 13.54.  sampling returned: 2002.18. 

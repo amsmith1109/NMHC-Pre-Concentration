@@ -1,0 +1,6 @@
+Successfully connected to Valve Controller on port /dev/ttyUSB2!
+Successfully connected to MFC Controller on port /dev/ttyUSB1!
+Successfully connected to adsorbent trap on port /dev/ttyUSB0!
+
+Beginning state: off.
+

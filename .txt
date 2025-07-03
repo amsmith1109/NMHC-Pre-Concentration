@@ -1,0 +1,11 @@
+Successfully connected to MFC Controller!
+Successfully connected to adsorbent trap!
+Successfully connected to Valve Controller!
+
+Beginning state: off.
+
+Sample flow disabled.
+Backflush flow disabled.
+Set point changed to: -99.
+
+Not yet implemented.

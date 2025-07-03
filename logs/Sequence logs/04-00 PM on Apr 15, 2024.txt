@@ -1,0 +1,755 @@
+Successfully connected to MFC Controller on port /dev/ttyUSB2!
+Successfully connected to adsorbent trap on port /dev/ttyUSB1!
+Successfully connected to Valve Controller on port /dev/ttyUSB0!
+
+Beginning state: off.
+
+Set point changed to: -99.
+Sample flow disabled.
+Backflush flow disabled.
+
+**********************************************************************
+*                    BEGINNING SEQUENCE: DR.TXT.                     *
+**********************************************************************
+**********************************************************************
+*                        BEGINNING RUN (1/1)                         *
+*                        METHOD: 2000 ML TEST                        *
+*                      SAMPLE: "BREATHING AIR".                      *
+**********************************************************************
+Selecting sample #15.
+Running change over method to prime sample line.
+
+Beginning state: evacuate.
+
+Waiting 30 seconds to proceed.
+Wait will complete at [2024] Apr 15 16:01:38.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: flush.
+
+Setting sample flow rate to 50. Please wait for flow to stabilize.
+Waiting 30 seconds to proceed.
+Wait will complete at [2024] Apr 15 16:02:25.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: off.
+
+Sample flow disabled.
+
+
+Change over complete. Continuing to 2000 mL test method.
+
+Beginning state: cool down.
+
+Checking that ads trap temperature is < -29.
+
+Temperature threshold reached! Currently measuring -29.0
+
+
+Beginning state: flush.
+
+Setting backflush flow rate to 35. Please wait for flow to stabilize.
+Waiting 12 seconds to proceed.
+Wait will complete at [2024] Apr 15 16:07:22.
+[====================] 12.00 s [0.00 seconds remaining]     
+
+Beginning state: sampling.
+
+Precision timed pulse (0.5 min) on valve 1.
+Pulse will complete at [2024] Apr 15 16:07:52.
+True volume: 17.68349578335921 mL
+
+Beginning state: pre-backflush.
+
+Sample flow disabled.
+Setting backflush flow rate to 50. Please wait for flow to stabilize.
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 16:08:12.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: backflush.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 16:08:28.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: drop backflush.
+
+Setting backflush flow rate to 15. Please wait for flow to stabilize.
+
+
+Beginning state: isolate trap.
+
+Waiting 3 seconds to proceed.
+Wait will complete at [2024] Apr 15 16:08:38.
+[====================] 3.00 s [0.00 seconds remaining]     
+
+Beginning state: check GC.
+
+Waiting for GC to be ready.
+Method will time out at [2024] Apr 15 16:14:38 if the GC is not ready.
+GC ready.
+
+Beginning state: flash heat.
+
+Setting calibrated setpoint for 290
+Set point changed to: 688.7.
+Waiting 6 seconds to proceed.
+Wait will complete at [2024] Apr 15 16:08:45.
+[====================] 6.00 s [0.00 seconds remaining]     
+
+Beginning state: check heater.
+
+Checking that ads trap temperature is > 275.
+
+Temperature threshold reached! Currently measuring 277.0
+
+
+Beginning state: inject.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 16:09:05.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: bake out.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 16:09:21.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: post bake.
+
+Set point changed to: -99.
+Waiting 30 seconds to proceed.
+Wait will complete at [2024] Apr 15 16:09:52.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: off.
+
+Set point changed to: -99.
+Sample flow disabled.
+Backflush flow disabled.
+Waiting 3000 seconds to proceed.
+Wait will complete at [2024] Apr 15 16:59:54.
+[====================] 3000.00 s [0.00 seconds remaining]     
+Sample Name: Breathing Air sampling returned: 17.68349578335921.  check heater returned: 281.2. 
+**********************************************************************
+*                        BEGINNING RUN (1/26)                        *
+*                        METHOD: 2000 ML TEST                        *
+*                         SAMPLE: "PDX AIR".                         *
+**********************************************************************
+Selecting sample #2.
+Running change over method to prime sample line.
+
+Beginning state: evacuate.
+
+Waiting 30 seconds to proceed.
+Wait will complete at [2024] Apr 15 17:00:26.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: flush.
+
+Setting sample flow rate to 50. Please wait for flow to stabilize.
+Waiting 30 seconds to proceed.
+Wait will complete at [2024] Apr 15 17:01:27.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: off.
+
+Sample flow disabled.
+
+
+Change over complete. Continuing to 2000 mL test method.
+
+Beginning state: cool down.
+
+Checking that ads trap temperature is < -29.
+
+Temperature threshold reached! Currently measuring -29.8
+
+
+Beginning state: flush.
+
+Setting backflush flow rate to 35. Please wait for flow to stabilize.
+Waiting 12 seconds to proceed.
+Wait will complete at [2024] Apr 15 17:02:14.
+[====================] 12.00 s [0.00 seconds remaining]     
+
+Beginning state: sampling.
+
+Precision timed pulse (0.5 min) on valve 1.
+Pulse will complete at [2024] Apr 15 17:02:44.
+True volume: 17.25024430883169 mL
+
+Beginning state: pre-backflush.
+
+Sample flow disabled.
+Setting backflush flow rate to 50. Please wait for flow to stabilize.
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 17:03:21.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: backflush.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 17:03:36.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: drop backflush.
+
+Setting backflush flow rate to 15. Please wait for flow to stabilize.
+
+
+Beginning state: isolate trap.
+
+Waiting 3 seconds to proceed.
+Wait will complete at [2024] Apr 15 17:03:46.
+[====================] 3.00 s [0.00 seconds remaining]     
+
+Beginning state: check GC.
+
+Waiting for GC to be ready.
+Method will time out at [2024] Apr 15 17:09:46 if the GC is not ready.
+GC ready.
+
+Beginning state: flash heat.
+
+Setting calibrated setpoint for 290
+Set point changed to: 688.7.
+Waiting 6 seconds to proceed.
+Wait will complete at [2024] Apr 15 17:03:54.
+[====================] 6.00 s [0.00 seconds remaining]     
+
+Beginning state: check heater.
+
+Checking that ads trap temperature is > 275.
+
+Temperature threshold reached! Currently measuring 276.9
+
+
+Beginning state: inject.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 17:04:13.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: bake out.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 17:04:29.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: post bake.
+
+Set point changed to: -99.
+Waiting 30 seconds to proceed.
+Wait will complete at [2024] Apr 15 17:05:00.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: off.
+
+Set point changed to: -99.
+Sample flow disabled.
+Backflush flow disabled.
+Waiting 3000 seconds to proceed.
+Wait will complete at [2024] Apr 15 17:55:02.
+[====================] 3000.00 s [0.00 seconds remaining]     
+Sample Name: PDX Air sampling returned: 17.25024430883169.  check heater returned: 280.8. 
+**********************************************************************
+*                        BEGINNING RUN (2/26)                        *
+*                        METHOD: 2000 ML TEST                        *
+*                         SAMPLE: "PDX AIR".                         *
+**********************************************************************
+
+Beginning state: cool down.
+
+Checking that ads trap temperature is < -29.
+
+Temperature threshold reached! Currently measuring -29.8
+
+
+Beginning state: flush.
+
+Setting backflush flow rate to 35. Please wait for flow to stabilize.
+Waiting 12 seconds to proceed.
+Wait will complete at [2024] Apr 15 17:55:49.
+[====================] 12.00 s [0.00 seconds remaining]     
+
+Beginning state: sampling.
+
+Precision timed pulse (0.5 min) on valve 1.
+Pulse will complete at [2024] Apr 15 17:56:19.
+True volume: 17.234733325600423 mL
+
+Beginning state: pre-backflush.
+
+Sample flow disabled.
+Setting backflush flow rate to 50. Please wait for flow to stabilize.
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 17:56:55.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: backflush.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 17:57:11.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: drop backflush.
+
+Setting backflush flow rate to 15. Please wait for flow to stabilize.
+
+
+Beginning state: isolate trap.
+
+Waiting 3 seconds to proceed.
+Wait will complete at [2024] Apr 15 17:57:21.
+[====================] 3.00 s [0.00 seconds remaining]     
+
+Beginning state: check GC.
+
+Waiting for GC to be ready.
+Method will time out at [2024] Apr 15 18:03:21 if the GC is not ready.
+GC ready.
+
+Beginning state: flash heat.
+
+Setting calibrated setpoint for 290
+Set point changed to: 688.7.
+Waiting 6 seconds to proceed.
+Wait will complete at [2024] Apr 15 17:57:29.
+[====================] 6.00 s [0.00 seconds remaining]     
+
+Beginning state: check heater.
+
+Checking that ads trap temperature is > 275.
+
+Temperature threshold reached! Currently measuring 277.3
+
+
+Beginning state: inject.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 17:57:48.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: bake out.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 17:58:04.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: post bake.
+
+Set point changed to: -99.
+Waiting 30 seconds to proceed.
+Wait will complete at [2024] Apr 15 17:58:35.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: off.
+
+Set point changed to: -99.
+Sample flow disabled.
+Backflush flow disabled.
+Waiting 3000 seconds to proceed.
+Wait will complete at [2024] Apr 15 18:48:37.
+[====================] 3000.00 s [0.00 seconds remaining]     
+Sample Name: PDX Air sampling returned: 17.234733325600423.  check heater returned: 280.0. 
+**********************************************************************
+*                        BEGINNING RUN (3/26)                        *
+*                        METHOD: 2000 ML TEST                        *
+*                         SAMPLE: "PDX AIR".                         *
+**********************************************************************
+
+Beginning state: cool down.
+
+Checking that ads trap temperature is < -29.
+
+Temperature threshold reached! Currently measuring -29.7
+
+
+Beginning state: flush.
+
+Setting backflush flow rate to 35. Please wait for flow to stabilize.
+Waiting 12 seconds to proceed.
+Wait will complete at [2024] Apr 15 18:49:23.
+[====================] 12.00 s [0.00 seconds remaining]     
+
+Beginning state: sampling.
+
+Precision timed pulse (0.5 min) on valve 1.
+Pulse will complete at [2024] Apr 15 18:49:53.
+True volume: 17.241592111326057 mL
+
+Beginning state: pre-backflush.
+
+Sample flow disabled.
+Setting backflush flow rate to 50. Please wait for flow to stabilize.
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 18:50:30.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: backflush.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 18:50:46.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: drop backflush.
+
+Setting backflush flow rate to 15. Please wait for flow to stabilize.
+
+
+Beginning state: isolate trap.
+
+Waiting 3 seconds to proceed.
+Wait will complete at [2024] Apr 15 18:50:56.
+[====================] 3.00 s [0.00 seconds remaining]     
+
+Beginning state: check GC.
+
+Waiting for GC to be ready.
+Method will time out at [2024] Apr 15 18:56:56 if the GC is not ready.
+GC ready.
+
+Beginning state: flash heat.
+
+Setting calibrated setpoint for 290
+Set point changed to: 688.7.
+Waiting 6 seconds to proceed.
+Wait will complete at [2024] Apr 15 18:51:03.
+[====================] 6.00 s [0.00 seconds remaining]     
+
+Beginning state: check heater.
+
+Checking that ads trap temperature is > 275.
+
+Temperature threshold reached! Currently measuring 277.5
+
+
+Beginning state: inject.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 18:51:23.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: bake out.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 18:51:38.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: post bake.
+
+Set point changed to: -99.
+Waiting 30 seconds to proceed.
+Wait will complete at [2024] Apr 15 18:52:10.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: off.
+
+Set point changed to: -99.
+Sample flow disabled.
+Backflush flow disabled.
+Waiting 3000 seconds to proceed.
+Wait will complete at [2024] Apr 15 19:42:12.
+[====================] 3000.00 s [0.00 seconds remaining]     
+Sample Name: PDX Air sampling returned: 17.241592111326057.  check heater returned: 281.8. 
+**********************************************************************
+*                        BEGINNING RUN (4/26)                        *
+*                        METHOD: 2000 ML TEST                        *
+*                         SAMPLE: "PDX AIR".                         *
+**********************************************************************
+
+Beginning state: cool down.
+
+Checking that ads trap temperature is < -29.
+
+Temperature threshold reached! Currently measuring -29.4
+
+
+Beginning state: flush.
+
+Setting backflush flow rate to 35. Please wait for flow to stabilize.
+Waiting 12 seconds to proceed.
+Wait will complete at [2024] Apr 15 19:42:58.
+[====================] 12.00 s [0.00 seconds remaining]     
+
+Beginning state: sampling.
+
+Precision timed pulse (0.5 min) on valve 1.
+Pulse will complete at [2024] Apr 15 19:43:28.
+True volume: 17.24132792205771 mL
+
+Beginning state: pre-backflush.
+
+Sample flow disabled.
+Setting backflush flow rate to 50. Please wait for flow to stabilize.
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 19:43:48.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: backflush.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 19:44:03.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: drop backflush.
+
+Setting backflush flow rate to 15. Please wait for flow to stabilize.
+
+
+Beginning state: isolate trap.
+
+Waiting 3 seconds to proceed.
+Wait will complete at [2024] Apr 15 19:44:13.
+[====================] 3.00 s [0.00 seconds remaining]     
+
+Beginning state: check GC.
+
+Waiting for GC to be ready.
+Method will time out at [2024] Apr 15 19:50:13 if the GC is not ready.
+GC ready.
+
+Beginning state: flash heat.
+
+Setting calibrated setpoint for 290
+Set point changed to: 688.7.
+Waiting 6 seconds to proceed.
+Wait will complete at [2024] Apr 15 19:44:21.
+[====================] 6.00 s [0.00 seconds remaining]     
+
+Beginning state: check heater.
+
+Checking that ads trap temperature is > 275.
+
+Temperature threshold reached! Currently measuring 277.2
+
+
+Beginning state: inject.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 19:44:40.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: bake out.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 19:44:56.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: post bake.
+
+Set point changed to: -99.
+Waiting 30 seconds to proceed.
+Wait will complete at [2024] Apr 15 19:45:28.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: off.
+
+Set point changed to: -99.
+Sample flow disabled.
+Backflush flow disabled.
+Waiting 3000 seconds to proceed.
+Wait will complete at [2024] Apr 15 20:35:29.
+[====================] 3000.00 s [0.00 seconds remaining]     
+Sample Name: PDX Air sampling returned: 17.24132792205771.  check heater returned: 280.6. 
+**********************************************************************
+*                        BEGINNING RUN (5/26)                        *
+*                        METHOD: 2000 ML TEST                        *
+*                         SAMPLE: "PDX AIR".                         *
+**********************************************************************
+
+Beginning state: cool down.
+
+Checking that ads trap temperature is < -29.
+
+Temperature threshold reached! Currently measuring -29.4
+
+
+Beginning state: flush.
+
+Setting backflush flow rate to 35. Please wait for flow to stabilize.
+Waiting 12 seconds to proceed.
+Wait will complete at [2024] Apr 15 20:36:16.
+[====================] 12.00 s [0.00 seconds remaining]     
+
+Beginning state: sampling.
+
+Precision timed pulse (0.5 min) on valve 1.
+Pulse will complete at [2024] Apr 15 20:36:46.
+True volume: 17.409257010125916 mL
+
+Beginning state: pre-backflush.
+
+Sample flow disabled.
+Setting backflush flow rate to 50. Please wait for flow to stabilize.
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 20:37:06.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: backflush.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 20:37:21.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: drop backflush.
+
+Setting backflush flow rate to 15. Please wait for flow to stabilize.
+
+
+Beginning state: isolate trap.
+
+Waiting 3 seconds to proceed.
+Wait will complete at [2024] Apr 15 20:37:31.
+[====================] 3.00 s [0.00 seconds remaining]     
+
+Beginning state: check GC.
+
+Waiting for GC to be ready.
+Method will time out at [2024] Apr 15 20:43:31 if the GC is not ready.
+GC ready.
+
+Beginning state: flash heat.
+
+Setting calibrated setpoint for 290
+Set point changed to: 688.7.
+Waiting 6 seconds to proceed.
+Wait will complete at [2024] Apr 15 20:37:39.
+[====================] 6.00 s [0.00 seconds remaining]     
+
+Beginning state: check heater.
+
+Checking that ads trap temperature is > 275.
+
+Temperature threshold reached! Currently measuring 277.5
+
+
+Beginning state: inject.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 20:37:58.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: bake out.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 20:38:14.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: post bake.
+
+Set point changed to: -99.
+Waiting 30 seconds to proceed.
+Wait will complete at [2024] Apr 15 20:38:45.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: off.
+
+Set point changed to: -99.
+Sample flow disabled.
+Backflush flow disabled.
+Waiting 3000 seconds to proceed.
+Wait will complete at [2024] Apr 15 21:28:47.
+[====================] 3000.00 s [0.00 seconds remaining]     
+Sample Name: PDX Air sampling returned: 17.409257010125916.  check heater returned: 281.9. 
+**********************************************************************
+*                        BEGINNING RUN (6/26)                        *
+*                        METHOD: 2000 ML TEST                        *
+*                         SAMPLE: "PDX AIR".                         *
+**********************************************************************
+
+Beginning state: cool down.
+
+Checking that ads trap temperature is < -29.
+
+Temperature threshold reached! Currently measuring -29.4
+
+
+Beginning state: flush.
+
+Setting backflush flow rate to 35. Please wait for flow to stabilize.
+Waiting 12 seconds to proceed.
+Wait will complete at [2024] Apr 15 21:29:34.
+[====================] 12.00 s [0.00 seconds remaining]     
+
+Beginning state: sampling.
+
+Precision timed pulse (0.5 min) on valve 1.
+Pulse will complete at [2024] Apr 15 21:30:04.
+True volume: 17.40120988657713 mL
+
+Beginning state: pre-backflush.
+
+Sample flow disabled.
+Setting backflush flow rate to 50. Please wait for flow to stabilize.
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 21:30:23.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: backflush.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 21:30:39.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: drop backflush.
+
+Setting backflush flow rate to 15. Please wait for flow to stabilize.
+
+
+Beginning state: isolate trap.
+
+Waiting 3 seconds to proceed.
+Wait will complete at [2024] Apr 15 21:30:49.
+[====================] 3.00 s [0.00 seconds remaining]     
+
+Beginning state: check GC.
+
+Waiting for GC to be ready.
+Method will time out at [2024] Apr 15 21:36:49 if the GC is not ready.
+GC ready.
+
+Beginning state: flash heat.
+
+Setting calibrated setpoint for 290
+Set point changed to: 688.7.
+Waiting 6 seconds to proceed.
+Wait will complete at [2024] Apr 15 21:30:57.
+[====================] 6.00 s [0.00 seconds remaining]     
+
+Beginning state: check heater.
+
+Checking that ads trap temperature is > 275.
+
+Temperature threshold reached! Currently measuring 277.5
+
+
+Beginning state: inject.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 21:31:16.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: bake out.
+
+Waiting 15 seconds to proceed.
+Wait will complete at [2024] Apr 15 21:31:32.
+[====================] 15.00 s [0.00 seconds remaining]     
+
+Beginning state: post bake.
+
+Set point changed to: -99.
+Waiting 30 seconds to proceed.
+Wait will complete at [2024] Apr 15 21:32:03.
+[====================] 30.00 s [0.00 seconds remaining]     
+
+Beginning state: off.
+
+Set point changed to: -99.
+Sample flow disabled.
+Backflush flow disabled.
+Waiting 3000 seconds to proceed.
+Wait will complete at [2024] Apr 15 22:22:05.

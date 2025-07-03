@@ -1,0 +1,17 @@
+Successfully connected to VC on port /dev/ttyUSB1!
+Successfully connected to MFC on port /dev/ttyUSB3!
+Successfully connected to ADS on port /dev/ttyUSB2!
+**********************************************************************
+*                    BEGINNING SEQUENCE: DR.TXT.                     *
+**********************************************************************
+**********************************************************************
+*                        BEGINNING RUN (1/1)                         *
+*                        METHOD: 2000 ML REF                         *
+*                      SAMPLE: "BREATHING AIR".                      *
+**********************************************************************
+Selecting sample #15.
+Running change over method to prime sample line.
+Beginning state: evacuate.
+
+Waiting 30 seconds to proceed.
+Wait will complete at [2024] Sep 01 17:50:17.
