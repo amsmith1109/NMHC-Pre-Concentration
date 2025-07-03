@@ -1,0 +1,17 @@
+[{"name": "valve 0 pulse",
+"valves": [1,0,0,0,0],
+"condition": "pulse",
+"value": 0.5},
+{"name": "valve 1 pulse",
+"valves": [0,1,0,0,0],
+"condition": "pulse",
+"value": 20},
+{"name": "valve 2 pulse",
+"valves": [0,0,1,0,0],
+"condition": "pulse",
+"value": 0.5},
+{"name": "valve 3 pulse",
+"valves": [0,0,0,1,0],
+"condition": "pulse",
+"value": 0.5}
+]

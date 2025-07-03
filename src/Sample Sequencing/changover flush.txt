@@ -1,0 +1,20 @@
+[
+{"name":		"evacuate system",
+"valves": 		[0,0,0,0],
+"sample":		0,
+"backflush":	0,	
+"pump":			1,
+"condition":	"time",
+"value":   		0.5}
+,
+{"name":		"flush",
+"sample":		50,
+"condition":	"time",
+"value":   		.75
+}
+,
+{"name":		"off",
+"sample":		0,
+"pump":			0
+}
+]

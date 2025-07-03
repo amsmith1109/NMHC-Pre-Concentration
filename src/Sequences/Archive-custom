@@ -1,0 +1,32 @@
+[
+{
+"Method":      "2000 mL Ref.m",
+"Stream":      [2, 4, 6, 8, 10],
+"Sample Name": "CMO Samples",
+"time":        50,
+"Description": ""
+},
+{
+"Method":      "2000 mL Ref.m",
+"Stream":      12,
+"Sample Name": "36% NPL Dilution",
+"time":        50,
+"Description": ""
+},
+{
+"Method":      "2000 mL Ref.m",
+"Stream":      15,
+"Sample Name": "breathing air",
+"Repetition":  3,
+"time":        50,
+"Description": ""
+},
+{
+"Method":      "blank.m",
+"Stream":      15,
+"Sample Name": "H2",
+"Repetition":  1000,
+"time":        50,
+"Description": ""
+}
+]

@@ -1,0 +1,25 @@
+[
+"cool down",
+<<<<<<< Updated upstream
+"pre-battery check",
+=======
+>>>>>>> Stashed changes
+"flush",
+"sampling",
+"pre-backflush",
+"backflush",
+"drop backflush",
+"isolate trap",
+"check gc",
+"flash heat",
+"check heater",
+"start gc",
+"inject",
+"bake out",
+"post bake",
+<<<<<<< Updated upstream
+"battery check",
+=======
+>>>>>>> Stashed changes
+"off"
+]

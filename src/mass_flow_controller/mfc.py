@@ -11,7 +11,7 @@ class massFlowController:
                  cal_file = None,
                  maxFlow = None,
                  timeout = 20):
-        
+
         if DAC==None:
             print('No DAC provided.')
             return
@@ -35,7 +35,7 @@ class massFlowController:
             self.maxFlow = self.cal.invert(5)
         else:
             self.maxFlow = maxFlow
-    
+
     def flowrate(self,
                  flow=None,
                  waiting=True,
@@ -47,9 +47,10 @@ class massFlowController:
                 print('{} {}'.format(flow, self.cal.units))
             return flow
         else:
-            if flow > self.maxFlow:
+            if flow > self.maxFlow or flow == 'on':
                 flow = self.maxFlow
                 print('Output capped at {} {}.'.format(flow, self.cal.units))
+                waiting = False
             voltage = self.cal.convert(flow)
             self.dac.write(self.port, voltage)
             self.setpoint = flow
@@ -63,8 +64,20 @@ class massFlowController:
                 count = 0
                 time_stop = time.ticks_ms() + self.timeout*1000
                 reading = []
-                if flow < (.051 * self.maxFlow):
+                if voltage < 1:
+                    '''The MFC is less accurate at lower flow rates. Setting
+                    the floor at <1 V is <20% of the output flow. The MFC
+                    will gradually improve the flowrate accuracy, but
+                    broadening the tolerance helps to more quickly assess
+                    whether or not gas is flowing.
+                    
+                    The 1.5 V write for a second helps to "wake up"
+                    the MFC so it responds more quickly to the small
+                    voltage input.'''
                     tolerance = .1
+                    self.dac.write(self.port, 1.5)
+                    time.sleep(1)
+                    self.dac.write(self.port, voltage)
                 else:
                     tolerance = .01
                 while (time.ticks_ms() < time_stop):
@@ -91,16 +104,12 @@ class massFlowController:
                         break
                     timeout = True
                     time.sleep(.1)
-                
                 if timeout==True:
-                    if display:
-                        print('Setpoint not reached before the timeout of {} s.'.format(self.timeout))
-                    return False
+                    raise RuntimeError('Setpoint not reached before the timeout of {} s.'.format(self.timeout))
                 else:
                     if display:
                         print('Setpoint of {} {} reached in {} s.'.format(flow, self.cal.units, timeout))
-                    return True
-                
+                    return
 
     #def autotune(self):
         

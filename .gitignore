@@ -1,3 +1,4 @@
 *.ini
 .idea/*/
 __pycache__/*/
+.logs/*/

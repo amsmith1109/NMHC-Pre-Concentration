@@ -1,0 +1,77 @@
+[
+"cool down",
+{
+    "name":        "flush",
+    "valves":      [0, 0, 0, 1, 0],
+    "sample":      100,
+    "condition":   "time",
+    "value":       0.5},
+{
+    "name":        "sampling",
+    "valves":      [0, 1, 0, 0, 0],
+    "pump":        1,
+    "condition":   "pulse",
+    "value":       20,
+    "monitor":     true},
+{
+    "name":        "pre-backflush",
+    "valves":      [0, 0, 1, 1, 0],
+    "sample":      0,
+    "backflush":   100,
+    "pump":        1,
+    "condition":   "time",
+    "value":       0.25},
+{
+    "name":        "backflush",
+    "valves":      [0, 1, 1, 1, 0],
+    "pump":        1,
+    "condition":   "time",
+    "value":       1.5},
+{
+    "name":        "drop backflush",
+    "backflush":   0,
+    "condition":   "time",
+    "value":       0.5},
+{
+    "name":        "isolate trap",
+    "valves":      [0, 0, 1, 1, 0],
+    "condition":   "time",
+    "value":       0.05},
+{
+    "name":        "check GC",
+    "condition":   "gc"},
+{
+    "name":        "flash heat",
+    "valves":      [0, 0, 1, 1, 0],
+    "ads":         300,
+    "pump":        1,
+    "condition":   "time",
+    "value":       0.1},
+{
+    "name":        "check heater",
+    "ads":         275,
+    "condition":   "temp",
+    "value":       ">",
+    "timeout":     0.15,
+    "monitor":     true},
+{
+    "name":        "inject",
+    "valves":      [1, 1, 1, 0, 0],
+    "pump":        1,
+    "condition":   "time",
+    "value":       0.5},
+{
+    "name":        "bake out",
+    "valves":      [0, 1, 1, 0, 0],
+    "condition":   "time",
+    "value":       1.5},
+{
+    "name":        "post bake",
+    "valves":      [0, 1, 1, 0, 1],
+    "h2o":         -99,
+    "ads":         -99,
+    "pump":        1,
+    "condition":   "time",
+    "value":       0.5},
+"off"
+]

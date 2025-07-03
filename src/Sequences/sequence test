@@ -1,0 +1,18 @@
+[
+{
+"Method":      "2000 mL Ref N2.m",
+"Stream":      12,
+"Sample Name": "NPL",
+"Repetition":  3,
+"time":        50,
+"Description": ""
+},
+{
+"Method":      "2000 mL Ref.m",
+"Stream":      15,
+"Sample Name": "breathing air",
+"Repetition":  100,
+"time":        50,
+"Description": ""
+}
+]
