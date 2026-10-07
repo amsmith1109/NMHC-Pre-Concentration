@@ -1,0 +1,342 @@
+\documentclass{standalone}
+\include{preample}
+\usepackage{circuitikz}
+\usepackage{siunitx}
+
+\newcommand\ssr[2] {%1 start coords, %2 size
+    % [line width=#2*.5pt]
+    % input (+)
+    \draw #1 -- ++(#2*.75, 0) 
+    circle (#2*2pt) node[above]{$+_{in}$};
+    % output (+)
+    \draw #1+(#2*2.25, 0) 
+    circle (#2*2pt) node[above]{$+_{out}$} ;
+    % -- ++(#2*3, 0);
+    % input (-)
+    \draw #1+(0, #2*-1) -- ++(#2*.75, #2*-1)
+    circle (#2*2pt) node[above]{$-_{in}$};
+    % output (-)
+    \draw #1+(#2*2.25, #2*-1) 
+    circle (#2*2pt) node[above]{$-_{out}$} 
+    -- ++(#2*3, #2*-1);
+    
+    %The rectangle
+    \draw #1 + (.375*#2, .5*#2) rectangle ++(2.675*#2, -1.5*#2);
+    % text
+    \draw #1 + (#2*1.5, .5*#2) node[above]{D1D40};
+
+    \draw #1 + (0, -1*#2) node[ground]{};
+}
+
+\newcommand\pwmb[2] {%1: start coords, %2 name
+    \draw #1 node[above]{12 V} to[R, n=res] ++(0,-2) to[short,*-.] ++(0,0)
+    to[D,n=diode] ++(0,-2) node[ground]{}
+    ++(0,2) -- ++(1,0)
+    node[op amp, noinv input up, anchor=-](#2){LM357}
+    (#2.+) -- ++(0,3)
+    (#2.out) -- ++(0,-4);
+    \draw (res)+(-.25,0) node[left]{$10k\Omega$};
+    \draw (diode)+(-.325,-.25) node[left]{1N4007};
+    \draw (diode)+(-.325,.25) node[left]{4.3 V};
+
+    % Insert Relays between #2.out and the SSR
+
+    % SSR
+    % input (+)
+    % \def\xoff{2}
+    % \draw (#2.out) + (\xoff,0) -- ++(\xoff+0.75, 0)
+    % circle (2pt) node[above]{$+_{in}$};
+    % % output (+)
+    % \draw (#2.out) + (\xoff+2.25, 0)
+    % circle (2pt) node[above]{$+_{out}$} 
+    % -- ++(\xoff+3, 0);
+    % % input (-)
+    % \draw (#2.out)+(\xoff, -1) -- ++(\xoff+.75, -1)
+    % circle (2pt) node[above]{$-_{in}$};
+    % % output (-)
+    % \draw (#2.out) + (\xoff+2.25, -1) 
+    % circle (2pt) node[above]{$-_{out}$} 
+    % -- ++(\xoff+3, -1) node[right]{to ads};
+    % %The rectangle
+    % \draw (#2.out) + (\xoff+.375, .5) rectangle ++(\xoff+2.675, -1.5);
+    % % text
+    % \draw (#2.out) + (\xoff+1.5, -1.5) node[above] {D1D40};
+    % \draw (#2.out) + (\xoff, -1) node[ground]{};
+}
+
+\newcommand\esp[2]{%1 start coords %2 scale
+    \def\spacing{1}
+    \draw #1 + (\spacing*.5, 0) rectangle ++(8.5*#2*\spacing, -3*#2);
+    \draw (8.5*.5*\spacing*#2,-1.5*#2) node[]{ESP8266};
+    % Top Row
+    \draw (1*#2*\spacing, -.25*#2) circle (2pt) node[below]{3V3} -- ++(0,.75*#2);
+    \draw (2*#2*\spacing, -.25*#2) circle (2pt) node[below]{D8} -- ++(0,.75*#2);
+    \draw (3*#2*\spacing, -.25*#2) circle (2pt) node[below]{D7} -- ++(0,.75*#2);
+    \draw (4*#2*\spacing, -.25*#2) circle (2pt) node[below]{D6} -- ++(0,.75*#2);
+    \draw (5*#2*\spacing, -.25*#2) circle (2pt) node[below]{D5} -- ++(0,.75*#2);
+    \draw (6*#2*\spacing, -.25*#2) circle (2pt) node[below]{D0} -- ++(0,.75*#2);
+    \draw (7*#2*\spacing, -.25*#2) circle (2pt) node[below]{A0} -- ++(0,.75*#2);
+    \draw (8*#2*\spacing, -.25*#2) circle (2pt) node[below]{RST} -- ++(0,.75*#2);
+
+    % Bottom Row
+    \draw (1*#2*\spacing, -2.75*#2) circle (2pt) node[above]{5V} -- ++(0,-.75*#2);
+    \draw (2*#2*\spacing, -2.75*#2) circle (2pt) node[above]{GND} -- ++(0,-.75*#2)
+    node[ground]{};
+    \draw (3*#2*\spacing, -2.75*#2) circle (2pt) node[above]{D4} -- ++(0,-.75*#2);
+    \draw (4*#2*\spacing, -2.75*#2) circle (2pt) node[above]{D3} -- ++(0,-.75*#2);
+    \draw (5*#2*\spacing, -2.75*#2) circle (2pt) node[above]{D2} -- ++(0,-.75*#2);
+    \draw (6*#2*\spacing, -2.75*#2) circle (2pt) node[above]{D1} -- ++(0,-.75*#2);
+    \draw (7*#2*\spacing, -2.75*#2) circle (2pt) node[above]{RX} -- ++(0,-.75*#2);
+    \draw (8*#2*\spacing, -2.75*#2) circle (2pt) node[above]{TX} -- ++(0,-.75*#2);
+}
+
+\newcommand\espu[2]{%1 start coords %2 scale
+    \def\spacing{1}
+    \draw #1 + (\spacing*.5, 0) rectangle ++(8.5*#2*\spacing, -3*#2);
+    \draw (8.5*.5*\spacing*#2,-1.5*#2) node[]{ESP8266};
+    % Top Row
+    \draw (1*#2*\spacing, -.25*#2) circle (2pt) node[below]{TX} -- ++(0,.75*#2);
+    \draw (2*#2*\spacing, -.25*#2) circle (2pt) node[below]{RX} -- ++(0,.75*#2);
+    \draw (3*#2*\spacing, -.25*#2) circle (2pt) node[below]{D1} -- ++(0,.75*#2);
+    \draw (4*#2*\spacing, -.25*#2) circle (2pt) node[below]{D2} -- ++(0,.75*#2)
+    -- ++(0,1) node[left]{debug} -- ++(0,0) to[nos] ++(3,0) to[short,*-.] ++(0,0);
+    \draw (5*#2*\spacing, -.25*#2) circle (2pt) node[below]{D3} -- ++(0,.75*#2);
+    \draw (6*#2*\spacing, -.25*#2) circle (2pt) node[below]{D4} -- ++(0,.75*#2)
+    node[above]{LED};
+    \draw (7*#2*\spacing, -.25*#2) circle (2pt) node[below]{GND} -- ++(0,.75*#2)
+    -- ++(0,1) -- ++(1,0) node[ground]{};
+    \draw (8*#2*\spacing, -.25*#2) circle (2pt) node[below]{5V} -- ++(0,.75*#2);
+
+    % Bottom Row
+    \draw (1*#2*\spacing, -2.75*#2) circle (2pt) node[above]{RST} -- ++(0,-.75*#2);
+    \draw (2*#2*\spacing, -2.75*#2) circle (2pt) node[above]{A0} -- ++(0,-.75*#2);
+    \draw (3*#2*\spacing, -2.75*#2) circle (2pt) node[above]{D0} -- ++(0,-.75*#2);
+    \draw (4*#2*\spacing, -2.75*#2) circle (2pt) node[above]{D5} -- ++(0,-.75*#2);
+    \draw (5*#2*\spacing, -2.75*#2) circle (2pt) node[above]{D6} -- ++(0,-.75*#2);
+    \draw (6*#2*\spacing, -2.75*#2) circle (2pt) node[above]{D7} -- ++(0,-.75*#2);
+    \draw (7*#2*\spacing, -2.75*#2) circle (2pt) node[above]{D8} -- ++(0,-.75*#2);
+    \draw (8*#2*\spacing, -2.75*#2) circle (2pt) node[above]{3V3} -- ++(0,-.75*#2);
+}
+
+\newcommand\divider[1]{%1 start position
+    \draw #1 -- ++(-1,0) node[ground]{};
+    \draw #1 to[R=$10k\Omega$] ++(0,-2)
+    to[short,*-.] ++(0,0) to[R=$20k\Omega$] ++(0,-2);
+    \draw #1+(-1,-4) node[ground]{} to[zzD] ++(-1,-2) -- ++(1,0);
+    \draw #1+(-1.5,-3) node[left]{1N4731A};
+}
+
+\newcommand\relay[1] {%1 start coords
+    \draw #1 + (1.5,2) -- ++(1.5, 1.25) -- ++(-.375,-.25) to[L] ++(0,-1) -- ++(-1.125,0);
+    % \draw #1 -- ++(1,0) to[L] ++(0,1) -- ++(.5,.5) -- ++(0,.5);
+    \draw #1 + (1.5,-.5) node[ground]{};
+    \draw #1 + (.5, -.5) rectangle ++(2.5, 1.5);
+    \draw #1 + (3,0) -- ++(1.875,0) to[nos] ++(0,1) -- ++(1.125,0);
+}
+
+\newcommand\boost[1] {%1 start coords
+    \draw #1+(.25,0) rectangle ++(1.75,-1.5);
+    \draw #1 + (.5, -.25) circle (2pt) -- ++(-0.25,-.25) node[above]{$v_{out}$};
+    \draw #1 + (.5, -1.25) circle (2pt) -- ++(-0.25,-1.25) node[ground]{};
+    \draw #1 + (1.5, -.25) circle (2pt) -- ++(2.25,-.25) node[above]{$V_{in}$} 
+    -- ++(.5,0) -- ++(0,.5) node[above]{12 V};
+    \draw #1 + (1.5, -1.25) circle (2pt) -- ++(2.25,-1.25) node[ground]{};
+    \draw #1 + (1,-.75) node[]{MP1584};
+}
+
+\newcommand\PIDP[1]{%1 start coords
+    \def\spacing{.75}
+    % Text
+    \draw #1+(\spacing,-.25) node[]{POWER};
+    \draw #1+(3.5*\spacing,-.25) node[]{OUTPUT 1};
+    \draw #1+(6.5*\spacing,-.25) node[]{OUTPUT 2};
+    % Power
+    \draw #1 rectangle ++(\spacing*2,-.5)
+    rectangle ++(-1*\spacing,-.75)
+    rectangle ++(-1*\spacing,.75);
+    % output 1
+    \draw #1+(\spacing*2,0) rectangle ++(\spacing*5,-.5)
+    rectangle ++(-1*\spacing,-.75)
+    rectangle ++(-1*\spacing,.75)
+    rectangle ++(-1*\spacing,-.75);
+    % output 2
+    \draw #1+(\spacing*5,0) rectangle ++(\spacing*8,-.5)
+    rectangle ++(-1*\spacing,-.75)
+    rectangle ++(-1*\spacing,.75)
+    rectangle ++(-1*\spacing,-.75);
+    
+    \draw #1 + (\spacing*.5,-.875) node[]{L};
+    \draw #1 + (\spacing*1.5,-.875) node[]{N};
+    \draw #1 + (\spacing*2.5,-.875) node[]{NO};
+    \draw #1 + (\spacing*3.5,-.875) node[]{NC};
+    \draw #1 + (\spacing*4.5,-.875) node[]{C};
+    \draw #1 + (\spacing*5.5,-.875) node[]{NO};
+    \draw #1 + (\spacing*6.5,-.875) node[]{NC};
+    \draw #1 + (\spacing*7.5,-.875) node[]{C};
+}
+\newcommand\PIDC[1]{%1 start coords
+    \def\spacing{.75}
+    % Text
+    \draw #1+(3.5*\spacing,-.25) node[]{INPUT};
+    \draw #1+(8.5*\spacing,-.25) node[]{RS232};
+    % Input
+    \draw #1 rectangle ++(\spacing*7,-.5)
+    rectangle ++(-1*\spacing,-.75)
+    rectangle ++(-1*\spacing,.75)
+    rectangle ++(-1*\spacing,-.75)
+    rectangle ++(-1*\spacing,.75)
+    rectangle ++(-1*\spacing,-.75)
+    rectangle ++(-1*\spacing,.75)
+    rectangle ++(-1*\spacing,-.75);
+    % COMM
+    \draw #1+(\spacing*7,0) rectangle ++(\spacing*10,-.5)
+    rectangle ++(-1*\spacing,-.75)
+    rectangle ++(-1*\spacing,.75)
+    rectangle ++(-1*\spacing,-.75);
+    
+    \draw #1 + (\spacing*.5,-.875) node[]{-};
+    \draw #1 + (\spacing*1.5,-.875) node[]{+};
+    \draw #1 + (\spacing*2.5,-.875) node[]{3};
+    \draw #1 + (\spacing*3.5,-.875) node[]{4};
+    \draw #1 + (\spacing*4.5,-.875) node[]{5};
+    \draw #1 + (\spacing*5.5,-.875) node[]{6};
+    \draw #1 + (\spacing*6.5,-.875) node[]{7};
+    \draw #1 + (\spacing*7.5,-.875) node[]{RTN};
+    \draw #1 + (\spacing*8.5,-.875) node[]{RX};
+    \draw #1 + (\spacing*9.5,-.875) node[]{TX};
+}
+
+\newcommand\ads[1]{%1 start coords
+    \draw #1 + (0,-.5) -- ++(-.5, -.5);
+    \draw #1 + (0, -4.5) -- ++(-.5, -4.5);
+    \draw #1 rectangle ++(2,-5);
+    \draw #1 + (1, -2.5) node[]{ADS};
+    % Thermocouple
+    \draw #1 + (.5, 0) rectangle ++(1.5, 1);
+    \draw #1 + (1, .5) node[]{TC};
+    \draw #1 + (.5, .5) -- ++(0, .5);
+    \draw #1 + (1.5, .5) -- ++(2, .5);
+    %% TECs & Cooler
+    \draw #1 + (2,0) rectangle ++(3,-2) rectangle ++(1,2) rectangle ++(1,-2);
+    \draw #1 + (2,-3) rectangle ++(3,-5) rectangle ++(1,2) rectangle ++ (1,-2);
+    % inbetween wires
+    \draw #1 + (2.5, -2) -- ++(2.5,-3);
+    \draw #1 + (3.5, -2) -- ++(3.5,-3);
+    % top TEC wiring
+    \draw #1 + (2.5, 0) -- ++(2.5, 1) -- ++(1, 0);
+    \draw #1 + (3.5, 0) -- ++(3.5, 1);
+    \draw #1 + (3, 1) -- ++(3,1);
+    % Ground wiring
+    \draw #1 + (4.5, -2) node[ground]{};
+    \draw #1 + (2.5, -5) -- ++(2.5, -5.5) to[short,.-*] ++(1,0);
+    \draw #1 + (3.5, -5) -- ++(3.5, -5.5) node[ground]{};
+    \draw #1 + (4.5, -5) -- ++(4.5, -5.5) -- ++(-1,0);    
+    % Cooler Wiring
+    \draw #1 + (4.5, 0) -- ++(4.5, 1) to[short,.-*] ++(-1,0) -- ++(0,.5) node[above]{12 V};
+    \draw #1 + (4.5, -3) -- ++(4.5, -2.75) -- ++(1, 0) -- ++(0,3.75) to[short,.-*] ++(-1,0);
+    % labels
+    \draw #1 + (2.5, -.125) node[]{+};
+    \draw #1 + (3.5, -.125) node[]{+};
+    \draw #1 + (2.5, -3.125) node[]{+};
+    \draw #1 + (3.5, -3.125) node[]{+};
+    \draw #1 + (2.5, -1.875) node[]{-};
+    \draw #1 + (3.5, -1.875) node[]{-};
+    \draw #1 + (2.5, -4.875) node[]{-};
+    \draw #1 + (3.5, -4.875) node[]{-};
+    \draw #1 + (2.5, -1) node[]{12706};
+    \draw #1 + (2.5, -4) node[]{12706};
+    \draw #1 + (3.5, -1) node[]{12715};
+    \draw #1 + (3.5, -4) node[]{12715};
+    \draw #1 + (4.5, -0.75) node[]{CPU};
+    \draw #1 + (4.5, -1.25) node[]{cooler};
+    \draw #1 + (4.5, -3.75) node[]{CPU};
+    \draw #1 + (4.5, -4.25) node[]{cooler};
+    
+}
+
+\newcommand\battery[1]{%1start coords
+    \draw #1 rectangle ++(3, -1.5);
+    \draw #1 + (.25,0) rectangle ++(.75,.5);
+    \draw #1 + (2.25,0) rectangle ++(2.75, .5);
+    \draw #1 + (.5, .25) node[]{+};
+    \draw #1 + (2.5, .25) node[]{-};
+    \draw #1 + (1.5, -.625) node[]{12 V, 20 Ah};
+    \draw #1 + (1.5, -.95) node[]{LiFePO$_4$ Bat.};
+
+    % Charger
+    \draw #1 + (0, -2) rectangle ++(3, -3.5);
+    \draw #1 + (0, -2.5) -- ++(-.5, -2.5) -- ++(0, 2.75) -- ++(.75,0);
+    \draw #1 + (3, -2.5) -- ++(3.5, -2.5) -- ++(0, 2.75) -- ++(-.75,0);
+    \draw #1 + (0, -3) -- ++(-.5, -3) node[left]{L};
+    \draw #1 + (3, -3) -- ++(3.5, -3) node[right]{N};
+    \draw #1 + (1.5, -3) node[]{2 A Charger};
+}
+
+\newcommand\adjPSU[1]{%1start coords
+    \draw #1 rectangle ++(3, -1.75);
+    % Vdc nodes
+    \draw #1 + (.25, 0) rectangle ++(.75, .5);
+    \draw #1 + (2.25, 0) rectangle ++(2.75, .5);
+    \draw #1 + (.5, .25) node[]{+};
+    \draw #1 + (2.5, .25) node[]{-};
+    % Device labels (middle of device)
+    \draw #1 + (1.5, -.625) node[]{0-15 V, 50 A};
+    \draw #1 + (1.5, -.95) node[]{600 W Adj. Power};
+    \draw #1 + (1.5, -1.275) node[]{SE-600-12};
+    % Bottom ports (wall voltage)
+    \draw #1 + (.75, -1.75) rectangle ++(1.25, -2.25);
+    \draw #1 + (1.25, -1.75) rectangle ++(1.75, -2.25);
+    \draw #1 + (1.75, -1.75) rectangle ++(2.25, -2.25);
+    \draw #1 + (1, -2) node[]{L};
+    \draw #1 + (1.5, -2) node[]{N};
+    \draw #1 + (2, -2) node[]{G};
+    \draw #1 + (1.5, -2.25) -- ++(1.5, -2.75) node[below]{110 V$_{ac}$};
+}
+
+\begin{document}
+\begin{circuitikz}[]
+    %% Devices
+    \espu{(0,0)}{1}
+    \divider{(-.75,-2.5)}
+    \boost{(10,0.75)}
+    \pwmb{(3,-5)}{a}
+    \relay{(7.5,-5.5)}
+    \ssr{(11,-4.5)}{1}
+    \PIDP{(2.25,-10.5)}
+    \PIDC{(14,2)}
+    \ads{(19,-5)}
+    \adjPSU{(12,-7.5)}
+    
+    %% Connections
+    % ESP8266
+    \draw (5, -3.5) -- ++(0,-2) -- ++(2.5,0); % D6 to Relay
+    \draw (-1,-2.5)+(0,-2) -- ++(3,-2) -- ++(0,1); % Divider to ESP8266
+    \draw (8, .5) -- (9.75, .5); % MP1584 to 5 V
+    \draw (9, -3.5) -- ++(0,4) to[short,*-.] ++(0,0); % Relay to 5 V
+    % PID Power
+    \draw (7.875,-10.5) -- ++(0,3.5) -- ++(2.625,0) -- ++(0,1.5); % PID 1 to relay
+    \draw (5.675, -11.75) node[ground]{}; % PID 4 GND
+    \draw (4.875, -10.5) -- ++(0,0.25) -- ++(-5.625,0) -- ++(0,3.75); %PID 5 to divider
+    % PID Comm
+    \draw (22.25,.5) rectangle (23.25, -1.5);
+    \draw (19.625, 0.75) -- (19.625,-1) -- (22.5,-1) node[right]{5}; % RS232 RTN
+    \draw (20.375, 0.75) -- (20.375,-.5) -- (22.5,-.5) node[right]{2}; % RS232 RX
+    \draw (21.125, 0.75) -- (21.125,0) -- (22.5,0) node[right]{3}; % RS232 TX
+    \draw (19, -4.5) -- (19, -2) -- (14.375,-2) -- (14.375, .75); % TC (-)
+    \draw (21, -4.5) -- (21, -1.5) -- (15.125, -1.5) -- (15.125, .75); % TC (+)
+    
+    \draw (11,-4.5) -- ++(-.5,0); % relay to SSR
+    \draw (13.25,-4.5) -- (12.5, -4.5) -- (12.5,-7); % SSR to Bat (+)
+    \draw (14, -5.5) -- (18.5,-5.5); % SSR to ADS
+    \draw (18.5,-9.5) -- (16.5,-9.5) -- ++(0, 3) -- (14.5, -6.5) -- (14.5, -7); %ADS to Bat (-)
+
+    % Labels
+    \draw (2.25, -11.25) node[left]{CNi16D53-C32 (TOP)};
+    \draw (21.5, 1.75) node[right]{CNi16D53-C32};
+    \draw (21.5, 1.25) node[right]{(BOT)};
+    \draw (23.25,-.5) node[right]{DB9};
+
+\end{circuitikz}
+\end{document}
+
+fullZZener diode:FullZZenerdiode,type: path-style, nodename: fullzzdiodeshape.Aliases: zzD*.Class: diodes.

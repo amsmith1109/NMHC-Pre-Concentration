@@ -1,0 +1,15 @@
+\documentclass[tikz,border=0pt]{standalone}
+\usepackage{graphicx}
+
+\begin{document}
+\begin{tikzpicture}
+  \node[anchor=south west,inner sep=0] at (0,0) {\includegraphics[width=3in]{CMO Negative.pdf}};
+  \node[anchor=south west,inner sep=0] at (3in,0) {\includegraphics[width=3in]{CMO Positive.pdf}};
+  \node[anchor=north west,inner sep=0] at (0, 0) {\includegraphics[width=3in]{CMO Non-Outliers.pdf}};
+  \node[anchor=north west,inner sep=0] at (3in, 0) {\includegraphics[width=3in]{CMO Outliers.pdf}};
+  \node[anchor=south,inner sep=0] at (1.5in,0.2) {(a) Negative trend residual};
+  \node[anchor=south,inner sep=0] at (4.5in,0.2) {(b) Positive trend residual};
+  \node[anchor=south,inner sep=0] at (1.5in,-2.25in) {(c) Trend residuals $<$ 2$\sigma$};
+  \node[anchor=south,inner sep=0] at (4.5in,-2.25in) {(d) Trend residuals $>$ 2$\sigma$};
+\end{tikzpicture}
+\end{document}

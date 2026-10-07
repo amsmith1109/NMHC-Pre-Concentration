@@ -1,0 +1,203 @@
+\documentclass[]{standalone}
+\usepackage{tikz}
+
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Turbo Pump
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pgfdeclareshape{turbo pump}{%
+    \inheritsavedanchors[from=circle]%
+    \inheritanchorborder[from=circle]%
+    \inheritanchor[from=circle]{center}%
+    \inheritanchor[from=circle]{radius}%
+    \anchor{inlet}{
+        \pgf@x=0pt
+        \pgf@y=1.5\radius
+    }
+    \anchor{outlet}{
+        \pgf@x=0pt
+        \pgf@y=-1.5\radius    
+    }  
+  \backgroundpath{%
+    \pgf@xa\radius% store radius in auxiliary length 
+    % Outline
+    \pgfpathcircle{\pgfpoint{0cm}{0cm}}{\pgf@xa}
+    
+    % Inlet and Outlet Lines
+    \pgfpathmoveto{\pgfpoint{0pt}{\pgf@xa}}%
+    \pgfpathlineto{\pgfpoint{0pt}{1.5\pgf@xa}}
+    \pgfpathmoveto{\pgfpoint{0pt}{-1\pgf@xa}}%
+    \pgfpathlineto{\pgfpoint{0pt}{-1.5\pgf@xa}}
+    
+    % Angled Lines
+    \pgfpathmoveto{\pgfpoint{-0.4358\pgf@xa}{-0.9\pgf@xa}}%
+    \pgfpathlineto{\pgfpoint{-0.8\pgf@xa}{0.6\pgf@xa}}%
+    \pgfpathmoveto{\pgfpoint{0.4358\pgf@xa}{-0.9\pgf@xa}}%
+    \pgfpathlineto{\pgfpoint{0.8\pgf@xa}{0.6\pgf@xa}}%
+
+    % Turbo Specific Shape
+    \pgfpathmoveto{\pgfpoint{0.3\pgf@xa}{0cm}}
+    \pgfpatharc{0}{360}{0.3\pgf@xa}
+    \pgfpathmoveto{\pgfpoint{0.15\pgf@xa}{0cm}}
+    \pgfpatharc{0}{360}{0.15\pgf@xa}
+    % \pgfpathcircle{\pgfpoint{0cm}{0cm}}{0.2\pgf@xa}
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Generic Pump
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pgfdeclareshape{vacuum pump}{%
+    \inheritsavedanchors[from=circle]%
+    \inheritanchorborder[from=circle]%
+    \inheritanchor[from=circle]{center}%
+    \inheritanchor[from=circle]{radius}%
+    \anchor{inlet}{
+        \pgf@x=0pt
+        \pgf@y=1.5\radius
+    }
+    \anchor{outlet}{
+        \pgf@x=0pt
+        \pgf@y=-1.5\radius    
+    }  
+  \backgroundpath{%
+    \pgf@xa\radius% store radius in auxiliary length 
+    % Outline
+    \pgfpathcircle{\pgfpoint{0cm}{0cm}}{\pgf@xa}
+    
+    % Inlet and Outlet Lines
+    \pgfpathmoveto{\pgfpoint{0pt}{\pgf@xa}}%
+    \pgfpathlineto{\pgfpoint{0pt}{1.5\pgf@xa}}
+    \pgfpathmoveto{\pgfpoint{0pt}{-1\pgf@xa}}%
+    \pgfpathlineto{\pgfpoint{0pt}{-1.5\pgf@xa}}
+    
+    % Angled Lines
+    \pgfpathmoveto{\pgfpoint{-0.4358\pgf@xa}{-0.9\pgf@xa}}%
+    \pgfpathlineto{\pgfpoint{-0.8\pgf@xa}{0.6\pgf@xa}}%
+    \pgfpathmoveto{\pgfpoint{0.4358\pgf@xa}{-0.9\pgf@xa}}%
+    \pgfpathlineto{\pgfpoint{0.8\pgf@xa}{0.6\pgf@xa}}%
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Piston Pump
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pgfdeclareshape{piston pump}{%
+    \inheritsavedanchors[from=circle]%
+    \inheritanchorborder[from=circle]%
+    \inheritanchor[from=circle]{center}%
+    \inheritanchor[from=circle]{radius}%
+    \anchor{inlet}{
+        \pgf@x=0pt
+        \pgf@y=1.5\radius
+    }
+    \anchor{outlet}{
+        \pgf@x=0pt
+        \pgf@y=-1.5\radius    
+    }  
+  \backgroundpath{%
+    \pgf@xa\radius% store radius in auxiliary length 
+    % Outline
+    \pgfpathcircle{\pgfpoint{0cm}{0cm}}{\pgf@xa}
+    
+    % Inlet and Outlet Lines
+    \pgfpathmoveto{\pgfpoint{0pt}{\pgf@xa}}%
+    \pgfpathlineto{\pgfpoint{0pt}{1.5\pgf@xa}}
+    \pgfpathmoveto{\pgfpoint{0pt}{-1\pgf@xa}}%
+    \pgfpathlineto{\pgfpoint{0pt}{-1.5\pgf@xa}}
+    
+    % Angled Lines
+    \pgfpathmoveto{\pgfpoint{-0.4358\pgf@xa}{-0.9\pgf@xa}}%
+    \pgfpathlineto{\pgfpoint{-0.8\pgf@xa}{0.6\pgf@xa}}%
+    \pgfpathmoveto{\pgfpoint{0.4358\pgf@xa}{-0.9\pgf@xa}}%
+    \pgfpathlineto{\pgfpoint{0.8\pgf@xa}{0.6\pgf@xa}}%
+
+    % Piston Specific Shape
+    \pgfpathmoveto{\pgfpoint{0}{-0.25\pgf@xa}}
+    \pgfpathlineto{\pgfpoint{0pt}{0.25\pgf@xa}}
+    \pgfpathmoveto{\pgfpoint{0.25\pgf@xa}{0.25\pgf@xa}}
+    \pgfpathlineto{\pgfpoint{-0.25\pgf@xa}{0.25\pgf@xa}}
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Ion Pump
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pgfdeclareshape{ion pump}{
+    \inheritsavedanchors[from=circle]
+    \inheritanchorborder[from=circle]
+    \inheritanchor[from=circle]{center}
+    \inheritanchor[from=circle]{radius}
+    \anchor{inlet}{
+        \pgf@x=0pt
+        \pgf@y=1.5\radius
+    }
+    \anchor{outlet}{
+        \pgf@x=0pt
+        \pgf@y=-1.5\radius    
+    }  
+  \backgroundpath{%
+    \pgf@xa\radius% store radius in auxiliary length 
+    % Outline
+    \pgfpathcircle{\pgfpoint{0cm}{0cm}}{\pgf@xa}
+    
+    % Inlet and Outlet Lines
+    \pgfpathmoveto{\pgfpoint{0pt}{\pgf@xa}}
+    \pgfpathlineto{\pgfpoint{0pt}{1.5\pgf@xa}}
+    \pgfpathmoveto{\pgfpoint{0pt}{-1\pgf@xa}}
+    \pgfpathlineto{\pgfpoint{0pt}{-1.5\pgf@xa}}
+    
+    % Angled Lines
+    \pgfpathmoveto{\pgfpoint{-0.4358\pgf@xa}{-0.9\pgf@xa}}
+    \pgfpathlineto{\pgfpoint{-0.8\pgf@xa}{0.6\pgf@xa}}
+    \pgfpathmoveto{\pgfpoint{0.4358\pgf@xa}{-0.9\pgf@xa}}
+    \pgfpathlineto{\pgfpoint{0.8\pgf@xa}{0.6\pgf@xa}}
+
+    % Ion Pump Specifics
+    \pgfpathmoveto{\pgfpoint{}{}}
+    \pgfpathlineto{\pgfpoint{}{}}
+    \pgfpathlineto{\pgfpoint{}{}}
+    \pgfpathmoveto{\pgfpoint{}{}}
+    \pgfpathlineto{\pgfpoint{}{}}
+    
+    \pgfpathmoveto{\pgfpoint{0}{0}}
+
+    \pgfpathmoveto{\pgfpoint{0}{0}}
+    
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Ion Pump
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pgfdeclareshape{valve}{
+    \inheritanchor[from=rectangle]{center}
+    \inheritanchor[from=rectangle]{length}
+    \inheritanchor[from=rectangle]{width}
+    \anchor{inlet}{
+        \pgf@x=-1.5\length
+        \pgf@y=0pt
+    }
+    \anchor{outlet}{
+        \pgf@x=1.5\length
+        \pgf@y=0pt
+    }  
+  \backgroundpath{
+    \pgfpathmoveto{\pgfpoint{-1.5\length}{0}}
+    \pgfpathlineto{\pgfpoint{-1\length}{0}}
+    }
+}
+
+\makeatother
+
+
+\begin{document}
+
+\begin{tikzpicture}
+ \node[turbo pump=name, draw, minimum size=3cm]{};
+ \draw (name.inlet) -- ++(1,0);
+\end{tikzpicture}
+ 
+
+\end{document}

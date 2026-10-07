@@ -1,0 +1,67 @@
+\section{GC Operation}
+The pre-concentration system couples to an 0.32mm ID x 30m (5um film) Al$_2$O$_3$/KCl PLOT column mounted in an HP 5890 gas chromatograph (GC). Measurements are made using a flame ionization detector (FID). The GC-FID system interfaces using a GPIB connection (part of the 5890 series-ii) to connect to a computer running Windows XP (CPU). The CPU has a copy of ezchrome installed which is programmed to run GC methods and sequences, and perform peak integration for each chromatogram. The CPU used to run the GC should be connected to the same network as the pre-concentration system. This allows the entire system to run from a single access point.
+
+\warn{Never connect a Windows XP machine to the internet! The local connections are made with a network switch (or router) that is NOT connected to any other network.}
+
+\subsection{Hardware Setup}
+There are two flow/pressure regulators on the front of the GC. These are connected to the FID H\textsubscript{2} supply, and the carrier gas (H\textsubscript{2}). The FID air supply is set by the pressure regulator at the source. The settings for each of these is as follows:
+
+\begin{itemize}
+    \item FID Air - 40 psig at regulator (approx. 300 sccm)
+    \item FID H\textsubscript{2} - 18 psig at regulator (30 sccm)
+    \item Carrier H\textsubscript{2} - 5 psig (approx 3 sccm)
+\end{itemize}
+\warn{The FID air being set at the source can cause issues if there are multiple devices pulling from the same zero air source. Consider adding an in-line regulator if stability issues are observed.}
+
+Flow rates are set and measured using a digital flow meter with an FID adapter. Make sure the flow meter is set to the correct molecule, the FID adapter is snug against the FID, and sufficient gas has purged the flow meter. The flow rate of each gas should be set using the following steps:
+\begin{enumerate}
+    \item Start with the FID Air and FID H\textsubscript{2} off. The carrier flow should be turned down all the way.
+    \item Set the regulator on the FID air source to 40 psig. Open the FID air and check that the flow is between 270 and 330 sccm. Adjust the regulator down as needed. Record the measured value and shut off the FID air.
+    \item Open the FID H\textsubscript{2} source and set to approximately 10 sccm and leave open.
+    \item Set the GC oven for 40 \textsuperscript{o}C and the FID temperature to 225 \textsuperscript{o}C. Allow each to temperature to settle.
+    \item Adjust the FID H\textsubscript{2} to 30 sccm (approx 18 psig). Record the measured value.
+    \item Slowly adjust the carrier to 5 psig. It can take upwards of 5 minutes for the pressure to settle. Verify that the combined flow of the FID H\textsubscript{2} and carrier is approximately 3 sccm greater than the FID H flow rate previously recorded. Record the measured value, subtract the previously recorded value and report the carrier flow rate. Remove the flow meter.
+    \item Open the FID air valve and begin igniting the FID. An audible pop should be heard when the FID has been lit. The FID flame can be checked using a small mirror. Place it near the outlet of the FID
+    \item Turn on the FID sensor on the front panel of the FID. These settings will produce a baseline of approximately 7 mV. Some combinations of air and H\textsubscript{2} have produced a baseline as low as 5 mV, or as high as 9 mV.
+\end{enumerate}
+
+Once the system is setup, the detector temperature should always be at its operating temperature to ensure thermal stability. Carrier gas flow should never be disabled to prevent oxidation or carbon deposition. Do not stop carrier flow until the FID is cooled to room temperature. The only exception to this rule occurs when H\textsubscript{2} is being run from a compressed cylinder, and the cylinder needs to be replaced. Turn on the FID air while H\textsubscript{2} is disconnected to protect the FID. Once H\textsubscript{2} is reconnected and flowing, continue operation as normal.
+
+[add picture of GC valves and regulators]
+
+\subsection{Software Setup}
+-Setting up a method\\
+-Setting up a sequence
+
+\subsection{Calibration}
+-Retention times\\
+-Concentration\\
+-Limit of Detection
+
+\subsection{Pre-Conditioning and Bake Outs}
+When installing a new column, always follow the manufacturer's recommendations. Carefully observe the maximum rated temperature. The initial conditioning (and regeneration) bake out is done at the maximum temperature for the column. For a Al$_2$O$_3$/KCl PLOT column, this is 200 \textsuperscript{o}C. The column is held at this temperature for 6 hours.
+
+It has been observed that column degradation can occur while the system is off, even with a constantly flow of H\textsubscript{2}. Keeping the oven at 100 - 125 \textsuperscript{o}C while not in use can reduce the need to bake out the column prior to starting measurements. However, a short bake outs may be necessary if the oven is left at 40 \textsuperscript{o}C for an extended period (e.g., overnight). Ramping the oven to the maximum operating temperature will help remove any buildup that has concentrated on the front of the column. \figref{fig:dirty bakeout} shows the bake out of a column with buildup, and \figref{fig:clean bakeout} shows the bake out of a clean column. If conserving gas is important, the bake out can be performed without the FID running.
+
+\begin{figure}
+    insert dirty bake out
+    \centering
+    % \includegraphics{}
+    \caption{Chromatogram of a bake out with a column that has been stored at 40 \textsuperscript{o}C with H\textsubscript{2} flowing.}
+    \label{fig:dirty bakeout}
+\end{figure}
+
+\begin{figure}
+    insert clean bake out
+    \centering
+    % \includegraphics{}
+    \caption{Chromatogram of a bake out with a clean column. Generally observed after an initial bake out, or after processing multiple samples.}
+    \label{fig:clean bakeout}
+\end{figure}
+
+\subsection{Running Samples}
+-Volume Calibration\\
+-Sample Concentration Limits\\
+-Standard Run details
+
+\pagebreak

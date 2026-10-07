@@ -1,0 +1,40 @@
+% Handling the crossover of intersecting lines
+% Author: Steffen Knoll
+\documentclass{standalone}
+\usepackage{circuitikz}
+\usepackage{tikz}
+\usetikzlibrary{intersections}
+\usepackage{tkz-euclide}
+\def\LW{1pt}
+\tikzset{every path/.style={line width=\LW}}
+\usepackage{pgffor}
+\usepackage{xfp}
+
+\newcommand{\orbit}[4]{%1 = start coords, %2 = n, %3 = 0/1 for off/on, %4 = scale
+\draw #1 circle (1.5*#4);
+\foreach \n in {1, ..., #2}{
+    % \coordinate (a) at (#3,#3);
+    \coordinate (a) at ({#4*sin((2*\n+2*#3-1)*180/#2)}, {#4*cos((2*\n+2*#3-1)*180/#2)});
+    \coordinate (b) at ({#4*sin(\n*360/#2)},{#4*cos(\n*360/#2)});
+    % \coordninate let \p1 = (A) in ({2*\x1},{2*\y1});
+    \draw [line width=#4pt]($#1 + 2*(a)$) -- 
+    ($#1 + (a)$) circle (.125*#4) -- 
+    ($#1 + (b)$) circle (.125*#4) -- 
+    ($#1 + 2*(b)$);
+    % name each node... somehow?
+}
+}
+
+
+
+\begin{document}
+
+\foreach \x in {0,20,...,2000}{
+\begin{circuitikz}
+    \def\T{\fpeval{round((\x/360),2)}}
+    \draw [fill=black, fill opacity=1] (0,0) node[above]{T = \T} -- ({.1*cos(\x)}, {-1 - .1*sin(\x)}) circle (3 pt) ;
+    \draw [draw=none] (-.25,.5) rectangle (.25, -1.5);
+\end{circuitikz}
+}
+
+\end{document}

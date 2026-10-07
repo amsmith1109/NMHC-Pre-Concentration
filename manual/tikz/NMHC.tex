@@ -1,0 +1,69 @@
+\documentclass{standalone}
+\include{preample}
+\include{tikz/Gas System Symbols}
+
+\def\position{0}
+
+\begin{document}
+\begin{circuitikz}[]
+    \tikzset{every path/.style={line width=1 pt}}
+
+    % NMHC System
+    \orbit{V$_1$}{(0,0)}{6}{1}{\position}
+    \orbit{V$_0$}{(5,0)}{6}{1}{0}
+    \draw (V$_1$-2) -- (V$_1$-3); % Bypass Line
+    \draw [name path=top01] (V$_1$-1) -- (V$_0$-1);
+    \draw [name path=bot01] (V$_1$-4) -- (V$_0$-4);
+    % \draw (V$_1$-6) -- ++(-1,0) -- ++(0,-5) -- ++(10,0);
+    % Inlet
+    \coordinate (V$_0$-inlet) at ($(V$_0$-6) + (0,2)$);
+    \cross{V$_0$-inlet}{V$_0$-6}{top01}
+    % Outlet
+    \coordinate (V$_0$-outlet) at ($(V$_0$-5) - (0,2)$);
+    \cross{V$_0$-5}{V$_0$-outlet}{bot01}
+
+    \TWV{V$_3$}{(V$_0$-outlet)}{.5}{180}{0}
+    \TWV{V$_2$}{(V$_0$-inlet)}{.5}{0}{0}
+    \draw (V$_3$-NO) -- ++(.5, 0);
+    \rotameter{M1}{($(V$_3$-NO) + (0.5,0)$)}{1}{0}
+    \draw [-{Straight Barb}] (M1-out) -- ++(.5, 0) node[right]{Vent};
+    \draw (M1-center) node[]{M$_1$};
+    \draw [-{Straight Barb[reversed]}] (V$_0$-3) -- ++(0,-0.5) node[below]{H$_2$} node[below, yshift=-12pt]{(3 sccm)};
+
+    \block{H$_2$O Trap}{(V$_2$-NC)}{.875}
+    \mfc{MFC 1}{(H$_2$O Trap-outlet)}{1}
+    \mfc{MFC 2}{(V$_2$-NO)}{-1}
+    \draw [-{Straight Barb[reversed]}] (MFC 2-outlet) -- ++(-.5,0) node[left]{H$_2$} node[left,yshift=-12pt]{(40 psig)};    \pump{Vac}{($(V$_3$-NC)+(-3,0)$)}{1}{90}
+    \draw [-{Straight Barb}] (Vac-inlet) -- ++(-.5,0);
+    \draw (Vac-outlet) -- (V$_3$-NC);
+    \draw (MFC 1-outlet) -- ++(1,0) -- ++(0,2.5) -- ++(-0.5,0);
+
+
+    \draw (V$_1$-6) -- ++(0,1) -- ++(-1,0) node[above]{front} -- ++(0,-.25);
+    \draw (V$_1$-5) -- ++(0,-1) -- ++(-1,0) node[below]{back} -- ++(0,.25);
+    \coordinate (ads-front) at ($(V$_1$-6) + (-1, .75)$);
+    \coordinate (ads-back) at ($(V$_1$-5) + (-1, -.75)$);
+    \draw ($(ads-front) + (-.75,0)$) rectangle ($(ads-back) + (.75,0)$) node[pos=.5]{ADS Trap};
+    \draw [dash dot] (ads-front) -- (ads-back);
+
+    \draw ($(ads-front)+(-.375,0)$) -- ++(0,2.5) -- ++(.375,0);
+    \TWV{V$_4$}{($(ads-front)+(0,2.5)$)}{.5}{90}{0}
+    \draw [-{Straight Barb[reversed]}] (V$_4$-NO) -- ++(0,0.5) node[above,yshift=12pt]{purge air} node[above]{(60 psig)};
+
+    \draw (V$_0$-2) -- ++(0,1) -- ++(2,0) -- ++(0,-.25);
+    \gc{HP5890}{($(V$_0$-2) + (2,.75)$)}{1}{FID}
+    \draw [-{Straight Barb[reversed]}] ($(V$_0$-2) + (3.75,-2.25)$) 
+    -- ++(0,-.75) node[below,yshift=-12pt]{(300 sccm)} node[below]{FID Air};
+    \draw [-{Straight Barb[reversed]}] ($(V$_0$-2) + (2,-2.25)$) 
+    -- ++(0,-.75) node[below,yshift=-12pt]{(30 sccm)} node[below]{FID H$_2$};
+
+    \mpv{V$_5$}{($(MFC 1-outlet) + (0.5,2.5)$)}{1}{180}{6}
+    \def\samp{4}
+    \draw (V$_5$-\samp) -- ++(-1,0);
+    \pump{}{($(V$_5$-\samp) + (-1,0)$)}{-1}{90}
+    \draw [-{Straight Barb[reversed]}] ($(V$_5$-\samp) + (-3.5,0)$) -- ++(-0.5,0) node[left]{Roof Air System};
+    \draw [-{Straight Barb[reversed]}] (V$_5$-1) -- ++(-4,0) node[left]{Ref Air};
+
+    
+\end{circuitikz}
+\end{document}

@@ -1,0 +1,54 @@
+\documentclass[tikz]{standalone}
+\include{preample}
+
+\begin{document}
+\begin{tikzpicture}[node distance=2cm]
+    \node (call) [start] {state called};
+    \node (check) [decision, below of=call, yshift=-.25cm] {Check Value};
+    \node (prnt) [decision, right of=check, xshift=2cm] {State Value};
+    \node (prntproc1) [stop, above of=prnt, yshift=.25cm] {Print State};
+    \node (prntproc2) [stop, below of=prnt, yshift=-0.5cm] {Print Default State Names};
+    \node (proc) [decision, below of=check, yshift=-1cm] {State Value};
+    \node (prntcurrent) [stop, left of=proc, xshift=-2cm] {Print Current State};
+    \node (type) [decision, below of=proc, yshift=-1cm] {Advancing Condition};
+    \node (precision) [process, below of=type, yshift=-0.5cm] {Pulse Specified Value};
+    \node (GC) [process, left of=type, xshift=-2cm] {Check GC};
+    \node (GCcheck) [decision, below of=GC, yshift=-0.5cm] {GC Value};
+    \node (rotate) [process, right of=type, xshift=2cm] {Rotate Valves};
+    \node (flowrate) [process, below of=rotate, yshift=.5cm] {Set MFCs};
+    \node (temp) [process, below of=flowrate, yshift=.5cm] {Set Trap Temps};
+    \node (type2) [decision, below of=temp, yshift=-.25cm] {Advancing Condition};
+    \node (tempcheck) [process, left of=type2, xshift=-2cm] {Wait for Trap Temp};
+    \node (timed) [process, below of=type2, yshift=-0.25cm] {Wait Specified Time};
+    \node (monitor) [process, left of=timed, xshift=-2cm] {Monitor Parameter};
+    \node (return) [stop, left of=tempcheck, xshift=-2cm] {Return};
+    \draw [arrow] (call) -- (check);
+    \draw [arrow] (check) -- node[anchor=south] {True} (prnt);
+    \draw [arrow] (prnt) -- node[anchor=west] {None} (prntproc2);
+    \draw [arrow] (prnt) -- node[anchor=west] {name or dict} (prntproc1);
+    \draw [arrow] (check) -- node[anchor=west] {False} (proc);
+    \draw [arrow] (proc) -- node[anchor=south] {None} (prntcurrent);
+    \draw [arrow] (proc) -- node[anchor=west] {name or dict} (type);
+    \draw [arrow] (type) -- node[anchor=south] {GC} (GC);
+    \draw [arrow] (type) -- node[anchor=south] {Other} (rotate);
+    \draw [arrow] (rotate) -- (flowrate);
+    \draw [arrow] (flowrate) -- (temp);
+    \draw [arrow] (temp) -- (type2);
+    \draw [arrow] (type) -- node[anchor=west] {pulse} (precision);
+    \draw [arrow] (GC) -- (GCcheck);
+    \draw [arrow] (GCcheck) -- node[anchor=south] {$>$0} (precision);
+    \draw [arrow] (GCcheck) -- node[anchor=east] {=0} (return);
+    \draw [arrow] (type2) -- node[anchor=west] {time} (timed);
+    \draw [arrow] (type2) -- node[anchor=south] {temp} (tempcheck);
+    \draw [<->, line width=.35mm] (monitor) -- (timed);
+    \draw [<->, line width=.35mm] (monitor) -- (tempcheck);
+    \draw [arrow] (tempcheck) -- (return);
+    \draw [arrow] (timed) 
+                  |-([shift={(0,-.25cm)}]timed.south) 
+                  -| ([shift={(.25cm,0)}]return.south);
+    \draw  [arrow] (type2.east) 
+           --([shift={(.375cm,0)}]type2.east) node[anchor=south] {manual}
+           |- ([shift={(0,-0.5cm)}]timed.south)
+           -| ([shift={(-.25cm,0)}]return.south);
+\end{tikzpicture}
+\end{document}

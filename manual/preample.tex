@@ -1,0 +1,149 @@
+\usepackage{amsmath,newtxtext,newtxmath}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{dirtytalk}
+\usepackage{geometry}
+\usepackage{cancel}
+\usepackage{caption}
+\usepackage{enumitem}
+% \usepackage{epstopdf}
+\usepackage{fontenc}
+\usepackage{float}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry} %fixes margins of the document
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage[super]{nth}
+\usepackage{pdflscape}
+\usepackage[final]{pdfpages}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+\usepackage{titlesec}
+\usepackage[nottoc,numbib]{tocbibind}
+\usepackage{tocloft}
+\usepackage{verbatim}
+\usepackage{xcolor,colortbl}
+\usepackage{xparse}
+\usepackage{xspace}
+\usepackage{times}
+\usepackage{textcomp}
+
+\usepackage[backend=biber, style=science,
+citestyle=authoryear, nohashothers=true]{biblatex}
+
+\def\ethane{C\textsubscript{2}H\textsubscript{6}\xspace}
+\def\methane{CH\textsubscript{4}\xspace}
+% \addbibresource{Citations.bib}
+
+\title{Non-Methane Hydrocarbon (NMHC) Pre-Concentration Sampling System}
+\author{Alex M. Smith}
+\date{May \nth{1} 2023}
+
+\setlength{\parindent}{0em}
+\setlength{\parskip}{1em plus 0em minus 0em}
+\setlength\abovedisplayskip{0pt}
+\setlength\belowdisplayskip{0pt}
+\geometry{
+    letterpaper,
+    margin=1in,
+    top=1in
+}
+\titleformat{\section}[block]{\Large\bfseries\filcenter}{}{0em}{}
+\titleformat{\subsection}{\large\MakeUppercase}{}{0em}{}
+\titleformat{\subsubsection}{\MakeUppercase}{}{0em}{}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\TODO}{msom}
+ {
+  %\IfBooleanF{#1}% do nothing if it's starred
+   {
+    \cs_if_eq:NNT #1 \chapter { \cleardoublepage\mbox{} }
+    \refstepcounter{\cs_to_str:N #1}
+    \IfNoValueTF{#3}
+     {
+      \addcontentsline{toc}{\cs_to_str:N #1}{\protect\numberline{\use:c{the\cs_to_str:N #1}}#4}
+     }
+     {
+      \addcontentsline{toc}{\cs_to_str:N #1}{\protect\numberline{\use:c{the\cs_to_str:N #1}}#3}
+     }
+   }
+  \cs_if_eq:NNF #1 \chapter { \mbox{} }% allow page breaks after sections
+ }
+\ExplSyntaxOff
+
+\newcommand{\figref}[1]{\textbf{\hyperref[#1]{Figure \ref{#1}}}}
+\newcommand{\tableref}[1]{\textbf{\hyperref[#1]{Table \ref{#1}}}}
+\renewcommand{\eqref}[1]{\hyperref[#1]{Eq.\hspace{.25em}(\ref{#1})}}
+
+\newcommand{\reducedstrut}{\vrule width 0pt height .9\ht\strutbox depth .9\dp\strutbox\relax}
+\newcommand{\code}[1]{%
+  %\begingroup
+  \setlength{\fboxsep}{0pt}%  
+  \colorbox{gray!20}{\reducedstrut\texttt{#1}\/}
+  %\endgroup
+  \hspace{-0.5em}
+}
+
+\newcommand{\warn}[1]{
+\begin{center}
+% \setlength{\fboxsep}{3pt}
+% \setlength{\fboxrule}{3pt}
+% \fbox{
+\emph{Warning: #1}
+% }
+\end{center}
+}
+
+\setcounter{tocdepth}{2}
+
+\def\2{\textsubscript{2}}
+\def\cm{cm\textsubscript{-1}}
+
+\def\flowwidth{3cm}
+
+\tikzstyle{start} = [rectangle,
+rounded corners,
+minimum width=\flowwidth,
+minimum height=1cm,
+text centered,
+text width=\flowwidth,
+draw=black,
+fill=gray!30]
+
+\tikzstyle{stop} = [rectangle,
+rounded corners,
+minimum width=\flowwidth,
+minimum height=1cm,
+text centered,
+text width=\flowwidth,
+draw=black,
+fill=red!30]
+
+\tikzstyle{io} = [trapezium,
+trapezium left angle=70,
+trapezium right angle=110,
+minimum width=\flowwidth,
+minimum height=1cm,
+text centered,
+draw=black,
+fill=blue!30]
+
+\tikzstyle{process} = [rectangle,
+minimum width=\flowwidth,
+minimum height=1cm,
+text width=\flowwidth,
+text centered,
+draw=black,
+fill=orange!30]
+
+\tikzstyle{decision} = [diamond,
+minimum width=\flowwidth,
+minimum height=1cm,
+text width=1.5cm,
+text centered,
+draw=black,
+fill=green!30]
+
+\tikzstyle{arrow} = [thick, ->, >=stealth]
