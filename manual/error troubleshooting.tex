@@ -1,0 +1,150 @@
+\section{Error Troubleshooting}
+\label{Error Troubleshooting}
+
+This section records a code-based investigation of intermittent failures during
+automated sequences. It focuses on reports that the system appeared to shut
+off without an obvious error after several runs, sometimes around 2--4 AM.
+The analysis uses the current Python source and the method logs included in
+the project. It identifies plausible software paths, not a confirmed
+electrical or hardware root cause.
+
+\subsection{Summary of the leading explanation}
+
+The strongest code-supported explanation is that a fault in communication
+with the mass flow controller (MFC) aborts a run, after which the software
+intentionally attempts to place the system in its \code{off} state. This
+sequence can look like a sudden shutdown even though the initiating event
+was a serial communication or response error.
+
+The standard reference method includes a monitored sample pulse lasting
+31.25 minutes. During that pulse, the controller repeatedly reads the sample
+flow over the serial connection. If communication stops responding, the
+sequence can fail during the sampling step. The current logs contain examples
+of \code{TimeoutError: Device timed out.} in the sampling step, including
+failures around 3:13 AM and 4:11 AM. Other log entries show similar timeouts
+at different times of day. This is evidence for a recurrent communication
+failure path, but it does not establish what causes the communication failure.
+
+\subsection{How an MFC response can become a run failure}
+
+For a monitored pulse, the state handler calls \code{sample(display=False)}
+while sample flow is active. The call chain is:
+\begin{enumerate}
+    \item The pulse monitor calls \code{sample(display=False)}.
+    \item \code{sample()} calls \code{flowrate(position=0)} to query the
+    sample MFC.
+    \item \code{flowrate()} sends a request through the serial helper
+    \code{uPy.echo()}.
+    \item If the device does not complete its response prompt before the
+    timeout, \code{uPy.echo()} raises \code{TimeoutError}. The recovery in
+    \code{flowrate()} handles \code{SerialException}, but does not catch
+    this timeout, so it propagates out of the sampling state.
+\end{enumerate}
+
+There is a second, distinct failure path if the serial helper receives an
+empty response rather than timing out. The helper returns \code{None} for an
+empty evaluated response. \code{flowrate()} appends that value to its result
+list without checking it, and \code{sample(display=False)} can consequently
+return \code{None}. The monitored pulse stores that result in its flow
+measurement list. When the pulse completes, the code integrates the list to
+calculate sampled volume; invalid or missing measurements can make this
+calculation fail. This missing-value path is plausible from the source, but
+the cited overnight log entries specifically report timeouts, not a
+\code{None}-related integration error.
+
+\subsection{Why a communication error can look like a shutdown}
+
+When a method raises an exception, \code{run\_method()} catches it long
+enough to write a failure record to \say{logs/method log.csv}. If the log
+write succeeds, it then calls \code{state("off")} before raising an
+exception to its caller. The \code{off} state commands valves and relays off,
+then requests zero sample and backflush flow. A user watching the hardware
+may therefore see a shutdown as the visible result of an earlier MFC, serial,
+temperature, or GC error.
+
+This shutdown attempt is not guaranteed to finish. It uses the same hardware
+communication paths, including the MFC connection; if one of those calls
+fails again, the off-state transition can itself raise an exception. Outputs
+that were commanded before the failure may already be off, while later
+commands may not have completed. Treat an apparent shutdown as a potentially
+incomplete transition until the physical outputs have been checked.
+
+This explanation applies if the Raspberry Pi process remained alive long
+enough to handle an exception and command the attached system off. If the Pi
+itself lost power, rebooted, or became unresponsive, this Python shutdown path
+cannot by itself explain that event; investigate Pi power, undervoltage,
+thermal conditions, storage, and operating-system logs as a separate failure
+mode.
+
+The sequence's default error policy is to re-raise a run failure, which ends
+the sequence rather than automatically continuing. A message may be missed
+if the program was launched without a visible terminal or its output was
+redirected. Some code paths also redirect Python's standard output to the
+null device while suppressing output; if an exception occurs before output
+is restored, later diagnostic text may not reach the console. The method log
+is therefore important, but it is not a substitute for preserving the
+terminal output and checking the actual hardware state.
+
+\subsection{Why it may happen after several runs}
+
+The code does not schedule a shutdown for 2--4 AM, and the Python source
+contains no time-of-day rule for stopping a run. An offline Raspberry Pi
+does not need internet access for the serial communications or GPIO calls
+shown here. A repeated long-running sequence does, however, perform many
+hardware operations; intermittent communication faults may become more
+likely to be encountered as the number of polls and runs increases. The
+observed hour could also reflect when a run in a regularly spaced sequence
+reaches its sampling or shutdown steps.
+
+The project's \say{Day Run} sequence specifies a 45-minute minimum interval
+between runs. The interval begins at the start of each run; it is not a
+fixed time-of-day schedule. Whether that explains the observed timing depends
+on how the sequence was started, whether continuous operation was enabled,
+and the actual sequence file used at the time.
+
+An archived method log also records \code{[Errno 28] No space left on
+device} during a run. This confirms that storage exhaustion occurred at
+least once historically, but it does not explain the later serial timeout
+entries by itself. A full filesystem or exhausted inodes can prevent logging
+and other writes, so available storage should still be checked when
+investigating an apparently silent failure.
+
+\subsection{Checks to perform after a failure}
+
+Before restarting the sequence, verify the physical state of the pump,
+valves, MFCs, traps, and GC; do not infer their state solely from the
+program's last printed message. Then preserve the following evidence:
+\begin{itemize}
+    \item The full terminal output, including any traceback, from before and
+    after the apparent shutdown.
+    \item The corresponding final row in \say{logs/method log.csv}, including
+    the method name, state name, timestamp, and error text.
+    \item The Pi's available disk space and inodes (\code{df -h} and
+    \code{df -i}), and whether the filesystem was mounted read-only.
+    \item Kernel messages near the failure time (\code{dmesg}), looking for
+    USB disconnects, USB resets, undervoltage, or power-related warnings.
+    \item The selected sequence, its repetition and interval settings, and
+    whether it was started with continuous operation or by a supervisor.
+\end{itemize}
+
+If it is safe to do so, record whether the MFC still responds to a direct
+read after the failure and whether the serial device disappears from the
+Pi. Also note whether the GC reports ready and whether temperature readings
+remain available. These observations help distinguish an MFC-only
+communication loss from a broader USB, power, Raspberry Pi, or instrument
+shutdown.
+
+\subsection{Information needed to confirm the hardware cause}
+
+The source and logs support the software failure path above, but the
+underlying physical cause remains undetermined. To narrow it down, record
+the Raspberry Pi model and operating-system version; the power supply and
+any USB hub used; which controllers share USB or power connections; and
+whether the Pi itself stayed on when the pre-concentrator outputs shut down.
+The MFC and valve-controller board types, their power arrangements, and
+their serial connection details are also relevant.
+
+\warn{If the controller appears to shut down during an unattended run,
+confirm the physical state and restore a known safe condition before
+restarting. A software exception or a log entry does not prove that every
+output reached its intended safe state.}

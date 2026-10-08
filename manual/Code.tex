@@ -1,12 +1,242 @@
-\section{Raw Code}
+\section{Functions and Commands}
+\label{Functions and Commands}
 
-\subsection{Control Board}
-\label{Control Board Code}
+The system is controlled by \code{pre\_con.py}. Its command-line interface
+offers standard runs, individual methods, sequences, and an interactive
+prompt. The control functions described below are methods of the
+\code{pre\_con} object created by that program.
 
-\subsection{Mass Flow Controller}
-\label{MFC Code}
+\subsection{Starting the program}
 
-\subsection{Valve Controller}
-\label{VC Code}
+Run commands from the project folder on the system's control computer:
+\begin{verbatim}
+python3 pre_con.py --help
+python3 pre_con.py --run
+\end{verbatim}
 
-\subsection{Standard Sequence}
+Select only one operating mode per invocation. The available modes and
+options are:
+\begin{itemize}
+    \item \code{-r}, \code{--run}: create and run a standard method.
+    \item \code{-m FILE}, \code{--method FILE}: run a method file from
+    \say{src/Methods/}.
+    \item \code{-s FILE}, \code{--sequence FILE}: run a sequence file from
+    \say{src/Sequences/}.
+    \item \code{-c}, \code{--cli}: open the interactive command prompt.
+    \item \code{-l}, \code{--log}: request the method log. This option is
+    present in the program, but its implementation currently prints
+    \say{Not yet implemented} rather than displaying log entries.
+    \item \code{--continuous}: repeat the selected sequence until stopped
+    with the system's debug switch. Use this with \code{--sequence}.
+\end{itemize}
+
+The following options customize \code{--run}:
+\begin{itemize}
+    \item \code{--flow N}: sample flow rate in standard cubic centimetres per
+    minute (sccm).
+    \item \code{--volume N}: sample volume in millilitres (mL).
+    \item \code{--temp N}: adsorbent trap setpoint in degrees Celsius.
+    \item \code{--inject N}: GC injection duration in seconds.
+    \item \code{--blank}: perform a blank run without the flush and sampling
+    steps.
+    \item \code{--stream N [N ...]}: run the selected sample stream or streams.
+    \item \code{--repeat N}: repeat the standard run; the default is one run.
+    \item \code{--delay N}: wait the specified number of minutes in the final
+    \code{off} state.
+\end{itemize}
+
+For example, a standard run with a 50 sccm sample flow, a 1,000 mL sample,
+and a 300~\textdegree C trap setpoint can be started with:
+\begin{verbatim}
+python3 pre_con.py --run --flow 50 --volume 1000 --temp 300
+\end{verbatim}
+The command-line values are integers. The program makes a customized method
+file named \say{custom.m} when it creates a standard run.
+
+\subsection{Interactive prompt}
+
+Start the prompt with \code{python3 pre\_con.py --cli}. At the \code{>} prompt,
+enter a method on the active control object without typing the \code{pc.}
+prefix. For example:
+\begin{verbatim}
+> state()
+> run_method()
+> check_method("standard.m")
+> sample()
+> exit()
+\end{verbatim}
+\code{state()} reports the current state, \code{run\_method()} lists available
+methods, and \code{sample()} reads the current sample flow. Use
+\code{exit()} to command the system to the \code{off} state and leave the
+prompt. The prompt also accepts ordinary Python call arguments, for example
+\code{sample(50)} to set the sample flow rate to 50 sccm.
+
+\subsection{Methods and states}
+
+A method is a JSON-formatted list in a file under \say{src/Methods/}. Its
+entries are state names, or state dictionaries that override settings. A
+standard method can be checked before it is run:
+\begin{verbatim}
+python3 pre_con.py --method "standard.m"
+\end{verbatim}
+Within the interactive prompt, \code{check\_method("standard.m")} checks and
+summarizes the method, while \code{run\_method("standard.m")} runs it.
+Calling \code{run\_method()} with no name lists the available method files.
+The program writes method start/end times, notes, and errors to
+\say{logs/method log.csv}. If a method fails, it records the error, commands
+the system to \code{off}, and raises an exception.
+
+The \code{state()} function has several uses:
+\begin{itemize}
+    \item \code{state()} displays the current system state.
+    \item \code{state(check=True)} lists the named states available in
+    \say{src/precon\_states}.
+    \item \code{state("flush", check=True)} displays and returns the settings
+    for a named state without applying them.
+    \item \code{state("flush")} applies that state's settings and waits for
+    its advancement condition, if any.
+\end{itemize}
+
+State settings are defined in \say{src/precon\_states}. The state dictionary
+accepts \code{name}, \code{valves}, \code{ads}, \code{h2o}, \code{battery},
+\code{sample}, \code{backflush}, \code{pump}, \code{aux1}, \code{aux2},
+\code{condition}, \code{value}, \code{monitor}, \code{timeout}, and
+\code{message}. Omitted settings retain their defaults; the state definitions
+specify only the settings needed for each step. A missing condition applies
+the specified settings and returns without waiting. The code recognizes these
+advancement conditions:
+\begin{itemize}
+    \item \code{time}: wait for \code{value} minutes.
+    \item \code{pulse}: pulse the selected valve for \code{value} minutes.
+    \item \code{gc}: wait for the GC-ready signal and, when a nonzero
+    \code{value} is supplied, trigger the GC with that pulse duration in
+    minutes.
+    \item \code{temp}: wait for the configured temperature or battery
+    threshold, using \code{value} as the comparison (\code{>} or \code{<})
+    and \code{timeout} in minutes.
+    \item \code{manual}: wait for the front-panel debug switch to be toggled
+    on and then off.
+    \item \code{input}: request operator input using \code{message};
+    \code{error}: raise an error using \code{message}.
+\end{itemize}
+The H2O trap control is not active in the current implementation. Do not
+assume that an \code{h2o} state setting will control a water trap.
+
+\subsection{Sequences}
+
+A sequence is a JSON-formatted list stored under \say{src/Sequences/}. Each
+entry identifies a method and can specify the sample name, streams,
+repetition count, and a minimum time between runs. For example:
+\begin{verbatim}
+python3 pre_con.py --sequence "Day Run"
+python3 pre_con.py --sequence "Day Run" --continuous
+\end{verbatim}
+In the interactive prompt, \code{run\_sequence()} lists the available
+sequences; \code{run\_sequence("Day Run")} runs one. A sequence entry can
+contain \code{Method}, \code{Sample Name}, \code{Stream}, \code{Repetition},
+\code{Description}, \code{on\_error}, and \code{time}. \code{Stream} may be
+one stream number, a list of stream numbers, or null to use the currently
+selected stream. \code{Repetition} defaults to one. The \code{Macro} field
+is accepted in sequence entries, but macros are not implemented.
+
+\subsection{Hardware-level calls}
+
+These low-level methods act directly on the connected controllers. They are
+available at the interactive prompt; enter the method call without the
+\code{pc.} prefix. A return value or displayed measurement depends on the
+method as described below.
+
+\subsubsection{Adsorbent-trap temperature controller}
+
+\begin{itemize}
+    \item \code{ads\_connect(serial\_address)} connects to the adsorbent-trap
+    temperature controller at the specified serial address and loads the
+    calibration coefficients from
+    \say{src/thermal\_controller/PID calibration.txt}. The controller is
+    normally connected automatically during program startup; this call is
+    mainly for reconnecting or development.
+    \item \code{ads\_temp(temp)} sets the adsorbent-trap temperature in
+    degrees Celsius. Setpoints above 100~\textdegree C are converted using
+    the saved calibration before they are sent to the controller. Calling
+    \code{ads\_temp()} is intended to print the controller's setpoint, but
+    the current implementation compares \code{temp} with the controller
+    limit before checking for \code{None}; do not rely on the no-argument
+    form.
+    \item \code{ads\_calibrate(temp=None)} starts the ADS temperature
+    calibration procedure and saves the resulting coefficients to the
+    calibration file. Use only when performing the calibration procedure.
+\end{itemize}
+
+\subsubsection{Water-trap temperature controller}
+
+\code{h2o\_temp(temp=None)} is present in the source, but water-trap control
+is not implemented: the controller is not initialized during startup and the
+method currently references undefined or incorrect variables. Do not call it
+to set or read a water-trap temperature.
+
+\subsubsection{Mass flow controller}
+
+\begin{itemize}
+    \item \code{mfc\_connect(port=None)} connects to the MFC controller and
+    reads its controller count and timeout. If \code{port} is omitted, the
+    method attempts to reuse the port from the existing MFC connection.
+    \item \code{flowrate(position=None, flowrate=None)} reads or sets one or
+    more controller flow rates. \code{position} is the zero-based controller
+    index; omitting it addresses every configured MFC. \code{flowrate} is
+    the requested flow in sccm. Omitting \code{flowrate} queries the current
+    value. The function returns a list of responses, including when only one
+    controller is queried.
+    \item \code{sample(flowrate=None, display=True)} reads or sets the sample
+    MFC (controller index 0) in sccm. With no flow argument it displays the
+    measured flow; pass \code{display=False} to return that reading instead.
+    Supplying a flow sets it and does not return a reading.
+    \item \code{backflush(flowrate=None, display=True)} has the same behavior
+    for the backflush MFC (controller index 1).
+    \item \code{check\_battery()} returns the calibrated battery measurement.
+    \item \code{measure(device)} reads a measurement by device name:
+    \code{"ads"} reads the ADS controller, \code{"h2o"} requests the
+    unimplemented water-trap controller, and \code{"battery"} calls
+    \code{check\_battery()}. The water-trap option is unavailable while that
+    controller is not implemented.
+\end{itemize}
+
+\subsubsection{Valve controller, stream selector, and relays}
+
+\begin{itemize}
+    \item \code{valve(valve, position)} rotates a valve to the requested
+    controller position. \code{valve()} queries the valve controller.
+    A list or range of valve indices can be supplied with a matching list of
+    positions. Valve numbering and valid positions depend on the hardware
+    configuration.
+    \item \code{pulse(valve, sleep)} pulses the selected valve for
+    \code{sleep} minutes. The valve index must be an integer from 0 through
+    8; this timed operation is also used internally by state transitions.
+    \item \code{home\_valves()} commands valves 0 through 7 to position 0.
+    \item \code{stream(position=None)} with no argument reads and returns the
+    stream selector's current position. Pass an integer to select a position,
+    \code{"home"} to home the selector, or \code{"step"} to advance one
+    position.
+    \item \code{step()} advances the stream selector by one position, like
+    \code{stream("step")}.
+    \item \code{relay(name, command)} is the shared relay control used by
+    the named helpers. \code{name} must be \code{"pump"}, \code{"aux1"}, or
+    \code{"aux2"}. Set \code{command} to \code{1} or \code{"on"} to turn on,
+    and \code{0} or \code{"off"} to turn off.
+    \item \code{pump(command=None)}, \code{aux1(command=None)}, and
+    \code{aux2(command=None)} switch their respective relays using the same
+    on/off values as \code{relay}. Use an explicit on or off command;
+    omitting it does not query the physical relay and currently reports the
+    pump state even for an auxiliary relay.
+\end{itemize}
+
+\subsubsection{Run helpers}
+
+\code{standard\_run(...)} builds and, by default, runs a modified standard
+method. Its keyword options are \code{flow}, \code{volume}, \code{temp},
+\code{delay}, \code{inject}, \code{blank}, \code{stream}, \code{aux}, and
+\code{ambient}. \code{linearity(...)} generates a series of standard runs
+varying \code{volume}, \code{flow}, \code{temp}, or \code{inject}.
+
+\warn{Interactive commands operate the attached hardware immediately. Verify
+the selected sample stream, flow settings, trap setpoint, and method before
+starting a run.}
